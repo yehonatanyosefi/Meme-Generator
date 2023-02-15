@@ -116,9 +116,18 @@ function addTouchListeners() {
 }
 
 function downloadCanvas(elLink) {
-     const data = gElCanvas.toDataURL() // Method returns a data URL containing a representation of the image in the format specified by the type parameter.
-     elLink.href = data // Put it on the link
-     elLink.download = 'my-img' // Can change the name of the file
+     const meme = getMeme()
+     const oldSelectedLine = meme.selectedLineIdx
+     if (oldSelectedLine !== -1) {
+          meme.selectedLineIdx = -1
+          renderMeme()
+          //TODO: remove double download, keep interval to load canvas
+          elLink.click()
+     } else {
+          const data = gElCanvas.toDataURL() // Method returns a data URL containing a representation of the image in the format specified by the type parameter.
+          elLink.href = data // Put it on the link
+          elLink.download = 'my-img' // Can change the name of the file
+     }
 }
 
 function onSelectImg(imgId) {
