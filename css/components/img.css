@@ -1,6 +1,6 @@
 .img-container {
 	display: grid;
-	grid-template-columns: repeat(auto-fit, 100px);
+	grid-template-columns: repeat(auto-fit, 180px);
 	grid-auto-flow: dense;
 	gap: 10px;
 	margin: 0 auto;

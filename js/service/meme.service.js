@@ -55,7 +55,7 @@ function createMeme() {
      }
 }
 
-function clearCanvas() {
+function resetCanvas() {
      gMeme.lines = [createLine()]
      gMeme.selectedLineIdx = 0
 }

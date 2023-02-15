@@ -10,11 +10,11 @@ var gCanvas = { isMouseDown: false, }
 // var gCurrMemeId = null
 // var gIsModalOpen = false
 // var gModal = null
-//TODO: fix square around text
 //TODO: add rest of buttons
 //TODO: add several fonts selectors
 //TODO: add randomizer on canvas editor
-//TODO: fix all media queries and ui
+//TODO: add responsiveness for mobile
+//TODO: improve ui
 //TODO: fix uploaded image render, and save to local storage
 //TODO: fix Saved Memes
 //TODO: randomize the stroke color. Note that as a bonus here you may calculate the text size so it will not exceed the canvas width
@@ -27,6 +27,7 @@ var gCanvas = { isMouseDown: false, }
 //TODO: Resize / Rotate a line. UI for this feature shall be a resize icon added to the line’s frame.
 //TODO: Use the new Web Share API to share your meme
 //TODO: i18n for Hebrew
+//TODO: fix double download
 
 function onInit() {
      //touch
@@ -121,8 +122,7 @@ function downloadCanvas(elLink) {
      if (oldSelectedLine !== -1) {
           meme.selectedLineIdx = -1
           renderMeme()
-          //TODO: remove double download, keep interval to load canvas
-          elLink.click()
+          //TODO: make it not download the border
      } else {
           const data = gElCanvas.toDataURL() // Method returns a data URL containing a representation of the image in the format specified by the type parameter.
           elLink.href = data // Put it on the link
@@ -131,7 +131,7 @@ function downloadCanvas(elLink) {
 }
 
 function onSelectImg(imgId) {
-     clearCanvas()
+     resetCanvas()
      if (imgId === 'rnd') {
           randomizeLine()
           imgId = getRandomIntInclusive(1, getImages().length)
@@ -151,15 +151,17 @@ function drawText(line, x, y, isSelected) {
 
      gCtx.fillText(txt, x, y) // Draws (fills) a given text at the given (x, y) position.
      gCtx.strokeText(txt, x, y) // Draws (strokes) a given text at the given (x, y) position.
-     if (isSelected) drawRect(x, y, size, txt.length)
+     if (isSelected) drawRect(x, y, size, txt)
 }
 
-function drawRect(x, y, size, length) { //TODO: improve dimensions and x start
+function drawRect(x, y, size, text) { //TODO: improve dimensions and x start
      const oldColor = gCtx.fillStyle
      gCtx.fillStyle = 'rgba(255, 255, 255, 0.4)'
      gCtx.strokeStyle = 'white'
-     gCtx.strokeRect(x - size * 1.3, y - (size / 2) - (length / 2), size * length / 2, size)
-     gCtx.fillRect(x - size * 1.3, y - (size / 2) - (length / 2), size * length / 2, size)
+     const width = gCtx.measureText(text).width
+     const mult = 1.2
+     gCtx.strokeRect(x - width / 2 * mult, y - (size / 2) * mult, width * mult, size * mult)
+     gCtx.fillRect(x - width / 2 * mult, y - (size / 2) * mult, width * mult, size * mult)
      gCtx.fillStyle = oldColor
 }
 
@@ -179,8 +181,8 @@ function onMouseHold(ev) {
      const { movementX: movX, movementY: movY } = ev
 }
 
-function onClearCanvas() {
-     clearCanvas()
+function onResetCanvas() {
+     resetCanvas()
      renderMeme()
 }
 
