@@ -85,9 +85,13 @@ function getImages() {
 }
 
 function switchLine() {
-     gMeme.selectedLineIdx++
-     if (gMeme.selectedLineIdx < gMeme.lines.length) return
-     gMeme.lines.push(createLine())
+     if (gMeme.selectedLineIdx === 0 && gMeme.lines.length === 1) {
+          gMeme.lines.push(createLine())
+     } else if (gMeme.selectedLineIdx < gMeme.lines.length) {
+          gMeme.selectedLineIdx++
+     } else {
+          gMeme.selectedLineIdx = 0
+     }
 }
 
 // function deleteMeme(memeId) {

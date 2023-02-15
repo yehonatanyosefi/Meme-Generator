@@ -34,8 +34,8 @@ function renderMeme() {
           gCtx.drawImage(img, 0, 0, gElCanvas.width, gElCanvas.height) //TODO: aspect ratio
           meme.lines.forEach((line, idx) => {
                let lineHeight = gElCanvas.height / 8
-               if (idx > 1) lineHeight = gElCanvas.height - gElCanvas.height / 8
-               else if (idx > 0) lineHeight = gElCanvas.height / 2
+               if (idx > 1) lineHeight = gElCanvas.height / 2
+               else if (idx > 0) lineHeight = gElCanvas.height - gElCanvas.height / 8
                drawText(line, gElCanvas.width / 2, lineHeight)
           })
      }
