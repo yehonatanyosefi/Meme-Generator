@@ -68,9 +68,10 @@
 							oninput="onChangeLine('size', this.value)"
 						/>
 					</form>
-					<button class="btn-round" onclick="onClearCanvas()">Reset</button>
+					<button class="btn-round" onclick="onResetCanvas()">Reset</button>
 					<input type="file" class="file-input btn" name="image" onchange="onImgInput(event)" />
-					<a href="#" onclick="downloadCanvas(this)"><button class="btn-round">Download</button></a>
+					<button class="btn-round" onclick="prepareDownload()">Download</button
+					><a href="#" class="canvas-downloader" onclick="downloadCanvas(this)"></a>
 					<button class="btn-round" onclick="onShareImg()">Share</button>
 					<button class="btn-round" onclick="onSaveMeme()">Save</button>
 				</div>

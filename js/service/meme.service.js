@@ -42,6 +42,10 @@ function setImg(imgId) {
      gMeme.selectedLineIdx = 0
      gMeme.url = gImgs[imgId - 1].imgUrl
 }
+function setMeme(memeIdx) {
+     const oldMemes = loadMemes()
+     gMeme = oldMemes[memeIdx]
+}
 
 function createMeme() {
      return {
@@ -60,16 +64,18 @@ function resetCanvas() {
      gMeme.selectedLineIdx = 0
 }
 
-function createLine(txt = 'Hello', size = 50, align = 'center', color = 'white', stroke = 'black', font = 'Impact') {
-     return { txt, size, align, color, stroke, font }
+function createLine(txt = 'Hello', size = 50, align = 'center', color = 'white', stroke = 'black', font = 'Impact', posY = null) {
+     return { txt, size, align, color, stroke, font, posY }
 }
 
 function changeLine(prop, value) {
      switch (prop) {
           case 'size':
+               if (!value) value = 50
                gMeme.lines[gMeme.selectedLineIdx].size = value
                break
           case 'text':
+               if (!value) value = ' '
                gMeme.lines[gMeme.selectedLineIdx].txt = value
                break
           case 'fill':
@@ -77,6 +83,9 @@ function changeLine(prop, value) {
                break
           case 'font':
                gMeme.lines[gMeme.selectedLineIdx].font = value
+               break
+          case 'posY':
+               gMeme.lines[gMeme.selectedLineIdx].posY = value
                break
      }
 }
@@ -111,7 +120,7 @@ function loadMemes() {
 }
 
 function randomizeLine() {
-     gMeme.lines = [createLine(makeLorem(3), getRandomIntInclusive(25, 50), 'center', getRandomColor())]
+     gMeme.lines = [createLine(makeLorem(3), getRandomIntInclusive(25, 50), 'center', getRandomColor(), getRandomColor())]
 }
 
 // function deleteMeme(memeId) {

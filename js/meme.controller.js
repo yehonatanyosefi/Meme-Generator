@@ -10,24 +10,22 @@ var gCanvas = { isMouseDown: false, }
 // var gCurrMemeId = null
 // var gIsModalOpen = false
 // var gModal = null
+//TODO: Support “Drag&Drop” of lines and stickers on canvas. This requires also support of line selection by click line/stickers on canvas
+//TODO: Inline (on Canvas) text editing
 //TODO: add rest of buttons
-//TODO: add several fonts selectors
-//TODO: add randomizer on canvas editor
+//TODO: Support using various aspect-ratio of images, use the images from “meme-imgs(various aspect ratios)” folder
+//TODO: add saved memes text display on 'my memes'
+//TODO: fix base64 'my memes' display
 //TODO: add responsiveness for mobile
-//TODO: improve ui
+//TODO: calculate the 'I'm flexible' text size so it will not exceed the canvas width
+//TODO: improve ui colors and styling
 //TODO: fix uploaded image render, and save to local storage
-//TODO: fix Saved Memes
-//TODO: randomize the stroke color. Note that as a bonus here you may calculate the text size so it will not exceed the canvas width
 //TODO: Image gallery filter (use <datalist>)
 //TODO: Add stickers (Those are lines that have emojis
-//TODO: Support “Drag&Drop” of lines and stickers on canvas. This requires also support of line selection by click line/stickers on canvas
-//TODO: Support using various aspect-ratio of images, use the images from “meme-imgs(various aspect ratios)” folder
 //TODO: Add “search by keywords” to Image-Gallery Page. Each word size is determined by the popularity of the keyword search - so each click on a keyword makes that keyword bigger TIP: use an initial demo data so it will look good when loads
-//TODO: Inline (on Canvas) text editing
 //TODO: Resize / Rotate a line. UI for this feature shall be a resize icon added to the line’s frame.
 //TODO: Use the new Web Share API to share your meme
 //TODO: i18n for Hebrew
-//TODO: fix double download
 
 function onInit() {
      //touch
@@ -116,18 +114,22 @@ function addTouchListeners() {
      gElCanvas.addEventListener('touchend', onMouseUp)
 }
 
-function downloadCanvas(elLink) {
+function prepareDownload() {
      const meme = getMeme()
-     const oldSelectedLine = meme.selectedLineIdx
-     if (oldSelectedLine !== -1) {
+     const elLink = document.querySelector('.canvas-downloader')
+     if (meme.selectedLineIdx !== -1) {
           meme.selectedLineIdx = -1
           renderMeme()
-          //TODO: make it not download the border
+          setTimeout(() => elLink.click(), 100)
      } else {
-          const data = gElCanvas.toDataURL() // Method returns a data URL containing a representation of the image in the format specified by the type parameter.
-          elLink.href = data // Put it on the link
-          elLink.download = 'my-img' // Can change the name of the file
+          elLink.click()
      }
+}
+
+function downloadCanvas(elLink) {
+     const data = gElCanvas.toDataURL() // Method returns a data URL containing a representation of the image in the format specified by the type parameter.
+     elLink.href = data // Put it on the link
+     elLink.download = 'my-img' // Can change the name of the file
 }
 
 function onSelectImg(imgId) {
@@ -136,20 +138,29 @@ function onSelectImg(imgId) {
           randomizeLine()
           imgId = getRandomIntInclusive(1, getImages().length)
      }
-     onOpenEditor()
      setImg(imgId)
+     renderNewCanvas()
+}
+
+function onSelectMeme(memeIdx) {
+     setMeme(memeIdx)
+     renderNewCanvas()
+}
+
+function renderNewCanvas() {
+     onOpenEditor()
      renderMeme()
 }
 
 function drawText(line, x, y, isSelected) {
-     const { txt, size, font, color, stroke, align } = line
+     const { txt, size, font, color, stroke, align, posY } = line
      gCtx.lineWidth = 1
      gCtx.font = `${size}px ${font}`
      gCtx.fillStyle = color
      gCtx.strokeStyle = stroke
      gCtx.textAlign = align
      gCtx.textBaseline = 'middle'
-
+     if (posY) y = posY
      gCtx.fillText(txt, x, y) // Draws (fills) a given text at the given (x, y) position.
      gCtx.strokeText(txt, x, y) // Draws (strokes) a given text at the given (x, y) position.
      if (isSelected) drawRect(x, y, size, txt)
@@ -205,7 +216,7 @@ function onOpenSavedMemes() {
      document.querySelector('.img-container').classList.add('hide')
      document.querySelector('.editor-container').classList.add('hide')
      document.querySelector('.memes-container').classList.remove('hide')
-     renderMemes(loadMemes())
+     renderMemes()
 }
 
 function onOpenEditor() {
