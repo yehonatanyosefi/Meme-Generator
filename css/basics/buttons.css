@@ -1,0 +1,39 @@
+/* round buttons */
+
+button {
+	background-color: var(--clr-2);
+	color: var(--clr-1);
+	cursor: pointer;
+	border: 2px solid var(--clr-1);
+	font-size: 1em;
+	padding: 0.625em 1.625em;
+
+	position: relative;
+}
+
+button:hover {
+	color: var(--clrbase);
+	border: 2px solid var(--clrbase);
+}
+
+/* Round */
+
+.btn-round {
+	border-radius: 2em;
+}
+
+/* Arrow */
+
+.btn-arrow {
+	transition: padding 0.4s;
+}
+
+.btn-arrow:hover {
+	padding-inline-end: 2.5em;
+}
+
+.btn-arrow:hover::after {
+	content: ' →';
+	position: absolute;
+	right: 1em;
+}

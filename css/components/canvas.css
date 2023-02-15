@@ -1,0 +1,14 @@
+canvas {
+	display: block;
+	margin: auto;
+	background-color: white;
+	border: 1px solid black;
+}
+
+.canvas-container {
+	margin: auto;
+	width: 50vw;
+	height: 50vh;
+	left: 50%;
+	top: 50%;
+}

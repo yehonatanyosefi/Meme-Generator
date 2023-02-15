@@ -1,0 +1,21 @@
+/* SETUP */
+@import 'setup/vars.css';
+@import 'setup/typography.css';
+
+/* BASICS */
+@import 'basics/base.css';
+@import 'basics/buttons.css';
+@import 'basics/helpers.css';
+@import 'basics/layout.css';
+
+/* COMPONENTS */
+@import 'components/img.css';
+@import 'components/canvas.css';
+@import 'components/card.css';
+@import 'components/footer.css';
+@import 'components/header.css';
+@import 'components/logo.css';
+@import 'components/page-btns.css';
+
+/* MEDIA QUERIS */
+@import 'setup/mq.css';
