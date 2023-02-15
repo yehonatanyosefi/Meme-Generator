@@ -56,6 +56,7 @@ function createMeme() {
 
 function clearCanvas() {
      gMeme.lines = [createLine()]
+     gMeme.selectedLineIdx = 0
 }
 
 function createLine(txt = 'Hello', size = 50, align = 'center', color = 'white', font = 'Impact') {
@@ -87,11 +88,27 @@ function getImages() {
 function switchLine() {
      if (gMeme.selectedLineIdx === 0 && gMeme.lines.length === 1) {
           gMeme.lines.push(createLine())
+          gMeme.selectedLineIdx++
      } else if (gMeme.selectedLineIdx < gMeme.lines.length) {
           gMeme.selectedLineIdx++
      } else {
           gMeme.selectedLineIdx = 0
      }
+}
+
+function saveMemes() {
+     const allMemes = loadMemes() || []
+     allMemes.push(gMeme)
+     saveToStorage(MEMES_KEY, allMemes)
+}
+
+function loadMemes() {
+     return loadFromStorage(MEMES_KEY)
+}
+
+function randomizeLine() {
+     gMeme.lines = [createLine(makeLorem(3), getRandomIntInclusive(25, 50), 'center', getRandomColor())]
+     console.log('gMeme', gMeme)
 }
 
 // function deleteMeme(memeId) {

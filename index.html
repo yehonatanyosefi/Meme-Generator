@@ -18,10 +18,10 @@
 				<div class="menu">
 					<li class="clean list flex center">
 						<ul>
-							<a href="#" onclick="toggleEditor()">Gallery</a>
+							<a href="#" onclick="onOpenGallery()">Gallery</a>
 						</ul>
 						<ul>
-							<a href="#">My Memes</a>
+							<a href="#" onclick="onOpenSavedMemes()">My Memes</a>
 						</ul>
 						<ul>
 							<a class="about" href="#">About</a>
@@ -31,6 +31,7 @@
 			</div>
 		</div>
 		<div class="main-content">
+			<div class="memes-container"></div>
 			<div class="img-container"></div>
 			<div class="editor-container hide">
 				<div class="canvas-container">
@@ -70,6 +71,7 @@
 						><button class="btn-round">Download</button></a
 					>
 					<button class="btn-round" onclick="onShareImg()">Share</button>
+					<button class="btn-round" onclick="onSaveMeme()">Save</button>
 				</div>
 			</div>
 		</div>

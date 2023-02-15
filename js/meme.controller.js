@@ -42,7 +42,6 @@ function renderMeme() {
 }
 
 
-
 function resizeCanvas() { //deletes content on move
      //TODO: maybe resize
      const elContainer = document.querySelector('.canvas-container')
@@ -107,7 +106,12 @@ function downloadCanvas(elLink) {
 }
 
 function onSelectImg(imgId) {
-     toggleEditor(false)
+     clearCanvas()
+     if (imgId === 'rnd') {
+          randomizeLine()
+          imgId = getRandomIntInclusive(1, getImages().length)
+     }
+     onOpenEditor()
      setImg(imgId)
      renderMeme()
 }
@@ -140,13 +144,6 @@ function onMouseDown(ev) {
      const { x, y } = pos
 }
 
-function getTxtInfo() {
-     const txt = document.querySelector('.txt').value
-     const font = document.querySelector('.font').value
-     const fontSize = document.querySelector('.font-size').value
-     return { txt, font, fontSize, }
-}
-
 function onMouseUp(ev) {
      gCanvas.isMouseDown = false
 }
@@ -155,14 +152,6 @@ function onMouseHold(ev) {
      const pos = getEvPos(ev)
      const { x, y } = pos
      const { movementX: movX, movementY: movY } = ev
-}
-
-function toggleEditor() {
-     document.querySelector('.img-container').classList.toggle('hide')
-     document.querySelector('.editor-container').classList.toggle('hide')
-     addListeners()
-     resizeCanvas()
-     gCtx.fillStyle = 'white'
 }
 
 function onClearCanvas() {
@@ -174,11 +163,37 @@ function onChangeLine(prop, value) {
      changeLine(prop, value)
      renderMeme()
 }
+
 function onSwitchLine() {
      switchLine()
      renderMeme()
 }
 
+function onSaveMeme() {
+     saveMemes()
+}
+
+function onOpenSavedMemes() {
+     document.querySelector('.img-container').classList.add('hide')
+     document.querySelector('.editor-container').classList.add('hide')
+     document.querySelector('.memes-container').classList.remove('hide')
+     renderMemes(loadMemes())
+}
+
+function onOpenEditor() {
+     document.querySelector('.img-container').classList.add('hide')
+     document.querySelector('.editor-container').classList.remove('hide')
+     document.querySelector('.memes-container').classList.add('hide')
+     addListeners()
+     resizeCanvas()
+     gCtx.fillStyle = 'white'
+}
+
+function onOpenGallery() {
+     document.querySelector('.img-container').classList.remove('hide')
+     document.querySelector('.editor-container').classList.add('hide')
+     document.querySelector('.memes-container').classList.add('hide')
+}
 // function resizeCanvas() {
 //      // create temp stuff
 //      const tempCanvas = document.createElement('canvas');
