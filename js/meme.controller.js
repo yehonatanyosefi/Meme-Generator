@@ -108,12 +108,13 @@ function onSelectImg(imgId) {
 }
 
 function drawText(line, x, y) {
-     const { txt, size, font } = line
+     const { txt, size, font, color } = line
      gCtx.lineWidth = 1
      if (txt === '') txt = 'hello'
      if (font === '') font = 'Impact'
      if (size === '') size = size
      gCtx.font = `${size}px ${font}`
+     gCtx.fillStyle = color
      gCtx.textAlign = 'center'
      gCtx.textBaseline = 'middle'
 
@@ -129,14 +130,6 @@ function drawRect(x, y, size, length) { //TODO: improve dimensions and x start
      gCtx.strokeRect(x - size * 1.3, y - (size / 2) - (length / 2), size * length / 2, size)
      gCtx.fillRect(x - size * 1.3, y - (size / 2) - (length / 2), size * length / 2, size)
      gCtx.fillStyle = oldColor
-}
-
-function setFillColor(color) {
-     gCtx.fillStyle = color
-}
-
-function setStrokeColor(color) {
-     gCtx.strokeStyle = color
 }
 
 function onMouseDown(ev) {

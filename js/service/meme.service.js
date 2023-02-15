@@ -59,6 +59,9 @@ function changeLine(prop, value) {
           case 'text':
                gMeme.lines[gMeme.selectedLineIdx].txt = value
                break
+          case 'fill':
+               gMeme.lines[gMeme.selectedLineIdx].color = value
+               break
      }
 }
 
