@@ -31,8 +31,7 @@
 			</div>
 		</div>
 		<div class="main-content">
-			<div class="img-container">
-			</div>
+			<div class="img-container"></div>
 			<div class="editor-container hide">
 				<div class="canvas-container">
 					<canvas class="canvas" height="450" width="450"> </canvas>
@@ -67,7 +66,9 @@
 					<button class="btn-round" onclick="onClearCanvas()">Clear</button>
 					<input type="file" class="file-input btn" name="image" onchange="onImgInput(event)" />
 					<!-- when click the link run downloadCanvas -->
-					<button class="btn-round" onclick="downloadCanvas(this)">Download</button></a>
+					<a href="#" onclick="downloadCanvas(this)" download="file-name"
+						><button class="btn-round">Download</button></a
+					>
 					<button class="btn-round" onclick="onShareImg()">Share</button>
 				</div>
 			</div>

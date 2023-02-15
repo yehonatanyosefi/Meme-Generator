@@ -58,8 +58,8 @@ function clearCanvas() {
      gMeme.lines = [createLine()]
 }
 
-function createLine() {
-     return { txt: 'Hello', size: 50, align: 'center', color: 'white', font: 'Impact' }
+function createLine(txt = 'Hello', size = 50, align = 'center', color = 'white', font = 'Impact') {
+     return { txt, size, align, color, font }
 }
 
 function changeLine(prop, value) {
