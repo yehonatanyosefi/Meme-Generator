@@ -108,14 +108,11 @@ function onSelectImg(imgId) {
 }
 
 function drawText(line, x, y) {
-     const { txt, size, font, color } = line
+     const { txt, size, font, color, align } = line
      gCtx.lineWidth = 1
-     if (txt === '') txt = 'hello'
-     if (font === '') font = 'Impact'
-     if (size === '') size = size
      gCtx.font = `${size}px ${font}`
      gCtx.fillStyle = color
-     gCtx.textAlign = 'center'
+     gCtx.textAlign = align
      gCtx.textBaseline = 'middle'
 
      gCtx.fillText(txt, x, y) // Draws (fills) a given text at the given (x, y) position.

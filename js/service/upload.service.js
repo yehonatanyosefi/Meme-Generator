@@ -27,7 +27,8 @@ function uploadImg(img) {
     // gCurrImageURL = img.src
 
     // Draw the img on the canvas
-    gCtx.drawImage(img, 0, 0, gElCanvas.width, gElCanvas.height)
+    // gCtx.drawImage(img, 0, 0, gElCanvas.width, gElCanvas.height)
+    addImage(img)
 }
 
 // function getImageURL() {

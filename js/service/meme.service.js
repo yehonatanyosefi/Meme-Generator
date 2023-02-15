@@ -6,32 +6,10 @@ const PAGE_SIZE = 5
 
 var gKeywordSearchCountMap = { 'funny': 12, 'cat': 16, 'baby': 2 }
 var gMeme = createMeme()
-var gImgs = createImages()
 var gFilter = { min: -Infinity, max: Infinity, name: '', }
 var gPageIdx = 0
 
-
-function setImg(imgId) {
-     gMeme.selectedImgId = imgId
-     gMeme.selectedLineIdx = 0
-     gMeme.url = `img/${imgId}.jpg`
-}
-
-function createMeme(name, price = getRandomIntInclusive(20, 100), rate = 0, img = 'img/default.jpg') {
-     return {
-          selectedImgId: 5,
-          selectedLineIdx: 0,
-          lines: [
-               { txt: 'Hello', size: 50, align: 'left', color: 'white', font: 'Impact' },
-          ],
-          url: img,
-          prev: null,
-          next: null,
-     }
-}
-function clearCanvas() {
-     gMeme.lines = [{ txt: 'Hello', size: 50, align: 'left', color: 'white' }]
-}
+var gImgs = createImages()
 
 function createImages() {
      let images = []
@@ -41,15 +19,44 @@ function createImages() {
      return images
 }
 
-function createImage(id) {
+function createImage(id, img) {
      return {
           id: id,
-          imgUrl: `img/${id}.jpg`,
+          imgUrl: img || `img/${id}.jpg`,
           keywords: ['funny', 'cat'],
           prev: null,
           next: null,
      }
 }
+
+function addImage(img) {
+     gImgs.push(createImage(gImgs.length + 1, img.src))
+     setImg(gImgs.length - 1)
+     renderMeme()
+}
+
+function setImg(imgId) {
+     gMeme.selectedImgId = imgId
+     gMeme.selectedLineIdx = 0
+     gMeme.url = gImgs[imgId].imgUrl
+}
+
+function createMeme(name, price = getRandomIntInclusive(20, 100), rate = 0, img = 'img/default.jpg') {
+     return {
+          selectedImgId: 5,
+          selectedLineIdx: 0,
+          lines: [
+               { txt: 'Hello', size: 50, align: 'center', color: 'white', font: 'Impact' },
+          ],
+          url: img,
+          prev: null,
+          next: null,
+     }
+}
+function clearCanvas() {
+     gMeme.lines = [{ txt: 'Hello', size: 50, align: 'center', color: 'white', font: 'Impact' }]
+}
+
 
 function changeLine(prop, value) {
      switch (prop) {

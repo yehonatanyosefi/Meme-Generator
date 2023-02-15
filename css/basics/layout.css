@@ -35,9 +35,7 @@
 /* EDITOR LAYOUT */
 .editor-container {
 	display: flex;
-	/* grid-template-columns: 100px 10px 200px; */
 	height: 450px;
-	/* border: 1px solid red; */
 }
 .editor-container canvas {
 	grid-column: 1;
