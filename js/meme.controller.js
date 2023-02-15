@@ -2,13 +2,31 @@
 //const
 const TOUCH_EVS = ['touchstart', 'touchmove', 'touchend']
 //var
-var gCurrMemeId = null
-var gIsModalOpen = false
-var gModal = null
 var gElCanvas = null
 var gCtx = null
-var gCanvasListeners = null
 var gCanvas = { isMouseDown: false, }
+
+// var gCanvasListeners = null
+// var gCurrMemeId = null
+// var gIsModalOpen = false
+// var gModal = null
+//TODO: fix square around text
+//TODO: add rest of buttons
+//TODO: add several fonts selectors
+//TODO: add randomizer on canvas editor
+//TODO: fix all media queries and ui
+//TODO: fix uploaded image render, and save to local storage
+//TODO: fix Saved Memes
+//TODO: randomize the stroke color. Note that as a bonus here you may calculate the text size so it will not exceed the canvas width
+//TODO: Image gallery filter (use <datalist>)
+//TODO: Add stickers (Those are lines that have emojis
+//TODO: Support “Drag&Drop” of lines and stickers on canvas. This requires also support of line selection by click line/stickers on canvas
+//TODO: Support using various aspect-ratio of images, use the images from “meme-imgs(various aspect ratios)” folder
+//TODO: Add “search by keywords” to Image-Gallery Page. Each word size is determined by the popularity of the keyword search - so each click on a keyword makes that keyword bigger TIP: use an initial demo data so it will look good when loads
+//TODO: Inline (on Canvas) text editing
+//TODO: Resize / Rotate a line. UI for this feature shall be a resize icon added to the line’s frame.
+//TODO: Use the new Web Share API to share your meme
+//TODO: i18n for Hebrew
 
 function onInit() {
      //touch
@@ -24,7 +42,6 @@ function onInit() {
      doTrans()
 }
 
-
 function renderMeme() {
      const meme = getMeme()
      const img = new Image() // Create a new html img element
@@ -36,11 +53,10 @@ function renderMeme() {
                let lineHeight = gElCanvas.height / 8
                if (idx > 1) lineHeight = gElCanvas.height / 2
                else if (idx > 0) lineHeight = gElCanvas.height - gElCanvas.height / 8
-               drawText(line, gElCanvas.width / 2, lineHeight)
+               drawText(line, gElCanvas.width / 2, lineHeight, meme.selectedLineIdx === idx)
           })
      }
 }
-
 
 function resizeCanvas() { //deletes content on move
      //TODO: maybe resize
@@ -116,7 +132,7 @@ function onSelectImg(imgId) {
      renderMeme()
 }
 
-function drawText(line, x, y) {
+function drawText(line, x, y, isSelected) {
      const { txt, size, font, color, align } = line
      gCtx.lineWidth = 1
      gCtx.font = `${size}px ${font}`
@@ -126,7 +142,7 @@ function drawText(line, x, y) {
 
      gCtx.fillText(txt, x, y) // Draws (fills) a given text at the given (x, y) position.
      gCtx.strokeText(txt, x, y) // Draws (strokes) a given text at the given (x, y) position.
-     drawRect(x, y, size, txt.length)
+     if (isSelected) drawRect(x, y, size, txt.length)
 }
 
 function drawRect(x, y, size, length) { //TODO: improve dimensions and x start

@@ -4,10 +4,11 @@ const MEMES_KEY = 'memesDB'
 const CURR_MEME_KEY = 'currMemeDB'
 const PAGE_SIZE = 5
 
-var gKeywordSearchCountMap = { 'funny': 12, 'cat': 16, 'baby': 2 }
+// var gKeywordSearchCountMap = { 'funny': 12, 'cat': 16, 'baby': 2 }
 var gMeme = createMeme()
-var gFilter = { min: -Infinity, max: Infinity, name: '', }
-var gPageIdx = 0
+
+// var gFilter = { min: -Infinity, max: Infinity, name: '', }
+// var gPageIdx = 0
 
 var gImgs = createImages()
 
@@ -89,7 +90,7 @@ function switchLine() {
      if (gMeme.selectedLineIdx === 0 && gMeme.lines.length === 1) {
           gMeme.lines.push(createLine())
           gMeme.selectedLineIdx++
-     } else if (gMeme.selectedLineIdx < gMeme.lines.length) {
+     } else if (gMeme.selectedLineIdx < gMeme.lines.length - 1) {
           gMeme.selectedLineIdx++
      } else {
           gMeme.selectedLineIdx = 0
@@ -108,7 +109,6 @@ function loadMemes() {
 
 function randomizeLine() {
      gMeme.lines = [createLine(makeLorem(3), getRandomIntInclusive(25, 50), 'center', getRandomColor())]
-     console.log('gMeme', gMeme)
 }
 
 // function deleteMeme(memeId) {
