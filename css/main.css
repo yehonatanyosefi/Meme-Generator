@@ -10,6 +10,7 @@
 
 /* COMPONENTS */
 @import 'components/img.css';
+@import 'components/control-box.css';
 @import 'components/canvas.css';
 @import 'components/card.css';
 @import 'components/footer.css';

@@ -1,4 +1,8 @@
-img {
-	width: 100px;
-	height: 100px;
+.img-container {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, 100px);
+	grid-auto-flow: dense;
+	gap: 10px;
+	margin: 0 auto;
+	padding: 5px;
 }

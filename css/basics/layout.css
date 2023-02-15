@@ -21,3 +21,15 @@
 /* CARD LAYOUT */
 
 /* MAIN CONTENT */
+
+/* EDITOR LAYOUT */
+.editor-container {
+	display: grid;
+	grid-template-columns: 1fr 80px 1fr;
+}
+.editor-container canvas {
+	grid-column: 1;
+}
+.editor-container .control-box {
+	grid-column: 3;
+}

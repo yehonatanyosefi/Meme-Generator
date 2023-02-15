@@ -1,4 +1,4 @@
-function onUploadImg() {
+function onShareImg() {
     const imgDataUrl = gElCanvas.toDataURL('image/jpeg') // Gets the canvas content as an image format
 
     // A function to be called if request succeeds

@@ -8,34 +8,53 @@
 			href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
 		/>
 		<link rel="stylesheet" href="css/main.css" />
-		<title>Title</title>
+		<title>Meme-Generator by Yehonatan Yosefi</title>
 	</head>
 
 	<body onload="onInit()" class="dark-theme">
-		<h1>page</h1>
-		<img src="img/1.jpg" onclick="onDrawImg(1)" />
-		<img src="img/2.jpg" onclick="onDrawImg(2)" />
-		<div class="canvas-container">
-			<canvas class="canvas" height="450" width="450"> </canvas>
+		<div class="img-container">
+			<img src="img/1.jpg" onclick="onDrawImg(1)" />
+			<img src="img/2.jpg" onclick="onDrawImg(2)" />
 		</div>
-		<div class="control-box grid center">
-			<input type="color" oninput="setFillColor(this.value)" value="#FFFFFF" />
-			<input type="color" oninput="setStrokeColor(this.value)" />
-			<select name="shape" onchange="setShape(this.value)">
-				<option value="brush">Brush</option>
-				<option value="line">Line</option>
-				<option value="text" selected="selected">Text</option>
-				<option value="img">Image</option>
-			</select>
-			<button onclick="clearCanvas()">Clear</button>
-			<input type="file" class="file-input btn" name="image" onchange="onImgInput(event)" />
-			<!-- when click the link run downloadCanvas -->
-			<a href="#" onclick="downloadCanvas(this)" download="file-name"><button>Download</button></a>
-			<button class="btn" onclick="onUploadImg()">Share</button>
+		<div class="editor-container">
+			<div class="canvas-container">
+				<canvas class="canvas" height="450" width="450"> </canvas>
+			</div>
+			<div class="control-box grid center">
+				<input type="color" oninput="setFillColor(this.value)" value="#FFFFFF" />
+				<input type="color" oninput="setStrokeColor(this.value)" />
+				<select name="options" onchange="onSetOpt(this.value)">
+					<option value="brush">Brush</option>
+					<option value="line">Line</option>
+					<option value="text" selected="selected">Text</option>
+					<option value="img">Image</option>
+				</select>
+				<form class="txt-inputs-container">
+					<label for="txt">Enter a txt</label>
+					<input type="text" name="txt" id="txt" placeholder="txt" class="txt" />
+					<label for="font">Enter a font</label>
+					<input type="text" name="font" id="font" placeholder="font" class="font" />
+					<label for="font-size">Enter a font size</label>
+					<input
+						type="number"
+						name="font-size"
+						id="font-size"
+						placeholder="font-size"
+						class="font-size"
+					/>
+				</form>
+				<button onclick="resizeCanvas()">Clear</button>
+				<input type="file" class="file-input btn" name="image" onchange="onImgInput(event)" />
+				<!-- when click the link run downloadCanvas -->
+				<a href="#" onclick="downloadCanvas(this)" download="file-name"><button>Download</button></a>
+				<button class="btn" onclick="onShareImg()">Share</button>
+			</div>
 		</div>
+		<footer class="flex center-all">By Yehonatan Yosefi</footer>
 		<script src="lib/hammer.min.js"></script>
 		<script src="js/service/storage.service.js"></script>
 		<script src="js/service/i18n.service.js"></script>
+		<script src="js/service/fb-share.service.js"></script>
 		<script src="js/service/upload.service.js"></script>
 		<script src="js/service/util.service.js"></script>
 		<script src="js/service/main.service.js"></script>

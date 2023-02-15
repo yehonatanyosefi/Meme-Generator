@@ -1,0 +1,6 @@
+footer {
+	left: 50%;
+	translate: -50%;
+	position: absolute;
+	bottom: 10px;
+}

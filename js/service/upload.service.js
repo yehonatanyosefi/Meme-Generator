@@ -1,6 +1,6 @@
 'use strict'
 
-let gCurrImageURL = null
+var gCurrImageURL = null
 
 // The next 2 functions handle IMAGE UPLOADING to img tag from file system:
 function onImgInput(ev) {
@@ -24,12 +24,12 @@ function loadImageFromInput(ev, onImageReady) {
 
 
 function uploadImg(img) {
-    gCurrImageURL = img.src
+    // gCurrImageURL = img.src
 
     // Draw the img on the canvas
-    // gCtx.drawImage(img, 0, 0, gElCanvas.width, gElCanvas.height)
+    gCtx.drawImage(img, 0, 0, gElCanvas.width, gElCanvas.height)
 }
 
-function getImageURL() {
-    return gCurrImageURL
-}
+// function getImageURL() {
+//     return gCurrImageURL
+// }

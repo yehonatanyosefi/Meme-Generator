@@ -1,15 +1,13 @@
 :root {
-	--clr0: #ccd5ae;
-	--clr1: #e9edc9;
-	--clr2: #fefae0;
-	--clr3: #faedcd;
-	--clr4: #d4a373;
-}
-
-body.dark-theme :root {
 	--clr0: #353535;
 	--clr1: #3c6e71;
 	--clr2: #ffffff;
 	--clr3: #d9d9d9;
 	--clr4: #284b63;
 }
+
+/* --clr0: #ccd5ae;
+	--clr1: #e9edc9;
+	--clr2: #fefae0;
+	--clr3: #faedcd;
+	--clr4: #d4a373; */

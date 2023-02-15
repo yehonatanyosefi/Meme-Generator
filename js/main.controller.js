@@ -7,8 +7,9 @@ var gIsModalOpen = false
 var gModal = null
 var gElCanvas = null
 var gCtx = null
-var gCanvas = { width: 450, height: 450, currOpt: 'text', color: '', linewidth: 2, isDraw: false, textSize: 20 }
+var gCanvas = { width: 450, height: 450, currOpt: 'text', color: 'black', linewidth: 2, isDraw: false, textSize: 20 }
 
+console.log('gCanvas', gCanvas)
 function onInit() {
      //touch
      // const modal = document.querySelector('.modal')
@@ -194,7 +195,7 @@ function resizeCanvas() { //deletes content on move
      gElCanvas.width = elContainer.offsetWidth
      // Unless needed, better keep height fixed.
      // gElCanvas.height = elContainer.offsetHeight //might need to remove
-     gCanvas = { width: elContainer.offsetWidth, height: elContainer.offsetWidth, }
+     gCanvas.width = gCanvas.height = elContainer.offsetWidth //no height resize
 }
 
 function getEvPos(ev) {
@@ -252,24 +253,24 @@ function onDrawImg(imgNum) {
      }
 }
 
-function drawText(text, x, y) {
+function drawText(txt, x, y, fontSize, font) {
      gCtx.lineWidth = 2
-     const size = gCanvas.textSize
-     gCtx.font = `${size}px Arial`
+     if (txt === '') txt = 'hello'
+     if (font === '') font = 'Impact'
+     if (fontSize === '') fontSize = gCanvas.textSize
+     gCtx.font = `${fontSize}px ${font}`
      gCtx.textAlign = 'center'
      gCtx.textBaseline = 'middle'
 
-     gCtx.fillText(text, x - (size / 2), y - (size / 2)) // Draws (fills) a given text at the given (x, y) position.
-     gCtx.strokeText(text, x - (size / 2), y - (size / 2)) // Draws (strokes) a given text at the given (x, y) position.
+     gCtx.fillText(txt, x - (fontSize / 2), y - (fontSize / 2)) // Draws (fills) a given text at the given (x, y) position.
+     gCtx.strokeText(txt, x - (fontSize / 2), y - (fontSize / 2)) // Draws (strokes) a given text at the given (x, y) position.
      gCanvas.isDraw = false
-     console.log('hi')
 }
 
 function drawRect(x, y) {
      const size = gCanvas.textSize
      gCtx.strokeRect(x - (size / 2), y - (size / 2), size, size)
      gCtx.fillRect(x - (size / 2), y - (size / 2), size, size)
-     gLastDrawn = { startX: x, startY: y, endX: x + size, endY: y + size, size: size }
 }
 
 function setFillColor(color) {
@@ -291,7 +292,6 @@ function drawLine(startX, startY, endX, endY) {
      gCtx.lineCap = 'square'
      gCtx.moveTo(startX, startY)
      gCtx.lineTo(endX, endY)
-     //debugger
      gCtx.lineWidth = 2
      gCtx.stroke()
 }
@@ -322,12 +322,10 @@ function onMouseDown(ev) {
      gCanvas.isDraw = true
      const pos = getEvPos(ev)
      const { x, y } = pos
-     console.log('hi')
-     console.log('gCanvas.currOpt', gCganvas.currOpt)
      switch (gCanvas.currOpt) {
           case 'text':
-               drawText('Hello', x, y)
-               console.log('hi')
+               const { txt, font, fontSize } = getTxtInfo()
+               drawText(txt, x, y, fontSize, font)
                break
           case 'line':
                gLinePos = { startX: x, startY: y }
@@ -338,11 +336,16 @@ function onMouseDown(ev) {
                gCtx.lineCap = 'round'
                gCtx.beginPath()
                gCtx.moveTo(x, y)
-               gCanDraw = true
                break
      }
 }
 
+function getTxtInfo() {
+     const txt = document.querySelector('.txt').value
+     const font = document.querySelector('.font').value
+     const fontSize = document.querySelector('.font-size').value
+     return { txt, font, fontSize, }
+}
 
 function onMouseUp(ev) {
      gCanvas.isDraw = false
@@ -354,9 +357,6 @@ function onMouseUp(ev) {
                const { x: endX, y: endY } = pos
                drawLine(startX, startY, endX, endY)
                gLinePos = null
-               break
-          case 'brush':
-               gCanDraw = false
                break
      }
 }
@@ -374,4 +374,13 @@ function draw(ev) {
                drawImg(x, y)
                break
      }
+}
+
+function onSetOpt(opt) {
+     gCanvas.currOpt = opt
+     toggleInputs(opt !== 'text')
+}
+
+function toggleInputs(isHidden) {
+     document.querySelector('.txt-inputs-container').hidden = isHidden
 }
