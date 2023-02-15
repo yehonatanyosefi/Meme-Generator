@@ -48,3 +48,8 @@
 .clean.list {
 	list-style-type: none;
 }
+
+/* Pointer */
+.pointer {
+	cursor: pointer;
+}

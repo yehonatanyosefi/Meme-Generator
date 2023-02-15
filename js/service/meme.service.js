@@ -6,6 +6,7 @@ const PAGE_SIZE = 5
 
 // var gKeywordSearchCountMap = { 'funny': 12, 'cat': 16, 'baby': 2 }
 var gMeme = createMeme()
+var gMyMemeIdx = -1
 
 // var gFilter = { min: -Infinity, max: Infinity, name: '', }
 // var gPageIdx = 0
@@ -34,7 +35,7 @@ function addImage(img) { //TODO: fix bug in display on gallery
      gImgs.push(createImage(gImgs.length + 1, img.src))
      setImg(gImgs.length)
      renderMeme()
-     renderGallery()
+     // renderGallery() //not adding to gallery atm, don't know if I want it to
 }
 
 function setImg(imgId) {
@@ -42,9 +43,10 @@ function setImg(imgId) {
      gMeme.selectedLineIdx = 0
      gMeme.url = gImgs[imgId - 1].imgUrl
 }
+
 function setMeme(memeIdx) {
-     const oldMemes = loadMemes()
-     gMeme = oldMemes[memeIdx]
+     gMeme = loadMemes()[memeIdx]
+     gMyMemeIdx = memeIdx
 }
 
 function createMeme() {
@@ -62,6 +64,24 @@ function createMeme() {
 function resetCanvas() {
      gMeme.lines = [createLine()]
      gMeme.selectedLineIdx = 0
+}
+function deleteCurrent() {
+     if (!gMeme.lines) {
+          if (gMyMemeIdx !== -1) {
+               const allMemes = loadMemes() || []
+               allMemes.splice(gMyMemeIdx, 1)
+               saveToStorage(MEMES_KEY, allMemes)
+               onOpenSavedMemes()
+          } else {
+               onOpenGallery()
+          }
+     } else if (gMeme.lines.length === 1) {
+          gMeme.lines = null
+          gMeme.selectedLineIdx = -1
+     } else {
+          gMeme.lines.splice(gMeme.selectedLineIdx, 1)
+          gMeme.selectedLineIdx -= 1
+     }
 }
 
 function createLine(txt = 'Hello', size = 50, align = 'center', color = 'white', stroke = 'black', font = 'Impact', posY = null) {
@@ -90,14 +110,6 @@ function changeLine(prop, value) {
      }
 }
 
-function getMeme() {
-     return gMeme
-}
-
-function getImages() {
-     return gImgs
-}
-
 function switchLine() {
      if (gMeme.selectedLineIdx === 0 && gMeme.lines.length === 1) {
           gMeme.lines.push(createLine())
@@ -111,7 +123,8 @@ function switchLine() {
 
 function saveMemes() {
      const allMemes = loadMemes() || []
-     allMemes.push(gMeme)
+     if (gMyMemeIdx !== -1) allMemes[gMyMemeIdx] = gMeme
+     else allMemes.push(gMeme)
      saveToStorage(MEMES_KEY, allMemes)
 }
 
@@ -121,6 +134,18 @@ function loadMemes() {
 
 function randomizeLine() {
      gMeme.lines = [createLine(makeLorem(3), getRandomIntInclusive(25, 50), 'center', getRandomColor(), getRandomColor())]
+}
+
+function resetMyMemeIdx() {
+     gMyMemeIdx = -1
+}
+
+function getMeme() {
+     return gMeme
+}
+
+function getImages() {
+     return gImgs
 }
 
 // function deleteMeme(memeId) {

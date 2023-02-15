@@ -1,4 +1,13 @@
 function onShareImg() {
+    const meme = getMeme()
+    if (meme.selectedLineIdx !== -1) {
+        meme.selectedLineIdx = -1
+        renderMeme()
+        setTimeout(() => shareImg(), 100)
+    } else shareImg()
+}
+
+function shareImg() {
     const imgDataUrl = gElCanvas.toDataURL('image/jpeg') // Gets the canvas content as an image format
 
     // A function to be called if request succeeds

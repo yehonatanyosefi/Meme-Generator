@@ -10,9 +10,10 @@ var gCanvas = { isMouseDown: false, }
 // var gCurrMemeId = null
 // var gIsModalOpen = false
 // var gModal = null
+//TODO: set/reset input and select values
 //TODO: Support “Drag&Drop” of lines and stickers on canvas. This requires also support of line selection by click line/stickers on canvas
 //TODO: Inline (on Canvas) text editing
-//TODO: add rest of buttons
+//TODO: add buttons 'plus', 'text align'
 //TODO: Support using various aspect-ratio of images, use the images from “meme-imgs(various aspect ratios)” folder
 //TODO: add saved memes text display on 'my memes'
 //TODO: fix base64 'my memes' display
@@ -48,6 +49,7 @@ function renderMeme() {
      // When the image ready draw it on the canvas
      img.onload = () => {
           gCtx.drawImage(img, 0, 0, gElCanvas.width, gElCanvas.height) //TODO: aspect ratio
+          if (!meme.lines) return
           meme.lines.forEach((line, idx) => {
                let lineHeight = gElCanvas.height / 8
                if (idx > 1) lineHeight = gElCanvas.height / 2
@@ -152,23 +154,23 @@ function renderNewCanvas() {
      renderMeme()
 }
 
-function drawText(line, x, y, isSelected) {
+function drawText(line, x, y, isSelected, ctx = gCtx) {
      const { txt, size, font, color, stroke, align, posY } = line
-     gCtx.lineWidth = 1
-     gCtx.font = `${size}px ${font}`
-     gCtx.fillStyle = color
-     gCtx.strokeStyle = stroke
-     gCtx.textAlign = align
-     gCtx.textBaseline = 'middle'
+     ctx.lineWidth = 1
+     ctx.font = `${size}px ${font}`
+     ctx.fillStyle = color
+     ctx.strokeStyle = stroke
+     ctx.textAlign = align
+     ctx.textBaseline = 'middle'
      if (posY) y = posY
-     gCtx.fillText(txt, x, y) // Draws (fills) a given text at the given (x, y) position.
-     gCtx.strokeText(txt, x, y) // Draws (strokes) a given text at the given (x, y) position.
+     ctx.fillText(txt, x, y) // Draws (fills) a given text at the given (x, y) position.
+     ctx.strokeText(txt, x, y) // Draws (strokes) a given text at the given (x, y) position.
      if (isSelected) drawRect(x, y, size, txt)
 }
 
 function drawRect(x, y, size, text) {
      const oldColor = gCtx.fillStyle
-     gCtx.fillStyle = 'rgba(255, 255, 255, 0.4)'
+     gCtx.fillStyle = 'rgba(255, 255, 255, 0.25)'
      gCtx.strokeStyle = 'white'
      const width = gCtx.measureText(text).width
      const mult = 1.2
@@ -193,8 +195,8 @@ function onMouseHold(ev) {
      const { movementX: movX, movementY: movY } = ev
 }
 
-function onResetCanvas() {
-     resetCanvas()
+function onEditorDelete() {
+     deleteCurrent()
      renderMeme()
 }
 
@@ -216,6 +218,7 @@ function onOpenSavedMemes() {
      document.querySelector('.img-container').classList.add('hide')
      document.querySelector('.editor-container').classList.add('hide')
      document.querySelector('.memes-container').classList.remove('hide')
+     resetMyMemeIdx()
      renderMemes()
 }
 
@@ -232,6 +235,7 @@ function onOpenGallery() {
      document.querySelector('.img-container').classList.remove('hide')
      document.querySelector('.editor-container').classList.add('hide')
      document.querySelector('.memes-container').classList.add('hide')
+     resetMyMemeIdx()
 }
 // function resizeCanvas() {
 //      // create temp stuff

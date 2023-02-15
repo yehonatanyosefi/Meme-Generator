@@ -12,15 +12,64 @@ function renderGallery() {
      elImages.innerHTML = strHTML.join('').replaceAll(',', '')
 }
 
+function drawImageOnCanvas(meme, idx) {
+     const imgSrc = meme.url
+     let canvas = document.querySelector(`.image-canvas${idx}`)
+     let ctx = canvas.getContext('2d')
+     let img = new Image()
+     img.src = imgSrc
+     img.onload = function () {
+          ctx.drawImage(img, 0, 0, 180, 180)
+          meme.lines.forEach((line, idx) => {
+               line.size *= 0.4
+               let lineHeight = canvas.height / 8
+               if (idx > 1) lineHeight = canvas.height / 2
+               else if (idx > 0) lineHeight = canvas.height - canvas.height / 8
+               drawText(line, canvas.width / 2, lineHeight, false, ctx)
+          })
+     }
+}
+
 function renderMemes() {
      const elMemes = document.querySelector('.memes-container')
      const strHTML = []
      const memes = loadMemes()
-     if (!memes) {
-          strHTML = `No Memes Yet`
-          elMemes.innerHTML = strHTML
+     if (!memes || !memes.length) {
+          strHTML.push(`No Memes Yet`)
+          elMemes.innerHTML = strHTML.join('')
           return
      }
-     strHTML.push(memes.map((meme, idx) => `<img src="${meme.url}" onclick="onSelectMeme(${idx})" />`))
+     strHTML.push(memes.map((meme, idx) => `<canvas class="pointer meme-canvas${idx}" onclick="onSelectMeme(${idx})" height="180" width="180"> </canvas>`))
      elMemes.innerHTML = strHTML.join('').replaceAll(',', '')
+     memes.forEach((meme, idx) => drawMemeOnCanvas(meme, idx))
 }
+
+function drawMemeOnCanvas(meme, idx) {
+     const imgSrc = meme.url
+     let canvas = document.querySelector(`.meme-canvas${idx}`)
+     let ctx = canvas.getContext('2d')
+     let img = new Image()
+     img.src = imgSrc
+     img.onload = function () {
+          ctx.drawImage(img, 0, 0, 180, 180)
+          meme.lines.forEach((line, idx) => {
+               line.size *= 0.4
+               let lineHeight = canvas.height / 8
+               if (idx > 1) lineHeight = canvas.height / 2
+               else if (idx > 0) lineHeight = canvas.height - canvas.height / 8
+               drawText(line, canvas.width / 2, lineHeight, false, ctx)
+          })
+     }
+}
+// function renderMemes() {
+//      const elMemes = document.querySelector('.memes-container')
+//      const strHTML = []
+//      const memes = loadMemes()
+//      if (!memes) {
+//           strHTML = `No Memes Yet`
+//           elMemes.innerHTML = strHTML
+//           return
+//      }
+//      strHTML.push(memes.map((meme, idx) => `<img src="${meme.url}" onclick="onSelectMeme(${idx})" />`))
+//      elMemes.innerHTML = strHTML.join('').replaceAll(',', '')
+// }
