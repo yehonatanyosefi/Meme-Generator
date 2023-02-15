@@ -25,173 +25,18 @@ function onInit() {
 }
 
 
-function renderMeme(imgNum) {
+function renderMeme() {
      const meme = getMeme()
      const img = new Image() // Create a new html img element
-     img.src = `img/${imgNum}.jpg` // Send a network req to get that image, define the img src
+     img.src = `${meme.url}` // Send a network req to get that image, define the img src
      // When the image ready draw it on the canvas
      img.onload = () => {
           gCtx.drawImage(img, 0, 0, gElCanvas.width, gElCanvas.height) //TODO: aspect ratio
-          drawText(meme.lines[0], gElCanvas.width / 2, gElCanvas.height / 8)
+          meme.lines.forEach(line => drawText(line, gElCanvas.width / 2, gElCanvas.height / 8))
      }
 }
 
-function onSwipe() {
-     // gModal.on('swipeleft swiperight', (ev) => {
-     //      const currMeme = getCurrMeme()
-     //      if (ev.type === 'swiperight') {
-     //           onReadMeme(currMeme.prev)
-     //      } else {
-     //           onReadMeme(currMeme.next)
-     //      }
-     // })
-}
 
-function onDeleteMeme(memeId) {
-     deleteMeme(memeId)
-     renderTable()
-}
-
-function onAddMeme() {
-     const form = document.querySelector('.new-meme')
-     form.hidden = false
-}
-
-function onConfirmMeme(ev) {
-     ev.preventDefault()
-     const elNewName = document.querySelector('input[name="new-meme-name"]')
-     const elNewPrice = document.querySelector('input[name="new-meme-price"]')
-     const imageURL = getImageURL()
-     if (imageURL) addMeme(elNewName.value, elNewPrice.value, imageURL)
-     else addMeme(elNewName.value, elNewPrice.value)
-     renderTable()
-     const form = document.querySelector('.new-meme')
-     form.hidden = true
-}
-
-function onUpdateMeme(memeId) {
-     const memePrice = +prompt('Price?')
-     updateMeme(memeId, memePrice)
-     renderTable()
-}
-
-function onReadMeme(memeId) {
-     var currMeme = getMemeById(MemeId)
-     gCurrMemeId = MemeId
-     saveCurrMeme(currMeme)
-     openModal(currMeme)
-}
-
-function openModal(currMeme) {
-     const modal = document.querySelector('.modal')
-     modal.classList.remove('hide')
-     const modalSpan = document.querySelector('.modal-body span')
-     modalSpan.innerText = currMeme.text
-     const modalTitle = document.querySelector('.modal-title')
-     modalTitle.innerText = currMeme.name
-     const modalRate = document.querySelector('.modal-footer div')
-     const currRate = currMeme.rate
-     modalRate.innerText = currRate
-     disableEnableModalBtns(currRate)
-     gIsModalOpen = true
-     setQueryStringParams()
-}
-
-function onChangeRate(ratingChange) {
-     const newRate = changeRate(ratingChange, gCurrMemeId)
-     const modalRate = document.querySelector('.modal-footer div')
-     modalRate.innerText = newRate
-     disableEnableModalBtns(newRate)
-}
-
-function disableEnableModalBtns(rate) {
-     const modalMinus = document.querySelector('.modal-minus')
-     const modalPlus = document.querySelector('.modal-plus')
-     if (rate <= 0) modalMinus.disabled = true //minus
-     else if (rate >= 1) modalMinus.disabled = false
-     if (rate >= 10) modalPlus.disabled = true //plus
-     else if (rate <= 9) modalPlus.disabled = false
-}
-
-function onCloseModal() {
-     const modal = document.querySelector('.modal')
-     modal.classList.add('hide')
-     gIsModalOpen = false
-     setQueryStringParams()
-}
-
-function onSetFilterBy(filterType, filterBy) {
-     changeMemeFilter(filterType, filterBy)
-     renderTable()
-     setQueryStringParams()
-}
-
-function renderFilterByQueryStringParams() {
-     const queryStringParams = new URLSearchParams(window.location.search)
-     if (queryStringParams.get('modal') === 'true') {
-          let MemeId = queryStringParams.get('memeId')
-          if (!checkMemeId(memeId)) {
-               const meme = getCurrMeme()
-               if (meme) {
-                    memeId = meme.id
-                    onReadMeme(memeId)
-               }
-          } else onReadMeme(memeId)
-     }
-     const filterVars = {
-          min: +queryStringParams.get('min') || -Infinity,
-          max: +queryStringParams.get('max') || Infinity,
-          name: queryStringParams.get('name') || '',
-     }
-     // const {min, max, name} = filterVars
-     if (!filterVars.min && !filterVars.max && (!filterVars.name || filterVars.name === '')) return
-
-     document.querySelector('.filter-min').value = (filterVars.min === -Infinity) ? '' : filterVars.min
-     document.querySelector('.filter-max').value = (filterVars.max === Infinity) ? '' : filterVars.max
-     document.querySelector('.filter-name').value = filterVars.name
-     setMemeFilter(filterVars)
-}
-
-function onPrevPage() {
-     var currPage = prevPage()
-     disableEnablePageBtns(currPage)
-     renderTable()
-}
-
-function onNextPage() {
-     var currPage = nextPage()
-     disableEnablePageBtns(currPage)
-     renderTable()
-}
-
-function disableEnablePageBtns(currPage) {
-     if (currPage >= getFilteredMeme().length / PAGE_SIZE - 1) document.querySelector('.next').disabled = true
-     else document.querySelector('.next').disabled = false
-     if (currPage <= 0) document.querySelector('.previous').disabled = true
-     else document.querySelector('.previous').disabled = false
-
-}
-
-function onSetLang(lang) {
-     if (lang === 'choose') return
-     setLang(lang)
-     renderTable()
-     setBodyRTL(lang)
-     setQueryStringParams()
-}
-
-function setBodyRTL(lang) {
-     if (lang === 'he') document.body.classList.add('rtl')
-     else document.body.classList.remove('rtl')
-}
-
-function renderLangByQueryStringParams() {
-     const queryStringParams = new URLSearchParams(window.location.search)
-     if (queryStringParams.get('lang') === 'he') {
-          setLang('he')
-          setBodyRTL('he')
-     }
-}
 
 function resizeCanvas() { //deletes content on move
      //TODO: maybe resize
@@ -256,9 +101,10 @@ function downloadCanvas(elLink) {
      elLink.download = 'my-img' // Can change the name of the file
 }
 
-function onSelectImg(imgNum) {
+function onSelectImg(imgId) {
      toggleEditor(false)
-     renderMeme(imgNum)
+     setImg(imgId)
+     renderMeme()
 }
 
 function drawText(line, x, y) {
@@ -292,43 +138,6 @@ function setFillColor(color) {
 function setStrokeColor(color) {
      gCtx.strokeStyle = color
 }
-
-
-function drawBrush(x, y) {
-     gCtx.lineTo(x, y)
-     gCtx.stroke()
-}
-
-function drawLine(startX, startY, endX, endY) {
-     gCtx.lineJoin = 'miter'
-     gCtx.lineCap = 'square'
-     gCtx.moveTo(startX, startY)
-     gCtx.lineTo(endX, endY)
-     gCtx.lineWidth = 2
-     gCtx.stroke()
-}
-
-// function resizeCanvas() {
-//      // create temp stuff
-//      const tempCanvas = document.createElement('canvas');
-//      const tempCtx = tempCanvas.getContext('2d');
-//      const fill = gCtx.fillStyle
-//      const stroke = gCtx.strokeStyle
-//      // save
-//      tempCanvas.width = gElCanvas.width
-//      tempCanvas.height = gElCanvas.height
-//      tempCtx.fillStyle = 'white'
-//      tempCtx.fillRect(0, 0, gElCanvas.width, gElCanvas.height)
-//      tempCtx.drawImage(gElCanvas, 0, 0)
-//      // resize & get the temp stuff back in
-//      const elContainer = document.querySelector('.canvas-container')
-//      gElCanvas.width = elContainer.offsetWidth
-//      gElCanvas.height = elContainer.offsetHeight
-//      gCtx.drawImage(tempCanvas, 0, 0)
-//      gCtx.fillStyle = fill
-//      gCtx.strokeStyle = stroke
-// }
-
 
 function onMouseDown(ev) {
      gCanvas.isMouseDown = true
@@ -365,3 +174,187 @@ function onClearCanvas() {
      clearCanvas()
      renderMeme()
 }
+
+function onChangeLine(prop, value) {
+     changeLine(prop, value)
+     renderMeme()
+}
+
+// function resizeCanvas() {
+//      // create temp stuff
+//      const tempCanvas = document.createElement('canvas');
+//      const tempCtx = tempCanvas.getContext('2d');
+//      const fill = gCtx.fillStyle
+//      const stroke = gCtx.strokeStyle
+//      // save
+//      tempCanvas.width = gElCanvas.width
+//      tempCanvas.height = gElCanvas.height
+//      tempCtx.fillStyle = 'white'
+//      tempCtx.fillRect(0, 0, gElCanvas.width, gElCanvas.height)
+//      tempCtx.drawImage(gElCanvas, 0, 0)
+//      // resize & get the temp stuff back in
+//      const elContainer = document.querySelector('.canvas-container')
+//      gElCanvas.width = elContainer.offsetWidth
+//      gElCanvas.height = elContainer.offsetHeight
+//      gCtx.drawImage(tempCanvas, 0, 0)
+//      gCtx.fillStyle = fill
+//      gCtx.strokeStyle = stroke
+// }
+
+
+// function onSwipe() {
+//      // gModal.on('swipeleft swiperight', (ev) => {
+//      //      const currMeme = getCurrMeme()
+//      //      if (ev.type === 'swiperight') {
+//      //           onReadMeme(currMeme.prev)
+//      //      } else {
+//      //           onReadMeme(currMeme.next)
+//      //      }
+//      // })
+// }
+
+// function onDeleteMeme(memeId) {
+//      deleteMeme(memeId)
+//      renderTable()
+// }
+
+// function onAddMeme() {
+//      const form = document.querySelector('.new-meme')
+//      form.hidden = false
+// }
+
+// function onConfirmMeme(ev) {
+//      ev.preventDefault()
+//      const elNewName = document.querySelector('input[name="new-meme-name"]')
+//      const elNewPrice = document.querySelector('input[name="new-meme-price"]')
+//      const imageURL = getImageURL()
+//      if (imageURL) addMeme(elNewName.value, elNewPrice.value, imageURL)
+//      else addMeme(elNewName.value, elNewPrice.value)
+//      renderTable()
+//      const form = document.querySelector('.new-meme')
+//      form.hidden = true
+// }
+
+// function onUpdateMeme(memeId) {
+//      const memePrice = +prompt('Price?')
+//      updateMeme(memeId, memePrice)
+//      renderTable()
+// }
+
+// function onReadMeme(memeId) {
+//      var currMeme = getMemeById(MemeId)
+//      gCurrMemeId = MemeId
+//      saveCurrMeme(currMeme)
+//      openModal(currMeme)
+// }
+
+// function openModal(currMeme) {
+//      const modal = document.querySelector('.modal')
+//      modal.classList.remove('hide')
+//      const modalSpan = document.querySelector('.modal-body span')
+//      modalSpan.innerText = currMeme.text
+//      const modalTitle = document.querySelector('.modal-title')
+//      modalTitle.innerText = currMeme.name
+//      const modalRate = document.querySelector('.modal-footer div')
+//      const currRate = currMeme.rate
+//      modalRate.innerText = currRate
+//      disableEnableModalBtns(currRate)
+//      gIsModalOpen = true
+//      setQueryStringParams()
+// }
+
+// function onChangeRate(ratingChange) {
+//      const newRate = changeRate(ratingChange, gCurrMemeId)
+//      const modalRate = document.querySelector('.modal-footer div')
+//      modalRate.innerText = newRate
+//      disableEnableModalBtns(newRate)
+// }
+
+// function disableEnableModalBtns(rate) {
+//      const modalMinus = document.querySelector('.modal-minus')
+//      const modalPlus = document.querySelector('.modal-plus')
+//      if (rate <= 0) modalMinus.disabled = true //minus
+//      else if (rate >= 1) modalMinus.disabled = false
+//      if (rate >= 10) modalPlus.disabled = true //plus
+//      else if (rate <= 9) modalPlus.disabled = false
+// }
+
+// function onCloseModal() {
+//      const modal = document.querySelector('.modal')
+//      modal.classList.add('hide')
+//      gIsModalOpen = false
+//      setQueryStringParams()
+// }
+
+// function onSetFilterBy(filterType, filterBy) {
+//      changeMemeFilter(filterType, filterBy)
+//      renderTable()
+//      setQueryStringParams()
+// }
+
+// function renderFilterByQueryStringParams() {
+//      const queryStringParams = new URLSearchParams(window.location.search)
+//      if (queryStringParams.get('modal') === 'true') {
+//           let MemeId = queryStringParams.get('memeId')
+//           if (!checkMemeId(memeId)) {
+//                const meme = getCurrMeme()
+//                if (meme) {
+//                     memeId = meme.id
+//                     onReadMeme(memeId)
+//                }
+//           } else onReadMeme(memeId)
+//      }
+//      const filterVars = {
+//           min: +queryStringParams.get('min') || -Infinity,
+//           max: +queryStringParams.get('max') || Infinity,
+//           name: queryStringParams.get('name') || '',
+//      }
+//      // const {min, max, name} = filterVars
+//      if (!filterVars.min && !filterVars.max && (!filterVars.name || filterVars.name === '')) return
+
+//      document.querySelector('.filter-min').value = (filterVars.min === -Infinity) ? '' : filterVars.min
+//      document.querySelector('.filter-max').value = (filterVars.max === Infinity) ? '' : filterVars.max
+//      document.querySelector('.filter-name').value = filterVars.name
+//      setMemeFilter(filterVars)
+// }
+
+// function onPrevPage() {
+//      var currPage = prevPage()
+//      disableEnablePageBtns(currPage)
+//      renderTable()
+// }
+
+// function onNextPage() {
+//      var currPage = nextPage()
+//      disableEnablePageBtns(currPage)
+//      renderTable()
+// }
+
+// function disableEnablePageBtns(currPage) {
+//      if (currPage >= getFilteredMeme().length / PAGE_SIZE - 1) document.querySelector('.next').disabled = true
+//      else document.querySelector('.next').disabled = false
+//      if (currPage <= 0) document.querySelector('.previous').disabled = true
+//      else document.querySelector('.previous').disabled = false
+
+// }
+
+// function onSetLang(lang) {
+//      if (lang === 'choose') return
+//      setLang(lang)
+//      renderTable()
+//      setBodyRTL(lang)
+//      setQueryStringParams()
+// }
+
+// function setBodyRTL(lang) {
+//      if (lang === 'he') document.body.classList.add('rtl')
+//      else document.body.classList.remove('rtl')
+// }
+
+// function renderLangByQueryStringParams() {
+//      const queryStringParams = new URLSearchParams(window.location.search)
+//      if (queryStringParams.get('lang') === 'he') {
+//           setLang('he')
+//           setBodyRTL('he')
+//      }
+// }

@@ -42,15 +42,16 @@
 				<div class="control-box grid center">
 					<input type="color" oninput="setFillColor(this.value)" value="#FFFFFF" />
 					<input type="color" oninput="setStrokeColor(this.value)" />
-					<!-- <select name="options" onchange="onSetOpt(this.value)">
-						<option value="brush">Brush</option>
-						<option value="line">Line</option>
-						<option value="text" selected="selected">Text</option>
-						<option value="img">Image</option>
-					</select> -->
 					<form class="txt-inputs-container">
 						<label for="txt">Text</label>
-						<input type="text" name="txt" id="txt" placeholder="txt" class="txt" />
+						<input
+							type="text"
+							name="txt"
+							id="txt"
+							placeholder="txt"
+							class="txt"
+							oninput="onChangeLine('text', this.value)"
+						/>
 						<label for="font">Font</label>
 						<input type="text" name="font" id="font" placeholder="font" class="font" />
 						<label for="font-size">Size</label>
@@ -60,6 +61,8 @@
 							id="font-size"
 							placeholder="font-size"
 							class="font-size"
+							value="50"
+							oninput="onChangeLine('size', this.value)"
 						/>
 					</form>
 					<button class="btn-round" onclick="onClearCanvas()">Clear</button>
