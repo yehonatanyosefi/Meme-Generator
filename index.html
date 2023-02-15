@@ -52,7 +52,11 @@
 							oninput="onChangeLine('text', this.value)"
 						/>
 						<label for="font">Font</label>
-						<input type="text" name="font" id="font" placeholder="font" class="font" />
+						<select onchange="onChangeLine('font', this.value)">
+							<option value="impact" selected="selected">Impact</option>
+							<option value="arial">Arial</option>
+							<option value="moonkids">Moonkids</option>
+						</select>
 						<label for="font-size">Size</label>
 						<input
 							type="number"

@@ -142,10 +142,11 @@ function onSelectImg(imgId) {
 }
 
 function drawText(line, x, y, isSelected) {
-     const { txt, size, font, color, align } = line
+     const { txt, size, font, color, stroke, align } = line
      gCtx.lineWidth = 1
      gCtx.font = `${size}px ${font}`
      gCtx.fillStyle = color
+     gCtx.strokeStyle = stroke
      gCtx.textAlign = align
      gCtx.textBaseline = 'middle'
 

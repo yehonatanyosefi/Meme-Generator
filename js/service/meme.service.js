@@ -60,8 +60,8 @@ function resetCanvas() {
      gMeme.selectedLineIdx = 0
 }
 
-function createLine(txt = 'Hello', size = 50, align = 'center', color = 'white', font = 'Impact') {
-     return { txt, size, align, color, font }
+function createLine(txt = 'Hello', size = 50, align = 'center', color = 'white', stroke = 'black', font = 'Impact') {
+     return { txt, size, align, color, stroke, font }
 }
 
 function changeLine(prop, value) {
@@ -74,6 +74,9 @@ function changeLine(prop, value) {
                break
           case 'fill':
                gMeme.lines[gMeme.selectedLineIdx].color = value
+               break
+          case 'font':
+               gMeme.lines[gMeme.selectedLineIdx].font = value
                break
      }
 }
