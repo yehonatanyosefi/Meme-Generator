@@ -32,7 +32,7 @@ function createImage(id, img) {
 
 function addImage(img) { //TODO: fix bug in display on gallery
      gImgs.push(createImage(gImgs.length + 1, img.src))
-     setImg(gImgs.length - 1)
+     setImg(gImgs.length)
      renderMeme()
      renderGallery()
 }

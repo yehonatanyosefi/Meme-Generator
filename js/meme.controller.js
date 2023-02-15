@@ -154,7 +154,7 @@ function drawText(line, x, y, isSelected) {
      if (isSelected) drawRect(x, y, size, txt)
 }
 
-function drawRect(x, y, size, text) { //TODO: improve dimensions and x start
+function drawRect(x, y, size, text) {
      const oldColor = gCtx.fillStyle
      gCtx.fillStyle = 'rgba(255, 255, 255, 0.4)'
      gCtx.strokeStyle = 'white'
