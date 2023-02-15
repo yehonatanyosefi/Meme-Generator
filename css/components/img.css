@@ -5,4 +5,9 @@
 	gap: 10px;
 	margin: 0 auto;
 	padding: 5px;
+	transition: opacity 0.25s;
+	opacity: 1;
+}
+.img-container img {
+	cursor: pointer;
 }

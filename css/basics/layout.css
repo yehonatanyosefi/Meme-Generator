@@ -1,7 +1,11 @@
 /* MAIN LAYOUT */
-/* .main-layout {
+.main-layout {
 	display: grid;
-	grid-template-columns: 5px 1fr 5px;
+	grid-template-columns: 20px 1fr 20px;
+	grid-template-rows:
+		2fr
+		50vh
+		1fr;
 }
 
 .main-layout > *:not(.full) {
@@ -10,22 +14,30 @@
 
 .main-layout > .full {
 	grid-column: 1 / -1;
-} */
+}
 
-/* HEADER LAYOUT */
-/* .header {
+/* NAV-BAR LAYOUT */
+.nav-bar {
+	display: grid;
+	grid-template-columns: 100px 1fr 1fr;
+	grid-template-areas: 'l m';
 	left: 0;
 	right: 0;
-} */
+}
 
-/* CARD LAYOUT */
-
-/* MAIN CONTENT */
+.nav-bar .menu .logo {
+	grid-area: l;
+}
+.nav-bar .menu a {
+	grid-area: m;
+}
 
 /* EDITOR LAYOUT */
 .editor-container {
-	display: grid;
-	grid-template-columns: 1fr 80px 1fr;
+	display: flex;
+	/* grid-template-columns: 100px 10px 200px; */
+	height: 450px;
+	/* border: 1px solid red; */
 }
 .editor-container canvas {
 	grid-column: 1;
