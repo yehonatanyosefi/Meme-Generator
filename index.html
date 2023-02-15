@@ -32,8 +32,6 @@
 		</div>
 		<div class="main-content">
 			<div class="img-container">
-				<img src="img/1.jpg" onclick="onDrawImg(1)" />
-				<img src="img/2.jpg" onclick="onDrawImg(2)" />
 			</div>
 			<div class="editor-container hide">
 				<div class="canvas-container">
@@ -42,6 +40,7 @@
 				<div class="control-box grid center">
 					<input type="color" oninput="onChangeLine('fill', this.value)" value="#FFFFFF" />
 					<!-- <input type="color" oninput="onChangeLine('stroke', this.value)" /> -->
+					<button onclick="onSwitchLine()">switch</button>
 					<form class="txt-inputs-container">
 						<label for="txt">Text</label>
 						<input
@@ -68,9 +67,7 @@
 					<button class="btn-round" onclick="onClearCanvas()">Clear</button>
 					<input type="file" class="file-input btn" name="image" onchange="onImgInput(event)" />
 					<!-- when click the link run downloadCanvas -->
-					<a href="#" onclick="downloadCanvas(this)" download="file-name"
-						><button class="btn-round">Download</button></a
-					>
+					<button class="btn-round" onclick="downloadCanvas(this)">Download</button></a>
 					<button class="btn-round" onclick="onShareImg()">Share</button>
 				</div>
 			</div>

@@ -32,7 +32,12 @@ function renderMeme() {
      // When the image ready draw it on the canvas
      img.onload = () => {
           gCtx.drawImage(img, 0, 0, gElCanvas.width, gElCanvas.height) //TODO: aspect ratio
-          meme.lines.forEach(line => drawText(line, gElCanvas.width / 2, gElCanvas.height / 8))
+          meme.lines.forEach((line, idx) => {
+               let lineHeight = gElCanvas.height / 8
+               if (idx > 1) lineHeight = gElCanvas.height - gElCanvas.height / 8
+               else if (idx > 0) lineHeight = gElCanvas.height / 2
+               drawText(line, gElCanvas.width / 2, lineHeight)
+          })
      }
 }
 
@@ -167,6 +172,10 @@ function onClearCanvas() {
 
 function onChangeLine(prop, value) {
      changeLine(prop, value)
+     renderMeme()
+}
+function onSwitchLine() {
+     switchLine()
      renderMeme()
 }
 

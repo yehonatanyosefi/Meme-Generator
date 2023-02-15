@@ -29,34 +29,38 @@ function createImage(id, img) {
      }
 }
 
-function addImage(img) {
+function addImage(img) { //TODO: fix bug in display on gallery
      gImgs.push(createImage(gImgs.length + 1, img.src))
      setImg(gImgs.length - 1)
      renderMeme()
+     renderGallery()
 }
 
 function setImg(imgId) {
      gMeme.selectedImgId = imgId
      gMeme.selectedLineIdx = 0
-     gMeme.url = gImgs[imgId].imgUrl
+     gMeme.url = gImgs[imgId - 1].imgUrl
 }
 
-function createMeme(name, price = getRandomIntInclusive(20, 100), rate = 0, img = 'img/default.jpg') {
+function createMeme() {
      return {
           selectedImgId: 5,
           selectedLineIdx: 0,
           lines: [
-               { txt: 'Hello', size: 50, align: 'center', color: 'white', font: 'Impact' },
+               createLine()
           ],
-          url: img,
           prev: null,
           next: null,
      }
 }
+
 function clearCanvas() {
-     gMeme.lines = [{ txt: 'Hello', size: 50, align: 'center', color: 'white', font: 'Impact' }]
+     gMeme.lines = [createLine()]
 }
 
+function createLine() {
+     return { txt: 'Hello', size: 50, align: 'center', color: 'white', font: 'Impact' }
+}
 
 function changeLine(prop, value) {
      switch (prop) {
@@ -78,6 +82,12 @@ function getMeme() {
 
 function getImages() {
      return gImgs
+}
+
+function switchLine() {
+     gMeme.selectedLineIdx++
+     if (gMeme.selectedLineIdx < gMeme.lines.length) return
+     gMeme.lines.push(createLine())
 }
 
 // function deleteMeme(memeId) {
