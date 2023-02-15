@@ -12,30 +12,30 @@ function renderGallery() {
      elImages.innerHTML = strHTML.join('').replaceAll(',', '')
 }
 
-function drawImageOnCanvas(meme, idx) {
-     const imgSrc = meme.url
-     let canvas = document.querySelector(`.image-canvas${idx}`)
-     let ctx = canvas.getContext('2d')
-     let img = new Image()
-     img.src = imgSrc
-     img.onload = function () {
-          ctx.drawImage(img, 0, 0, 180, 180)
-          meme.lines.forEach((line, idx) => {
-               line.size *= 0.4
-               let lineHeight = canvas.height / 8
-               if (idx > 1) lineHeight = canvas.height / 2
-               else if (idx > 0) lineHeight = canvas.height - canvas.height / 8
-               drawText(line, canvas.width / 2, lineHeight, false, ctx)
-          })
-     }
-}
+// function drawImageOnCanvas(meme, idx) {
+//      const imgSrc = meme.url
+//      let canvas = document.querySelector(`.image-canvas${idx}`)
+//      let ctx = canvas.getContext('2d')
+//      let img = new Image()
+//      img.src = imgSrc
+//      img.onload = function () {
+//           ctx.drawImage(img, 0, 0, 180, 180)
+//           meme.lines.forEach((line, idx) => {
+//                line.size *= 0.4
+//                let lineHeight = canvas.height / 8
+//                if (idx > 1) lineHeight = canvas.height / 2
+//                else if (idx > 0) lineHeight = canvas.height - canvas.height / 8
+//                drawText(line, canvas.width / 2, lineHeight, false, ctx)
+//           })
+//      }
+// }
 
 function renderMemes() {
      const elMemes = document.querySelector('.memes-container')
      const strHTML = []
      const memes = loadMemes()
      if (!memes || !memes.length) {
-          strHTML.push(`No Memes Yet`)
+          strHTML.push(`<div class="flex center-all">No Memes Yet, Save Your First One Today</div>`)
           elMemes.innerHTML = strHTML.join('')
           return
      }
@@ -52,6 +52,7 @@ function drawMemeOnCanvas(meme, idx) {
      img.src = imgSrc
      img.onload = function () {
           ctx.drawImage(img, 0, 0, 180, 180)
+          if (!meme.lines || !memes.lines.length) return
           meme.lines.forEach((line, idx) => {
                line.size *= 0.4
                let lineHeight = canvas.height / 8

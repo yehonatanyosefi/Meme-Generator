@@ -54,6 +54,7 @@ function createMeme() {
           selectedImgId: 5,
           selectedLineIdx: 0,
           lines: [
+               createLine(),
                createLine()
           ],
           prev: null,
@@ -62,7 +63,7 @@ function createMeme() {
 }
 
 function resetCanvas() {
-     gMeme.lines = [createLine()]
+     gMeme.lines = [createLine(), createLine()]
      gMeme.selectedLineIdx = 0
 }
 function deleteCurrent() {
@@ -80,7 +81,7 @@ function deleteCurrent() {
           gMeme.selectedLineIdx = -1
      } else {
           gMeme.lines.splice(gMeme.selectedLineIdx, 1)
-          gMeme.selectedLineIdx -= 1
+          if (gMeme.selectedLineIdx !== 0) gMeme.selectedLineIdx -= 1
      }
 }
 
@@ -95,8 +96,15 @@ function changeLine(prop, value) {
                gMeme.lines[gMeme.selectedLineIdx].size = value
                break
           case 'text':
-               if (!value) value = ' '
+               if (!value) {
+                    deleteCurrent()
+                    break
+               }
+               if (!gMeme.lines || !gMeme.lines.length) addMeme()
                gMeme.lines[gMeme.selectedLineIdx].txt = value
+               break
+          case 'align':
+               gMeme.lines[gMeme.selectedLineIdx].align = value
                break
           case 'fill':
                gMeme.lines[gMeme.selectedLineIdx].color = value
@@ -110,10 +118,15 @@ function changeLine(prop, value) {
      }
 }
 
+function addMeme() {
+     if (!gMeme.lines || !gMeme.lines.length) gMeme.lines = [createLine()]
+     else gMeme.lines.push(createLine())
+     gMeme.selectedLineIdx = gMeme.lines.length - 1
+}
+
 function switchLine() {
      if (gMeme.selectedLineIdx === 0 && gMeme.lines.length === 1) {
-          gMeme.lines.push(createLine())
-          gMeme.selectedLineIdx++
+          addMeme() //when only one line, it adds one as well
      } else if (gMeme.selectedLineIdx < gMeme.lines.length - 1) {
           gMeme.selectedLineIdx++
      } else {
@@ -133,7 +146,7 @@ function loadMemes() {
 }
 
 function randomizeLine() {
-     gMeme.lines = [createLine(makeLorem(3), getRandomIntInclusive(25, 50), 'center', getRandomColor(), getRandomColor())]
+     gMeme.lines = [createLine(makeLorem(3), getRandomIntInclusive(25, 50), 'center', getRandomColor(), getRandomColor()), createLine(makeLorem(3), getRandomIntInclusive(25, 50), 'center', getRandomColor(), getRandomColor())]
 }
 
 function resetMyMemeIdx() {

@@ -13,7 +13,7 @@ var gCanvas = { isMouseDown: false, }
 //TODO: set/reset input and select values
 //TODO: Support “Drag&Drop” of lines and stickers on canvas. This requires also support of line selection by click line/stickers on canvas
 //TODO: Inline (on Canvas) text editing
-//TODO: add buttons 'plus', 'text align'
+//TODO: add buttons 'text align'
 //TODO: Support using various aspect-ratio of images, use the images from “meme-imgs(various aspect ratios)” folder
 //TODO: add saved memes text display on 'my memes'
 //TODO: fix base64 'my memes' display
@@ -156,24 +156,32 @@ function renderNewCanvas() {
 
 function drawText(line, x, y, isSelected, ctx = gCtx) {
      const { txt, size, font, color, stroke, align, posY } = line
+     if (posY) y = posY
      ctx.lineWidth = 1
      ctx.font = `${size}px ${font}`
      ctx.fillStyle = color
      ctx.strokeStyle = stroke
      ctx.textAlign = align
      ctx.textBaseline = 'middle'
-     if (posY) y = posY
+     if (isSelected) drawRect(x, y, size, txt, align)
      ctx.fillText(txt, x, y) // Draws (fills) a given text at the given (x, y) position.
      ctx.strokeText(txt, x, y) // Draws (strokes) a given text at the given (x, y) position.
-     if (isSelected) drawRect(x, y, size, txt)
 }
 
-function drawRect(x, y, size, text) {
+function drawRect(x, y, size, text, align) {
+     const mult = 1.1
      const oldColor = gCtx.fillStyle
+     const width = gCtx.measureText(text).width
      gCtx.fillStyle = 'rgba(255, 255, 255, 0.25)'
      gCtx.strokeStyle = 'white'
-     const width = gCtx.measureText(text).width
-     const mult = 1.2
+     switch (align) {
+          case 'right':
+               x -= width / 2
+               break
+          case 'left':
+               x += width / 2
+               break
+     }
      gCtx.strokeRect(x - width / 2 * mult, y - (size / 2) * mult, width * mult, size * mult)
      gCtx.fillRect(x - width / 2 * mult, y - (size / 2) * mult, width * mult, size * mult)
      gCtx.fillStyle = oldColor
@@ -197,6 +205,11 @@ function onMouseHold(ev) {
 
 function onEditorDelete() {
      deleteCurrent()
+     renderMeme()
+}
+
+function onEditorAdd() {
+     addMeme()
      renderMeme()
 }
 

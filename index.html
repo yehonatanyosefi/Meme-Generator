@@ -41,6 +41,9 @@
 					<input type="color" oninput="onChangeLine('fill', this.value)" value="#FFFFFF" />
 					<!-- <input type="color" oninput="onChangeLine('stroke', this.value)" /> -->
 					<button class="btn-round" onclick="onSwitchLine()">switch</button>
+					<button class="btn-round" onclick="onChangeLine('align', 'left')">L</button>
+					<button class="btn-round" onclick="onChangeLine('align', 'center')">C</button>
+					<button class="btn-round" onclick="onChangeLine('align', 'right')">R</button>
 					<form class="txt-inputs-container">
 						<label for="txt">Text</label>
 						<input
@@ -69,6 +72,7 @@
 						/>
 					</form>
 					<button class="btn-round" onclick="onEditorDelete()">Delete</button>
+					<button class="btn-round" onclick="onEditorAdd()">Add</button>
 					<input type="file" class="file-input btn" name="image" onchange="onImgInput(event)" />
 					<button class="btn-round" onclick="prepareDownload()">Download</button
 					><a href="#" class="canvas-downloader" onclick="downloadCanvas(this)"></a>
