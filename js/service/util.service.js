@@ -139,3 +139,33 @@ function shuffle(array) { //shuffles an array and returns it shuffled
     }
     return array;
 }
+
+
+function isSpecialKey(keyCode) {
+    if (keyCode == 9 // Tab
+        || keyCode == 13 //Enter
+        || keyCode == 16 // Shift
+        || keyCode == 17 // Ctrl
+        || keyCode == 18 // Alt
+        || keyCode == 19 // Pause/Break
+        || keyCode == 20 // Caps Lock
+        || keyCode == 27 // Escape
+        || keyCode == 33 // Page Up
+        || keyCode == 34 // Page Down
+        || keyCode == 35 // End
+        || keyCode == 36 // Home
+        || keyCode == 37 // Left arrow
+        || keyCode == 38 // Up arrow
+        || keyCode == 39 // Right arrow
+        || keyCode == 40 // Down arrow
+        || keyCode == 45 // Insert
+        || keyCode == 91 // Left Windows/Command key
+        || keyCode == 92 // Right Windows/Command key
+        || keyCode == 93 // Select key
+        || (keyCode >= 112 && keyCode <= 123) // Function keys
+        || (keyCode >= 144 && keyCode <= 145)) // Num Lock and Scroll Lock
+    {
+        return true
+    }
+    return false
+}

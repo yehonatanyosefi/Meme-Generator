@@ -175,6 +175,14 @@ function getImages() {
      return gImgs
 }
 
+function onAddTextToLine(key) {
+     gMeme.lines[gMeme.selectedLineIdx].txt += key
+}
+
+function onDeleteFromLine() {
+     gMeme.lines[gMeme.selectedLineIdx].txt = gMeme.lines[gMeme.selectedLineIdx].txt.slice(0, -1)
+}
+
 // function changeRate(changeRate, memeId) {
 //      const currMeme = getMemeById(memeId)
 //      currMeme.rate += changeRate

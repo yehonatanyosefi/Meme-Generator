@@ -13,7 +13,6 @@ var gCanvas = { isMouseDown: false, }
 // var gModal = null
 //TODO: set/reset input and select values
 //TODO: “Drag&Drop” stickers on canvas
-//TODO: Inline (on Canvas) text editing
 //TODO: Support using various aspect-ratio of images, use the images from “meme-imgs(various aspect ratios)” folder
 //TODO: add responsiveness for mobile
 //TODO: calculate the 'I'm flexible' text size so it will not exceed the canvas width
@@ -84,7 +83,12 @@ function getEvPos(ev) {
 function addListeners() {
      addMouseListeners()
      addTouchListeners()
+     addKeyboardListeners()
      window.addEventListener('resize', resizeCanvas)
+}
+
+function addKeyboardListeners() {
+     addEventListener('keydown', onKeyDown)
 }
 
 function addMouseListeners() {
@@ -210,6 +214,23 @@ function onMouseHold(ev) {
      const { x, y } = pos
      const { movementX: movX, movementY: movY } = ev
      moveText(x, y, movX, movY)
+     renderMeme()
+}
+
+function onKeyDown(ev) {
+     if (isSpecialKey(ev.keyCode)) return
+     switch (ev.key) {
+          case 'Space':
+               onAddTextToLine(' ')
+               break
+          case 'Delete':
+          case 'Backspace':
+               onDeleteFromLine()
+               break
+          default:
+               onAddTextToLine(ev.key)
+               break
+     }
      renderMeme()
 }
 
