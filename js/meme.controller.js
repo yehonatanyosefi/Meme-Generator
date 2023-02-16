@@ -1,6 +1,7 @@
 'use strict'
 //const
 const TOUCH_EVS = ['touchstart', 'touchmove', 'touchend']
+const PADDING_MULT = 1.05 //multiplier for padding
 //var
 var gElCanvas = null
 var gCtx = null
@@ -29,11 +30,6 @@ var gCanvas = { isMouseDown: false, }
 //TODO: i18n for Hebrew
 
 function onInit() {
-     //touch
-     // const modal = document.querySelector('.modal')
-     // gModal = new Hammer(modal)
-     // onSwipe()
-     //CRUDL
      // renderFilterByQueryStringParams()
      // renderLangByQueryStringParams()
      //canvas
@@ -54,7 +50,7 @@ function renderMeme() {
                let lineHeight = gElCanvas.height / 8
                if (idx > 1) lineHeight = gElCanvas.height / 2
                else if (idx > 0) lineHeight = gElCanvas.height - gElCanvas.height / 8
-               drawText(line, gElCanvas.width / 2, lineHeight, meme.selectedLineIdx === idx)
+               drawText(line, gElCanvas.width / 2, lineHeight, meme.selectedLineIdx === idx, idx)
           })
      }
 }
@@ -92,15 +88,6 @@ function getEvPos(ev) {
 function addListeners() {
      addMouseListeners()
      addTouchListeners()
-     // gCanvasListeners = new Hammer(gElCanvas)
-     // gCanvasListeners.on('mousedown mousemovemouseup', (ev) => {
-     //      const currMeme = getCurrMeme()
-     //      if (ev.type === 'swiperight') {
-     //           onReadMeme(currMeme.prev)
-     //      } else {
-     //           onReadMeme(currMeme.next)
-     //      }
-     // })
      window.addEventListener('resize', resizeCanvas)
 }
 
@@ -108,6 +95,7 @@ function addMouseListeners() {
      gElCanvas.addEventListener('mousedown', onMouseDown)
      gElCanvas.addEventListener('mousemove', onMouseHold)
      gElCanvas.addEventListener('mouseup', onMouseUp)
+     gElCanvas.addEventListener('mouseout', onMouseUp)
 }
 
 function addTouchListeners() {
@@ -154,9 +142,12 @@ function renderNewCanvas() {
      renderMeme()
 }
 
-function drawText(line, x, y, isSelected, ctx = gCtx) {
-     const { txt, size, font, color, stroke, align, posY } = line
+function drawText(line, x, y, isSelected, idx, ctx = gCtx) {
+     const { txt, size, font, color, stroke, align, posX, posY } = line
+     if (posX) x = posX
+     else setLinePos(idx, 'posX', x)
      if (posY) y = posY
+     else setLinePos(idx, 'posY', y)
      ctx.lineWidth = 1
      ctx.font = `${size}px ${font}`
      ctx.fillStyle = color
@@ -169,7 +160,6 @@ function drawText(line, x, y, isSelected, ctx = gCtx) {
 }
 
 function drawRect(x, y, size, text, align) {
-     const mult = 1.1
      const oldColor = gCtx.fillStyle
      const width = gCtx.measureText(text).width
      gCtx.fillStyle = 'rgba(255, 255, 255, 0.25)'
@@ -182,15 +172,34 @@ function drawRect(x, y, size, text, align) {
                x += width / 2
                break
      }
-     gCtx.strokeRect(x - width / 2 * mult, y - (size / 2) * mult, width * mult, size * mult)
-     gCtx.fillRect(x - width / 2 * mult, y - (size / 2) * mult, width * mult, size * mult)
+     gCtx.strokeRect(x - width / 2 * PADDING_MULT, y - (size / 2) * PADDING_MULT, width * PADDING_MULT, size * PADDING_MULT)
+     gCtx.fillRect(x - width / 2 * PADDING_MULT, y - (size / 2) * PADDING_MULT, width * PADDING_MULT, size * PADDING_MULT)
      gCtx.fillStyle = oldColor
 }
 
 function onMouseDown(ev) {
-     gCanvas.isMouseDown = true
      const pos = getEvPos(ev)
      const { x, y } = pos
+     if (!isLineClicked(x, y)) return
+     gCanvas.isMouseDown = true
+}
+
+function isLineClicked(clickX, clickY) {
+     const meme = getMeme()
+     let isLineClicked = false
+     meme.lines.forEach((line, idx) => {
+          const { txt, size, posX, posY } = line
+          // Calc the distance between two dots
+          const distanceX = Math.abs(posX - clickX)
+          const distanceY = Math.abs(posY - clickY)
+          const width = gCtx.measureText(txt).width
+          if (distanceX <= width / 2 * PADDING_MULT && distanceY <= size / 2 * PADDING_MULT) {
+               isLineClicked = true
+               changeSelectedLine(idx)
+               renderMeme()
+          }
+     })
+     return isLineClicked
 }
 
 function onMouseUp(ev) {
@@ -198,9 +207,12 @@ function onMouseUp(ev) {
 }
 
 function onMouseHold(ev) {
+     if (!gCanvas.isMouseDown) return
      const pos = getEvPos(ev)
      const { x, y } = pos
      const { movementX: movX, movementY: movY } = ev
+     moveText(x, y, movX, movY)
+     renderMeme()
 }
 
 function onEditorDelete() {
@@ -250,73 +262,6 @@ function onOpenGallery() {
      document.querySelector('.memes-container').classList.add('hide')
      resetMyMemeIdx()
 }
-// function resizeCanvas() {
-//      // create temp stuff
-//      const tempCanvas = document.createElement('canvas');
-//      const tempCtx = tempCanvas.getContext('2d');
-//      const fill = gCtx.fillStyle
-//      const stroke = gCtx.strokeStyle
-//      // save
-//      tempCanvas.width = gElCanvas.width
-//      tempCanvas.height = gElCanvas.height
-//      tempCtx.fillStyle = 'white'
-//      tempCtx.fillRect(0, 0, gElCanvas.width, gElCanvas.height)
-//      tempCtx.drawImage(gElCanvas, 0, 0)
-//      // resize & get the temp stuff back in
-//      const elContainer = document.querySelector('.canvas-container')
-//      gElCanvas.width = elContainer.offsetWidth
-//      gElCanvas.height = elContainer.offsetHeight
-//      gCtx.drawImage(tempCanvas, 0, 0)
-//      gCtx.fillStyle = fill
-//      gCtx.strokeStyle = stroke
-// }
-
-
-// function onSwipe() {
-//      // gModal.on('swipeleft swiperight', (ev) => {
-//      //      const currMeme = getCurrMeme()
-//      //      if (ev.type === 'swiperight') {
-//      //           onReadMeme(currMeme.prev)
-//      //      } else {
-//      //           onReadMeme(currMeme.next)
-//      //      }
-//      // })
-// }
-
-// function onDeleteMeme(memeId) {
-//      deleteMeme(memeId)
-//      renderTable()
-// }
-
-// function onAddMeme() {
-//      const form = document.querySelector('.new-meme')
-//      form.hidden = false
-// }
-
-// function onConfirmMeme(ev) {
-//      ev.preventDefault()
-//      const elNewName = document.querySelector('input[name="new-meme-name"]')
-//      const elNewPrice = document.querySelector('input[name="new-meme-price"]')
-//      const imageURL = getImageURL()
-//      if (imageURL) addMeme(elNewName.value, elNewPrice.value, imageURL)
-//      else addMeme(elNewName.value, elNewPrice.value)
-//      renderTable()
-//      const form = document.querySelector('.new-meme')
-//      form.hidden = true
-// }
-
-// function onUpdateMeme(memeId) {
-//      const memePrice = +prompt('Price?')
-//      updateMeme(memeId, memePrice)
-//      renderTable()
-// }
-
-// function onReadMeme(memeId) {
-//      var currMeme = getMemeById(MemeId)
-//      gCurrMemeId = MemeId
-//      saveCurrMeme(currMeme)
-//      openModal(currMeme)
-// }
 
 // function openModal(currMeme) {
 //      const modal = document.querySelector('.modal')
@@ -331,22 +276,6 @@ function onOpenGallery() {
 //      disableEnableModalBtns(currRate)
 //      gIsModalOpen = true
 //      setQueryStringParams()
-// }
-
-// function onChangeRate(ratingChange) {
-//      const newRate = changeRate(ratingChange, gCurrMemeId)
-//      const modalRate = document.querySelector('.modal-footer div')
-//      modalRate.innerText = newRate
-//      disableEnableModalBtns(newRate)
-// }
-
-// function disableEnableModalBtns(rate) {
-//      const modalMinus = document.querySelector('.modal-minus')
-//      const modalPlus = document.querySelector('.modal-plus')
-//      if (rate <= 0) modalMinus.disabled = true //minus
-//      else if (rate >= 1) modalMinus.disabled = false
-//      if (rate >= 10) modalPlus.disabled = true //plus
-//      else if (rate <= 9) modalPlus.disabled = false
 // }
 
 // function onCloseModal() {
@@ -398,14 +327,6 @@ function onOpenGallery() {
 //      var currPage = nextPage()
 //      disableEnablePageBtns(currPage)
 //      renderTable()
-// }
-
-// function disableEnablePageBtns(currPage) {
-//      if (currPage >= getFilteredMeme().length / PAGE_SIZE - 1) document.querySelector('.next').disabled = true
-//      else document.querySelector('.next').disabled = false
-//      if (currPage <= 0) document.querySelector('.previous').disabled = true
-//      else document.querySelector('.previous').disabled = false
-
 // }
 
 // function onSetLang(lang) {

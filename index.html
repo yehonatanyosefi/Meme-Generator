@@ -37,13 +37,21 @@
 				<div class="canvas-container">
 					<canvas class="canvas" height="450" width="450"> </canvas>
 				</div>
-				<div class="control-box grid center">
-					<input type="color" oninput="onChangeLine('fill', this.value)" value="#FFFFFF" />
-					<!-- <input type="color" oninput="onChangeLine('stroke', this.value)" /> -->
-					<button class="btn-round" onclick="onSwitchLine()">switch</button>
-					<button class="btn-round" onclick="onChangeLine('align', 'left')">L</button>
-					<button class="btn-round" onclick="onChangeLine('align', 'center')">C</button>
-					<button class="btn-round" onclick="onChangeLine('align', 'right')">R</button>
+				<div class="control-box grid">
+					<div class="top-control">
+						<button class="btn-round" onclick="onSwitchLine()">Switch</button>
+						<button class="btn-round" onclick="onEditorDelete()">Delete</button>
+						<button class="btn-round" onclick="onEditorAdd()">Add</button>
+						<button class="btn-round" onclick="onChangeLine('align', 'right')">
+							<i class="fa-solid fa-align-left"></i>
+						</button>
+						<button class="btn-round" onclick="onChangeLine('align', 'center')">
+							<i class="fa-solid fa-align-center"></i>
+						</button>
+						<button class="btn-round" onclick="onChangeLine('align', 'left')">
+							<i class="fa-solid fa-align-right"></i>
+						</button>
+					</div>
 					<form class="txt-inputs-container">
 						<label for="txt">Text</label>
 						<input
@@ -60,6 +68,8 @@
 							<option value="arial">Arial</option>
 							<option value="moonkids">Moonkids</option>
 						</select>
+						<input type="color" oninput="onChangeLine('fill', this.value)" value="#FFFFFF" />
+						<!-- <input type="color" oninput="onChangeLine('stroke', this.value)" /> -->
 						<label for="font-size">Size</label>
 						<input
 							type="number"
@@ -71,18 +81,17 @@
 							oninput="onChangeLine('size', this.value)"
 						/>
 					</form>
-					<button class="btn-round" onclick="onEditorDelete()">Delete</button>
-					<button class="btn-round" onclick="onEditorAdd()">Add</button>
-					<input type="file" class="file-input btn" name="image" onchange="onImgInput(event)" />
-					<button class="btn-round" onclick="prepareDownload()">Download</button
-					><a href="#" class="canvas-downloader" onclick="downloadCanvas(this)"></a>
-					<button class="btn-round" onclick="onShareImg()">Share</button>
-					<button class="btn-round" onclick="onSaveMeme()">Save</button>
+					<div class="bottom-control">
+						<input type="file" class="file-input btn" name="image" onchange="onImgInput(event)" />
+						<button class="btn-round" onclick="onSaveMeme()">Save</button>
+						<button class="btn-round" onclick="prepareDownload()">Download</button
+						><a href="#" class="canvas-downloader" onclick="downloadCanvas(this)"></a>
+						<button class="btn-round" onclick="onShareImg()">Share</button>
+					</div>
 				</div>
 			</div>
 		</div>
 		<footer class="flex center-all">By Yehonatan Yosefi</footer>
-		<script src="lib/hammer.min.js"></script>
 		<script src="js/service/storage.service.js"></script>
 		<script src="js/service/i18n.service.js"></script>
 		<script src="js/service/fb-share.service.js"></script>
