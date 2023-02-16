@@ -9,19 +9,9 @@ var gIsMouseDown = false
 var gChangeSizeInterval = null
 var gIsFocused = false
 
-//TODO: Add stickers (Those are lines that have emojis) & “Drag&Drop” for stickers
-//TODO: Resize / Rotate a line. UI for this feature shall be a resize icon added to the line’s frame.
-//TODO: Use the new Web Share API to share your meme
-//TODO: i18n for Hebrew
-//TODO: maybe: aspect ratio, filter(datalist), keywords(w/popularity)
-
 function onInit() {
-     // renderFilterByQueryStringParams()
-     // renderLangByQueryStringParams()
-     //canvas
      gElCanvas = document.querySelector('.canvas')
      gCtx = gElCanvas.getContext('2d')
-     doTrans()
      renderGallery()
 }
 
@@ -40,15 +30,6 @@ function renderMeme() {
                drawText(line, gElCanvas.width / 2, lineHeight, meme.selectedLineIdx === idx, idx)
           })
      }
-}
-
-function resizeCanvas() { //deletes content on move
-     //TODO: maybe resize
-     const elContainer = document.querySelector('.canvas-container')
-     // Note: changing the canvas dimension this way clears the canvas
-     // gElCanvas.width = elContainer.offsetWidth
-     // Unless needed, better keep height fixed.
-     // gElCanvas.height = elContainer.offsetHeight //might need to remove
 }
 
 function getEvPos(ev) {
@@ -76,7 +57,6 @@ function addListeners() {
      addMouseListeners()
      addTouchListeners()
      addKeyboardListeners()
-     window.addEventListener('resize', resizeCanvas)
 }
 
 function addKeyboardListeners() {
@@ -280,7 +260,6 @@ function onOpenEditor() {
      document.querySelector('.my-memes-a').classList.remove('active')
      document.querySelector('.about-a').classList.remove('active')
      addListeners()
-     resizeCanvas()
      gCtx.fillStyle = 'white'
      updateTextVal()
      updateFontVal()
@@ -350,56 +329,3 @@ function updateTextVal() {
 function textInputFocus(isFocused) {
      gIsFocused = isFocused
 }
-
-// function onSetFilterBy(filterType, filterBy) {
-//      changeMemeFilter(filterType, filterBy)
-//      renderTable()
-//      setQueryStringParams()
-// }
-
-// function renderFilterByQueryStringParams() {
-//      const queryStringParams = new URLSearchParams(window.location.search)
-//      if (queryStringParams.get('modal') === 'true') {
-//           let MemeId = queryStringParams.get('memeId')
-//           if (!checkMemeId(memeId)) {
-//                const meme = getCurrMeme()
-//                if (meme) {
-//                     memeId = meme.id
-//                     onReadMeme(memeId)
-//                }
-//           } else onReadMeme(memeId)
-//      }
-//      const filterVars = {
-//           min: +queryStringParams.get('min') || -Infinity,
-//           max: +queryStringParams.get('max') || Infinity,
-//           name: queryStringParams.get('name') || '',
-//      }
-//      // const {min, max, name} = filterVars
-//      if (!filterVars.min && !filterVars.max && (!filterVars.name || filterVars.name === '')) return
-
-//      document.querySelector('.filter-min').value = (filterVars.min === -Infinity) ? '' : filterVars.min
-//      document.querySelector('.filter-max').value = (filterVars.max === Infinity) ? '' : filterVars.max
-//      document.querySelector('.filter-name').value = filterVars.name
-//      setMemeFilter(filterVars)
-// }
-
-// function onSetLang(lang) {
-//      if (lang === 'choose') return
-//      setLang(lang)
-//      renderTable()
-//      setBodyRTL(lang)
-//      setQueryStringParams()
-// }
-
-// function setBodyRTL(lang) {
-//      if (lang === 'he') document.body.classList.add('rtl')
-//      else document.body.classList.remove('rtl')
-// }
-
-// function renderLangByQueryStringParams() {
-//      const queryStringParams = new URLSearchParams(window.location.search)
-//      if (queryStringParams.get('lang') === 'he') {
-//           setLang('he')
-//           setBodyRTL('he')
-//      }
-// }

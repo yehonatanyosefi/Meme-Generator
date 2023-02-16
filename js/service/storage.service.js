@@ -10,7 +10,3 @@ function loadFromStorage(key) { //gets from Local Storage
      var value = JSON.parse(json)
      return value
 }
-
-function removeFromStorage(key) { //removes from Local Storage
-     localStorage.removeItem(key)
-}

@@ -1,15 +1,9 @@
 'use strict'
-
+//consts
 const MEMES_KEY = 'memesDB'
-// const PAGE_SIZE = 5
-
-// var gKeywordSearchCountMap = { 'funny': 12, 'cat': 16, 'baby': 2 }
+//vars
 var gMeme = createMeme()
 var gMyMemeIdx = -1
-
-// var gFilter = { min: -Infinity, max: Infinity, name: '', }
-// var gPageIdx = 0
-
 var gImgs = createImages()
 
 function createImages() {
@@ -38,7 +32,6 @@ function addImage(img) {
      gImgs.push(createImage(gImgs.length + 1, img.src))
      setImg(gImgs.length)
      renderMeme()
-     // renderGallery() //not adding to gallery atm, don't know if I want it to
 }
 
 function setImg(imgId) {
@@ -108,10 +101,6 @@ function changeLine(prop, value) {
           updateFontVal()
      }
      switch (prop) {
-          // case 'size':
-          //      if (!value) value = 50
-          //      gMeme.lines[gMeme.selectedLineIdx].size = value
-          //      break
           case 'text':
                if (!value) {
                     deleteCurrent()
@@ -225,84 +214,3 @@ function onDeleteFromLine() {
      gMeme.lines[gMeme.selectedLineIdx].txt = gMeme.lines[gMeme.selectedLineIdx].txt.slice(0, -1)
      updateTextVal()
 }
-
-// function changeRate(changeRate, memeId) {
-//      const currMeme = getMemeById(memeId)
-//      currMeme.rate += changeRate
-//      _saveMemes()
-//      return currMeme.rate
-// }
-
-// function getFilteredMeme() {
-//      return gMeme.filter(item => item.price > gFilter.min &&
-//           item.price < gFilter.max &&
-//           item.name.toLowerCase().includes(gFilter.name.toLowerCase()))
-// }
-
-// function getMemes() {
-//      let currMeme = getFilteredMeme()
-//      currMeme = _addNextPrev(currMeme)
-//      const startIdx = gPageIdx * PAGE_SIZE
-//      const memes = currMeme.slice(startIdx, startIdx + PAGE_SIZE)
-//      return memes
-// }
-
-// function getMemeIdxById(memeId) {
-//      return gMeme.findIndex(meme => meme.id === memeId)
-// }
-
-// function getMemeById(memeId) {
-//      return gMeme.find(meme => meme.id === memeId)
-// }
-
-// function getFilter() {
-//      return gFilter
-// }
-
-// function changeMemeFilter(filterType, filterBy) {
-//      if (filterBy !== undefined && filterBy !== '') gFilter[filterType] = filterBy
-//      else resetFilter(filterType)
-// }
-
-// function setMemeFilter(filterVars) {
-//      gFilter = filterVars
-// }
-
-// function resetFilter(filterType) {
-//      switch (filterType) {
-//           case 'min':
-//                gFilter.min = -Infinity
-//                break
-//           case 'max':
-//                gFilter.max = Infinity
-//                break
-//           case 'name':
-//                gFilter.name = ''
-//                break
-//      }
-// }
-
-// function prevPage() {
-//      gPageIdx--
-//      return gPageIdx
-// }
-
-// function nextPage() {
-//      gPageIdx++
-//      return gPageIdx
-// }
-
-// function saveCurrMeme(currMeme) {
-//      saveToStorage(CURR_MEME_KEY, currMeme)
-// }
-
-// function getCurrMeme() {
-//      return loadFromStorage(CURR_MEME_KEY) || null
-// }
-
-// function checkMemeId(currMemeId) {
-//      const meme = gMeme.find(meme => {
-//           return meme.id === currMemeId
-//      })
-//      return meme
-// }

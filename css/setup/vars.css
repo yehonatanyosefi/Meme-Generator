@@ -1,4 +1,5 @@
 :root {
+	/* pallete */
 	--clr0: #353535;
 	--clr1: #3c6e71;
 	--clr2: #efefef;
@@ -8,10 +9,9 @@
 	--clr-2: #efefef;
 	--clrbase: darkblue;
 
-	--nav-height: 100px;
-
+	/* changing sizes */
+	--nav-height: 80px;
 	--icon-button: 20px;
-
 	--side-padding: 5px;
 	--inline-end-header: 5px;
 }

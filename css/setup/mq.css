@@ -82,6 +82,7 @@
 		--side-padding: 30px;
 		--inline-end-header: 10px;
 		--icon-button: 30px;
+		--nav-height: 100px;
 	}
 	.nav-bar .menu a {
 		width: var(--nav-height);

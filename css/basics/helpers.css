@@ -25,10 +25,6 @@
 	align-items: center;
 }
 
-.flex.even-columns > * {
-	width: 100%;
-}
-
 /* grid helpers */
 .grid {
 	display: grid;
