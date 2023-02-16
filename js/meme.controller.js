@@ -12,16 +12,12 @@ var gCanvas = { isMouseDown: false, }
 // var gIsModalOpen = false
 // var gModal = null
 //TODO: set/reset input and select values
-//TODO: Support “Drag&Drop” of lines and stickers on canvas. This requires also support of line selection by click line/stickers on canvas
+//TODO: “Drag&Drop” stickers on canvas
 //TODO: Inline (on Canvas) text editing
-//TODO: add buttons 'text align'
 //TODO: Support using various aspect-ratio of images, use the images from “meme-imgs(various aspect ratios)” folder
-//TODO: add saved memes text display on 'my memes'
-//TODO: fix base64 'my memes' display
 //TODO: add responsiveness for mobile
 //TODO: calculate the 'I'm flexible' text size so it will not exceed the canvas width
 //TODO: improve ui colors and styling
-//TODO: fix uploaded image render, and save to local storage
 //TODO: Image gallery filter (use <datalist>)
 //TODO: Add stickers (Those are lines that have emojis
 //TODO: Add “search by keywords” to Image-Gallery Page. Each word size is determined by the popularity of the keyword search - so each click on a keyword makes that keyword bigger TIP: use an initial demo data so it will look good when loads
@@ -144,11 +140,13 @@ function renderNewCanvas() {
 
 function drawText(line, x, y, isSelected, idx, ctx = gCtx) {
      const { txt, size, font, color, stroke, align, posX, posY } = line
-     if (posX) x = posX
-     else setLinePos(idx, 'posX', x)
-     if (posY) y = posY
-     else setLinePos(idx, 'posY', y)
-     ctx.lineWidth = 1
+     if (ctx === gCtx) {
+          if (posX) x = posX
+          else setLinePos(idx, 'posX', x)
+          if (posY) y = posY
+          else setLinePos(idx, 'posY', y)
+     }
+     ctx.lineWidth = 1.5
      ctx.font = `${size}px ${font}`
      ctx.fillStyle = color
      ctx.strokeStyle = stroke

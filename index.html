@@ -39,9 +39,13 @@
 				</div>
 				<div class="control-box grid">
 					<div class="top-control">
-						<button class="btn-round" onclick="onSwitchLine()">Switch</button>
-						<button class="btn-round" onclick="onEditorDelete()">Delete</button>
-						<button class="btn-round" onclick="onEditorAdd()">Add</button>
+						<button class="btn-round" onclick="onSwitchLine()">
+							<i class="fa-solid fa-repeat"></i>
+						</button>
+						<button class="btn-round" onclick="onEditorDelete()">
+							<i class="fa-solid fa-delete-left"></i>
+						</button>
+						<button class="btn-round" onclick="onEditorAdd()"><i class="fa-solid fa-plus"></i></button>
 						<button class="btn-round" onclick="onChangeLine('align', 'right')">
 							<i class="fa-solid fa-align-left"></i>
 						</button>
@@ -83,10 +87,15 @@
 					</form>
 					<div class="bottom-control">
 						<input type="file" class="file-input btn" name="image" onchange="onImgInput(event)" />
-						<button class="btn-round" onclick="onSaveMeme()">Save</button>
-						<button class="btn-round" onclick="prepareDownload()">Download</button
+						<button class="btn-round" onclick="onSaveMeme()">
+							<i class="fa-solid fa-floppy-disk"></i>
+						</button>
+						<button class="btn-round" onclick="prepareDownload()">
+							<i class="fa-solid fa-download"></i></button
 						><a href="#" class="canvas-downloader" onclick="downloadCanvas(this)"></a>
-						<button class="btn-round" onclick="onShareImg()">Share</button>
+						<button class="btn-round" onclick="onShareImg()">
+							<i class="fa-brands fa-facebook"></i>
+						</button>
 					</div>
 				</div>
 			</div>

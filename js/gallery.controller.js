@@ -54,11 +54,13 @@ function drawMemeOnCanvas(meme, idx) {
           ctx.drawImage(img, 0, 0, 180, 180)
           if (!meme.lines || !meme.lines.length) return
           meme.lines.forEach((line, idx) => {
-               line.size *= 0.4
+               const mult = 0.4 //180/450
+               line.size *= mult
                let lineHeight = canvas.height / 8
                if (idx > 1) lineHeight = canvas.height / 2
                else if (idx > 0) lineHeight = canvas.height - canvas.height / 8
-               drawText(line, canvas.width / 2, lineHeight, false, undefined, ctx)
+               let lineWidth = line.posX * mult || canvas.width / 2
+               drawText(line, lineWidth, lineHeight, false, idx, ctx)
           })
      }
 }
