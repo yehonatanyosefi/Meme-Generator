@@ -1,11 +1,12 @@
 /* MAIN LAYOUT */
 .main-layout {
 	display: grid;
-	grid-template-columns: 20px 1fr 20px;
+	grid-template-columns: var(--side-padding) 1fr var(--side-padding);
 	grid-template-rows:
 		2fr
 		50vh
-		1fr;
+		1fr
+		repeat(auto-fit, fit-content);
 }
 
 .main-layout > *:not(.full) {
@@ -18,18 +19,12 @@
 
 /* NAV-BAR LAYOUT */
 .nav-bar {
-	display: grid;
-	grid-template-columns: 100px 1fr 1fr;
-	grid-template-areas: 'l m';
 	left: 0;
 	right: 0;
 }
 
 .nav-bar .menu .logo {
-	grid-area: l;
-}
-.nav-bar .menu a {
-	grid-area: m;
+	margin-inline-start: 10px;
 }
 
 /* EDITOR LAYOUT */

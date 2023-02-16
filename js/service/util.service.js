@@ -41,11 +41,11 @@ function makeId(length = 6) { //makes random ID
     return txt
 }
 
-function makeLorem(wordCount = 100) { //makes random text
-    const words = ['The sky', 'above', 'the port', 'was', 'the color of television', 'tuned', 'to', 'a dead channel', 'All', 'this happened', 'more or less', 'I', 'had', 'the story', 'bit by bit', 'from various people', 'and', 'as generally', 'happens', 'in such cases', 'each time', 'it', 'was', 'a different story', 'It', 'was', 'a pleasure', 'to', 'burn']
+function makeJoke(jokeCount = 1) { //makes random text
+    const words = ['קליק קלאק', 'בסיידר', 'מאגניייייב', 'יקרים', 'לא הייתי שולח לדודה', 'זה אמור לקחת שעה', '?רוצה סקר על שקשוקה', '?איפה המצלמות שלכם', '?יש שאלה איסלם', 'בוווקר טווב', '?מאק קורה', `קג'ן 23`, '?למישהו יש שאלות', 'נחמדי', 'פשוטי', 'אני מרגישה ורוד היום', 'לירון']
     var txt = ''
-    while (wordCount > 0) {
-        wordCount--
+    while (jokeCount > 0) {
+        jokeCount--
         txt += words[Math.floor(Math.random() * words.length)] + ' '
     }
     return txt

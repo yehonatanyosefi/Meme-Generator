@@ -8,92 +8,148 @@
 			href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
 		/>
 		<link rel="stylesheet" href="css/main.css" />
+		<link rel="preload" as="font" href="/fonts/Moonkids.ttf" type="font/ttf" crossorigin="anonymous" />
+		<link rel="preload" as="font" href="/fonts/Secular.ttf" type="font/ttf" crossorigin="anonymous" />
 		<title>Meme-Generator by Yehonatan Yosefi</title>
 	</head>
 
 	<body onload="onInit()" class="dark-theme main-layout">
 		<div class="nav-bar main-layout full">
-			<div class="flex space-between align-center">
-				<div class="logo">Meme-Generator</div>
+			<section class="flex space-between">
+				<div class="logo" onclick="onOpenGallery()">Meme-Generator</div>
 				<div class="menu">
-					<li class="clean list flex center">
+					<li class="clean list flex">
 						<ul>
-							<a href="#" onclick="onOpenGallery()"><i class="fa-solid fa-image"></i></a>
+							<a href="#" class="gallery-a active" onclick="onOpenGallery()">Gallery</a>
 						</ul>
 						<ul>
-							<a href="#" onclick="onOpenSavedMemes()"><i class="fa-solid fa-floppy-disk"></i></a>
+							<a href="#" class="my-memes-a" onclick="onOpenSavedMemes()">My Memes</a>
 						</ul>
 						<ul>
-							<a class="about" href="#">About</a>
+							<a href="#" class="about-a" onclick="onOpenAbout()">About</a>
 						</ul>
 					</li>
 				</div>
-			</div>
+				<button class="hamburger" onclick="toggleMenu(true)"><i class="fa-solid fa-bars"></i></button>
+			</section>
 		</div>
 		<div class="main-content">
-			<div class="memes-container"></div>
+			<div class="memes-container hide"></div>
 			<div class="img-container"></div>
+			<div class="about-container hide">
+				<img src="img/creator.png" class="about-img" onclick="onOpenEditor();onSelectImg(1)" />
+				<p class="flex center-all">This is all about love.</p>
+			</div>
 			<div class="editor-container hide">
 				<div class="canvas-container">
 					<canvas class="canvas" height="450" width="450"> </canvas>
 				</div>
-				<div class="control-box grid">
+				<div class="control-box">
 					<div class="top-control">
-						<button class="btn-round" onclick="onSwitchLine()">
+						<button class="btn-round" onclick="onSwitchLine()" onkeyup="event.preventDefault()">
 							<i class="fa-solid fa-repeat"></i>
 						</button>
-						<button class="btn-round" onclick="onEditorDelete()">
-							<i class="fa-solid fa-delete-left"></i>
+						<button class="btn-round" onclick="onEditorAdd()" onkeyup="event.preventDefault()">
+							<i class="fa-regular fa-square-plus"></i>
 						</button>
-						<button class="btn-round" onclick="onEditorAdd()"><i class="fa-solid fa-plus"></i></button>
-						<button class="btn-round" onclick="onChangeLine('align', 'right')">
+						<button class="btn-round" onclick="onEditorDelete()" onkeyup="event.preventDefault()">
+							<i class="fa-regular fa-square-minus"></i>
+						</button>
+						<button
+							class="btn-round"
+							onclick="onChangeLine('align', 'right')"
+							onkeyup="event.preventDefault()"
+						>
 							<i class="fa-solid fa-align-left"></i>
 						</button>
-						<button class="btn-round" onclick="onChangeLine('align', 'center')">
+						<button
+							class="btn-round"
+							onclick="onChangeLine('align', 'center')"
+							onkeyup="event.preventDefault()"
+						>
 							<i class="fa-solid fa-align-center"></i>
 						</button>
-						<button class="btn-round" onclick="onChangeLine('align', 'left')">
+						<button
+							class="btn-round"
+							onclick="onChangeLine('align', 'left')"
+							onkeyup="event.preventDefault()"
+						>
 							<i class="fa-solid fa-align-right"></i>
 						</button>
 					</div>
-					<form class="txt-inputs-container">
-						<label for="txt">Text</label>
-						<input
-							type="text"
-							name="txt"
-							id="txt"
-							placeholder="txt"
-							class="txt"
-							oninput="onChangeLine('text', this.value)"
-						/>
-						<label for="font">Font</label>
-						<select onchange="onChangeLine('font', this.value)">
-							<option value="impact" selected="selected">Impact</option>
-							<option value="arial">Arial</option>
-							<option value="moonkids">Moonkids</option>
-						</select>
-						<input type="color" oninput="onChangeLine('fill', this.value)" value="#FFFFFF" />
-						<!-- <input type="color" oninput="onChangeLine('stroke', this.value)" /> -->
-						<label for="font-size">Size</label>
-						<input
-							type="number"
-							name="font-size"
-							id="font-size"
-							placeholder="font-size"
-							class="font-size"
-							value="50"
-							oninput="onChangeLine('size', this.value)"
-						/>
-					</form>
+					<div class="text-container">
+						<button
+							onmousedown="onChangeSize(1)"
+							onmouseout="stopPress()"
+							onmouseup="stopPress()"
+							onkeyup="event.preventDefault()"
+							class="btn-round"
+						>
+							<i class="fa-solid fa-plus"></i>
+						</button>
+						<button
+							onmousedown="onChangeSize(-1)"
+							onmouseout="stopPress()"
+							onmouseup="stopPress()"
+							onkeyup="event.preventDefault()"
+							class="btn-round"
+						>
+							<i class="fa-solid fa-minus"></i>
+						</button>
+						<button class="color-wrapper i">
+							<input
+								type="color"
+								class="color-picker"
+								oninput="onChangeLine('fill', this.value)"
+								value="#FFFFFF"
+							/>
+						</button>
+						<div class="font-container">
+							<label for="font">Font</label>
+							<select
+								class="font"
+								onchange="onChangeLine('font', this.value)"
+								onkeyup="event.preventDefault()"
+							>
+								<option value="secular">Secular</option>
+								<option value="impact">Impact</option>
+								<option value="moonkids">Moonkids</option>
+							</select>
+						</div>
+						<div class="text-container">
+							<label for="txt">Text</label>
+							<input
+								type="text"
+								name="txt"
+								id="txt"
+								placeholder="txt"
+								class="txt"
+								onfocus="textInputFocus(true)"
+								onblur="textInputFocus(false)"
+								oninput="onChangeLine('text', this.value)"
+							/>
+						</div>
+					</div>
 					<div class="bottom-control">
-						<input type="file" class="file-input btn" name="image" onchange="onImgInput(event)" />
-						<button class="btn-round" onclick="onSaveMeme()">
+						<input
+							type="file"
+							id="upload"
+							class="file-input upload"
+							name="image"
+							class="upload"
+							onchange="onImgInput(event)"
+							hidden
+						/>
+						<label for="upload" class="upload-btn"><i class="fa-solid fa-upload"></i></label>
+						<button class="btn-round" onclick="onSaveMeme()" onkeyup="event.preventDefault()">
 							<i class="fa-solid fa-floppy-disk"></i>
 						</button>
-						<button class="btn-round" onclick="prepareDownload()">
-							<i class="fa-solid fa-download"></i></button
-						><a href="#" class="canvas-downloader" onclick="downloadCanvas(this)"></a>
-						<button class="btn-round" onclick="onShareImg()">
+						<div class="download-container">
+							<button class="btn-round" onclick="prepareDownload()" onkeyup="event.preventDefault()">
+								<i class="fa-solid fa-download"></i></button
+							><a href="#" class="canvas-downloader" onclick="downloadCanvas(this)"></a>
+						</div>
+						<button class="btn-round" onclick="onShareImg()" onkeyup="event.preventDefault()">
 							<i class="fa-brands fa-facebook"></i>
 						</button>
 					</div>
@@ -101,6 +157,8 @@
 			</div>
 		</div>
 		<footer class="flex center-all">By Yehonatan Yosefi</footer>
+		<div class="main-screen" onclick="toggleMenu()"></div>
+		<div class="modal hide">Meme Saved Successfully! 💾</div>
 		<script src="js/service/storage.service.js"></script>
 		<script src="js/service/i18n.service.js"></script>
 		<script src="js/service/fb-share.service.js"></script>

@@ -5,11 +5,29 @@
 	grid-auto-flow: dense;
 	gap: 10px;
 	margin: 0 auto;
+	margin-top: 10px;
+	width: 100%;
 	padding: 5px;
-	transition: opacity 0.25s;
-	opacity: 1;
+	padding-left: auto;
+	justify-content: center;
 }
+
 .img-container img,
-.memes-container img {
+.memes-container .gallery-img {
 	cursor: pointer;
+	width: 100%;
+	box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px, rgba(0, 0, 0, 0.1) 0px 1px 3px;
+}
+
+.gallery-img,
+.my-meme {
+	border-radius: 1.5em;
+	transition: scale 0.4s opacity 0.9s;
+	opacity: 0.9;
+}
+
+.gallery-img:hover,
+.my-meme:hover {
+	scale: 1.025;
+	opacity: 1;
 }

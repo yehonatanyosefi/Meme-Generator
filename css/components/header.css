@@ -1,22 +1,22 @@
 .nav-bar {
 	height: var(--nav-height);
-	background-color: var(--clr1);
-}
-
-.nav-bar .menu .about {
-	margin-block-end: 10px;
+	background-color: var(--clr4);
+	color: var(--clr2);
+	/* margin-bottom: 0; */
+	box-shadow: inset 0 -2px 0 var(--clrbase);
 }
 
 .nav-bar .menu a {
-	width: var(--nav-height);
-	height: var(--nav-height);
 	align-items: center;
 	justify-content: center;
 
-	text-transform: uppercase;
+	text-transform: capitalize;
 	display: flex;
 	color: inherit;
 	text-decoration: none;
 
-	transition: box-shadow 0.4s;
+	font-size: 1em;
+}
+.nav-bar .menu a:hover {
+	color: var(--clr3);
 }

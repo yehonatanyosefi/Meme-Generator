@@ -1,39 +1,28 @@
 /* round buttons */
 
-button {
-	background-color: var(--clr-2);
+button,
+.upload-btn {
 	color: var(--clr-1);
 	cursor: pointer;
-	border: 2px solid var(--clr-1);
 	font-size: 1em;
-	padding: 0.625em 1.625em;
-
-	position: relative;
+	justify-self: center;
+	align-self: center;
+	height: var(--icon-button);
+	width: var(--icon-button);
+	transition: scale 0.3s;
+	height: var(--icon-button);
+	width: var(--icon-button);
 }
 
-button:hover {
+button:hover,
+.upload-btn:hover,
+.upload {
 	color: var(--clrbase);
-	border: 2px solid var(--clrbase);
+	scale: 1.05;
 }
 
 /* Round */
 
 .btn-round {
 	border-radius: 2em;
-}
-
-/* Arrow */
-
-.btn-arrow {
-	transition: padding 0.4s;
-}
-
-.btn-arrow:hover {
-	padding-inline-end: 2.5em;
-}
-
-.btn-arrow:hover::after {
-	content: ' →';
-	position: absolute;
-	right: 1em;
 }

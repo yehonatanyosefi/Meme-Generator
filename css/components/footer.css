@@ -1,6 +1,10 @@
 footer {
 	left: 50%;
 	translate: -50%;
-	position: absolute;
+	position: fixed;
 	bottom: 10px;
+	user-select: none;
+	pointer-events: none;
+	opacity: 0.25;
+	color: var(--clr1);
 }

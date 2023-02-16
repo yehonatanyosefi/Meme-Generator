@@ -1,3 +1,22 @@
 .logo {
 	font-family: Moonkids, sans-serif;
+	width: fit-content;
+	height: var(--nav-height);
+	align-items: center;
+	justify-content: center;
+
+	text-transform: capitalize;
+	display: flex;
+	color: inherit;
+	text-decoration: none;
+
+	font-size: 1.5em;
+	padding-left: 10px;
+
+	cursor: pointer;
+
+	transition: transform 2s;
+}
+.logo:hover {
+	transform: rotateY(360deg);
 }

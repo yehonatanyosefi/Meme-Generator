@@ -4,19 +4,22 @@
 
 /* BASICS */
 @import 'basics/base.css';
-@import 'basics/buttons.css';
 @import 'basics/helpers.css';
 @import 'basics/layout.css';
+@import 'basics/buttons.css';
 
 /* COMPONENTS */
 @import 'components/img.css';
-@import 'components/editor-container.css';
+@import 'components/editor.css';
 @import 'components/canvas.css';
+@import 'components/about.css';
 @import 'components/footer.css';
 @import 'components/header.css';
 @import 'components/logo.css';
-@import 'components/page-btns.css';
+@import 'components/modal.css';
 
 /* MEDIA QUERIS */
-@import 'setup/animations.css';
 @import 'setup/mq.css';
+
+/* HIDE */
+@import 'basics/hide.css';

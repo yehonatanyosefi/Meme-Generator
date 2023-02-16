@@ -1,0 +1,10 @@
+.modal {
+	position: fixed;
+	inset: 50% 50% 50% 50%;
+	height: fit-content;
+	width: fit-content;
+	background-color: var(--clr2);
+	color: var(--clr4);
+	border: 1px solid black;
+	border-radius: 2px;
+}

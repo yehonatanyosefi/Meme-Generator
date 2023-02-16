@@ -1,0 +1,40 @@
+.control-box {
+	display: grid;
+	width: 100%;
+}
+.control-box {
+	padding-top: 10px;
+}
+.control-box {
+	padding-bottom: 10px;
+}
+.control-box button {
+	width: fit-content;
+}
+
+.color-wrapper {
+	height: var(--icon-button);
+	width: var(--icon-button);
+	background-image: url(../../svg/color-picker.svg);
+	background-repeat: no-repeat;
+	background-size: contain;
+	margin: 0;
+	padding: 0;
+}
+
+.color-picker {
+	opacity: 0;
+	width: var(--icon-button);
+	height: 100%;
+	cursor: pointer;
+}
+
+.top-control,
+.text-container,
+.bottom-control {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, var(--icon-button));
+	grid-auto-flow: dense;
+	justify-content: space-around;
+	align-items: center;
+}

@@ -1,28 +1,19 @@
 'use strict'
-//const
+//consts
 const TOUCH_EVS = ['touchstart', 'touchmove', 'touchend']
 const PADDING_MULT = 1.05 //multiplier for padding
-//var
+//vars
 var gElCanvas = null
 var gCtx = null
-var gCanvas = { isMouseDown: false, }
+var gIsMouseDown = false
+var gChangeSizeInterval = null
+var gIsFocused = false
 
-// var gCanvasListeners = null
-// var gCurrMemeId = null
-// var gIsModalOpen = false
-// var gModal = null
-//TODO: set/reset input and select values
-//TODO: “Drag&Drop” stickers on canvas
-//TODO: Support using various aspect-ratio of images, use the images from “meme-imgs(various aspect ratios)” folder
-//TODO: add responsiveness for mobile
-//TODO: calculate the 'I'm flexible' text size so it will not exceed the canvas width
-//TODO: improve ui colors and styling
-//TODO: Image gallery filter (use <datalist>)
-//TODO: Add stickers (Those are lines that have emojis
-//TODO: Add “search by keywords” to Image-Gallery Page. Each word size is determined by the popularity of the keyword search - so each click on a keyword makes that keyword bigger TIP: use an initial demo data so it will look good when loads
+//TODO: Add stickers (Those are lines that have emojis) & “Drag&Drop” for stickers
 //TODO: Resize / Rotate a line. UI for this feature shall be a resize icon added to the line’s frame.
 //TODO: Use the new Web Share API to share your meme
 //TODO: i18n for Hebrew
+//TODO: maybe: aspect ratio, filter(datalist), keywords(w/popularity)
 
 function onInit() {
      // renderFilterByQueryStringParams()
@@ -31,6 +22,7 @@ function onInit() {
      gElCanvas = document.querySelector('.canvas')
      gCtx = gElCanvas.getContext('2d')
      doTrans()
+     renderGallery()
 }
 
 function renderMeme() {
@@ -39,7 +31,7 @@ function renderMeme() {
      img.src = `${meme.url}` // Send a network req to get that image, define the img src
      // When the image ready draw it on the canvas
      img.onload = () => {
-          gCtx.drawImage(img, 0, 0, gElCanvas.width, gElCanvas.height) //TODO: aspect ratio
+          gCtx.drawImage(img, 0, 0, gElCanvas.width, gElCanvas.height)
           if (!meme.lines) return
           meme.lines.forEach((line, idx) => {
                let lineHeight = gElCanvas.height / 8
@@ -144,14 +136,18 @@ function renderNewCanvas() {
 
 function drawText(line, x, y, isSelected, idx, ctx = gCtx) {
      const { txt, size, font, color, stroke, align, posX, posY } = line
+     ctx.lineWidth = 1.5
      if (ctx === gCtx) {
           if (posX) x = posX
           else setLinePos(idx, 'posX', x)
           if (posY) y = posY
           else setLinePos(idx, 'posY', y)
+     } else {
+          ctx.lineWidth *= 0.4
      }
-     ctx.lineWidth = 1.5
-     ctx.font = `${size}px ${font}`
+     ctx.shadowColor = "black"
+     ctx.shadowBlur = 1
+     ctx.font = `${size}px ${font || 'secular'}`
      ctx.fillStyle = color
      ctx.strokeStyle = stroke
      ctx.textAlign = align
@@ -174,16 +170,20 @@ function drawRect(x, y, size, text, align) {
                x += width / 2
                break
      }
-     gCtx.strokeRect(x - width / 2 * PADDING_MULT, y - (size / 2) * PADDING_MULT, width * PADDING_MULT, size * PADDING_MULT)
-     gCtx.fillRect(x - width / 2 * PADDING_MULT, y - (size / 2) * PADDING_MULT, width * PADDING_MULT, size * PADDING_MULT)
+     gCtx.strokeRect(x - width / 2 * PADDING_MULT, y - (size / 2 * PADDING_MULT + 2), width * PADDING_MULT, size - PADDING_MULT)
+     gCtx.fillRect(x - width / 2 * PADDING_MULT, y - (size / 2 * PADDING_MULT + 2), width * PADDING_MULT, size - PADDING_MULT)
      gCtx.fillStyle = oldColor
 }
 
 function onMouseDown(ev) {
      const pos = getEvPos(ev)
      const { x, y } = pos
-     if (!isLineClicked(x, y)) return
-     gCanvas.isMouseDown = true
+     if (!isLineClicked(x, y)) {
+          changeSelectedLine(-1)
+          renderMeme()
+          return
+     }
+     gIsMouseDown = true
 }
 
 function isLineClicked(clickX, clickY) {
@@ -205,11 +205,11 @@ function isLineClicked(clickX, clickY) {
 }
 
 function onMouseUp(ev) {
-     gCanvas.isMouseDown = false
+     gIsMouseDown = false
 }
 
 function onMouseHold(ev) {
-     if (!gCanvas.isMouseDown) return
+     if (!gIsMouseDown) return
      const pos = getEvPos(ev)
      const { x, y } = pos
      const { movementX: movX, movementY: movY } = ev
@@ -218,13 +218,14 @@ function onMouseHold(ev) {
 }
 
 function onKeyDown(ev) {
-     if (isSpecialKey(ev.keyCode)) return
+     if (gIsFocused || isSpecialKey(ev.keyCode)) return
      switch (ev.key) {
           case 'Space':
                onAddTextToLine(' ')
                break
           case 'Delete':
           case 'Backspace':
+               ev.preventDefault()
                onDeleteFromLine()
                break
           default:
@@ -254,55 +255,101 @@ function onSwitchLine() {
      renderMeme()
 }
 
-function onSaveMeme() {
-     saveMemes()
+function stopPress() {
+     clearInterval(gChangeSizeInterval)
 }
 
-function onOpenSavedMemes() {
-     document.querySelector('.img-container').classList.add('hide')
-     document.querySelector('.editor-container').classList.add('hide')
-     document.querySelector('.memes-container').classList.remove('hide')
-     resetMyMemeIdx()
-     renderMemes()
+function onChangeSize(mod) {
+     gChangeSizeInterval = setInterval(() => {
+          changeSize(mod)
+          renderMeme()
+     }, 37)
+}
+
+function onSaveMeme() {
+     saveMemes()
+     openModal()
 }
 
 function onOpenEditor() {
      document.querySelector('.img-container').classList.add('hide')
      document.querySelector('.editor-container').classList.remove('hide')
      document.querySelector('.memes-container').classList.add('hide')
+     document.querySelector('.about-container').classList.add('hide')
+     document.querySelector('.gallery-a').classList.remove('active')
+     document.querySelector('.my-memes-a').classList.remove('active')
+     document.querySelector('.about-a').classList.remove('active')
      addListeners()
      resizeCanvas()
      gCtx.fillStyle = 'white'
+     updateTextVal()
+     updateFontVal()
+}
+
+function onOpenSavedMemes() {
+     document.querySelector('.img-container').classList.add('hide')
+     document.querySelector('.editor-container').classList.add('hide')
+     document.querySelector('.memes-container').classList.remove('hide')
+     document.querySelector('.about-container').classList.add('hide')
+     document.querySelector('.gallery-a').classList.remove('active')
+     document.querySelector('.my-memes-a').classList.add('active')
+     document.querySelector('.about-a').classList.remove('active')
+     resetMyMemeIdx()
+     renderMemes()
 }
 
 function onOpenGallery() {
      document.querySelector('.img-container').classList.remove('hide')
      document.querySelector('.editor-container').classList.add('hide')
      document.querySelector('.memes-container').classList.add('hide')
+     document.querySelector('.about-container').classList.add('hide')
+     document.querySelector('.gallery-a').classList.add('active')
+     document.querySelector('.my-memes-a').classList.remove('active')
+     document.querySelector('.about-a').classList.remove('active')
      resetMyMemeIdx()
 }
 
-// function openModal(currMeme) {
-//      const modal = document.querySelector('.modal')
-//      modal.classList.remove('hide')
-//      const modalSpan = document.querySelector('.modal-body span')
-//      modalSpan.innerText = currMeme.text
-//      const modalTitle = document.querySelector('.modal-title')
-//      modalTitle.innerText = currMeme.name
-//      const modalRate = document.querySelector('.modal-footer div')
-//      const currRate = currMeme.rate
-//      modalRate.innerText = currRate
-//      disableEnableModalBtns(currRate)
-//      gIsModalOpen = true
-//      setQueryStringParams()
-// }
+function onOpenAbout() {
+     document.querySelector('.img-container').classList.add('hide')
+     document.querySelector('.editor-container').classList.add('hide')
+     document.querySelector('.memes-container').classList.add('hide')
+     document.querySelector('.about-container').classList.remove('hide')
+     document.querySelector('.gallery-a').classList.remove('active')
+     document.querySelector('.my-memes-a').classList.remove('active')
+     document.querySelector('.about-a').classList.add('active')
 
-// function onCloseModal() {
-//      const modal = document.querySelector('.modal')
-//      modal.classList.add('hide')
-//      gIsModalOpen = false
-//      setQueryStringParams()
-// }
+}
+
+function openModal() {
+     const modal = document.querySelector('.modal')
+     modal.classList.remove('hide')
+     setTimeout(closeModal, 800)
+}
+
+function closeModal() {
+     const modal = document.querySelector('.modal')
+     modal.classList.add('hide')
+}
+
+function updateFontVal() {
+     const line = getSelectedLine()
+     const font = (!line) ? 'secular' : line.font
+     const elFont = document.querySelector('.font')
+     elFont.value = font
+}
+
+function toggleMenu() {
+     document.body.classList.toggle('menu-open')
+}
+function updateTextVal() {
+     const line = getSelectedLine()
+     const txt = (!line) ? '' : line.txt
+     document.querySelector('.txt').value = txt
+}
+
+function textInputFocus(isFocused) {
+     gIsFocused = isFocused
+}
 
 // function onSetFilterBy(filterType, filterBy) {
 //      changeMemeFilter(filterType, filterBy)
@@ -334,18 +381,6 @@ function onOpenGallery() {
 //      document.querySelector('.filter-max').value = (filterVars.max === Infinity) ? '' : filterVars.max
 //      document.querySelector('.filter-name').value = filterVars.name
 //      setMemeFilter(filterVars)
-// }
-
-// function onPrevPage() {
-//      var currPage = prevPage()
-//      disableEnablePageBtns(currPage)
-//      renderTable()
-// }
-
-// function onNextPage() {
-//      var currPage = nextPage()
-//      disableEnablePageBtns(currPage)
-//      renderTable()
 // }
 
 // function onSetLang(lang) {

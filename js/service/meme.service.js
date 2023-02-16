@@ -14,7 +14,8 @@ var gImgs = createImages()
 
 function createImages() {
      let images = []
-     for (let i = 1; i <= 18; i++) {
+     images.push(createImage(0, 'img/0.png')) //me :)
+     for (let i = 1; i <= 26; i++) {
           images.push(createImage(i))
      }
      return images
@@ -25,8 +26,6 @@ function createImage(id, img) {
           id: id,
           imgUrl: img || `img/${id}.jpg`,
           keywords: ['funny', 'cat'],
-          prev: null,
-          next: null,
      }
 }
 
@@ -35,7 +34,7 @@ function moveText(x, y, movX, movY) {
      gMeme.lines[gMeme.selectedLineIdx].posY = y + movY
 }
 
-function addImage(img) { //TODO: fix bug in display on gallery
+function addImage(img) {
      gImgs.push(createImage(gImgs.length + 1, img.src))
      setImg(gImgs.length)
      renderMeme()
@@ -67,6 +66,7 @@ function createMeme() {
 function resetCanvas() {
      gMeme.lines = [createLine(), createLine()]
      gMeme.selectedLineIdx = 0
+
 }
 function deleteCurrent() {
      if (!gMeme.lines) {
@@ -81,22 +81,37 @@ function deleteCurrent() {
      } else if (gMeme.lines.length === 1) {
           gMeme.lines = null
           gMeme.selectedLineIdx = -1
+          updateTextVal()
      } else {
           gMeme.lines.splice(gMeme.selectedLineIdx, 1)
-          if (gMeme.selectedLineIdx !== 0) gMeme.selectedLineIdx -= 1
+          if (gMeme.selectedLineIdx !== 0) {
+               gMeme.selectedLineIdx -= 1
+          }
+          updateTextVal()
      }
+     updateFontVal()
 }
 
-function createLine(txt = 'Hello', size = 50, align = 'center', color = 'white', stroke = 'black', font = 'Impact', posX = null, posY = null) {
+function createLine(txt = 'Text', size = 50, align = 'center', color = 'white', stroke = 'black', font = 'secular', posX = null, posY = null) {
      return { txt, size, align, color, stroke, font, posX, posY }
 }
 
+function changeSize(mod) {
+     gMeme.lines[gMeme.selectedLineIdx].size += mod
+     if (gMeme.lines[gMeme.selectedLineIdx].size === 1) gMeme.lines[gMeme.selectedLineIdx].size = 50
+}
+
 function changeLine(prop, value) {
+     if (gMeme.selectedLineIdx === -1) {
+          gMeme.selectedLineIdx = 0
+          updateTextVal()
+          updateFontVal()
+     }
      switch (prop) {
-          case 'size':
-               if (!value) value = 50
-               gMeme.lines[gMeme.selectedLineIdx].size = value
-               break
+          // case 'size':
+          //      if (!value) value = 50
+          //      gMeme.lines[gMeme.selectedLineIdx].size = value
+          //      break
           case 'text':
                if (!value) {
                     deleteCurrent()
@@ -104,6 +119,7 @@ function changeLine(prop, value) {
                }
                if (!gMeme.lines || !gMeme.lines.length) addMeme()
                gMeme.lines[gMeme.selectedLineIdx].txt = value
+               updateTextVal(value)
                break
           case 'align':
                gMeme.lines[gMeme.selectedLineIdx].align = value
@@ -124,20 +140,27 @@ function changeLine(prop, value) {
 }
 
 
+
 function addMeme() {
-     if (!gMeme.lines || !gMeme.lines.length) gMeme.lines = [createLine()]
+     if (!gMeme.lines || !gMeme.lines.length) gMeme.lines = [createLine('')]
      else gMeme.lines.push(createLine())
      gMeme.selectedLineIdx = gMeme.lines.length - 1
+     updateTextVal()
+     updateFontVal()
 }
 
 function switchLine() {
+     if (!gMeme.lines) return
      if (gMeme.selectedLineIdx === 0 && gMeme.lines.length === 1) {
           addMeme() //when only one line, it adds one as well
      } else if (gMeme.selectedLineIdx < gMeme.lines.length - 1) {
           gMeme.selectedLineIdx++
+          updateTextVal()
      } else {
           gMeme.selectedLineIdx = 0
+          updateTextVal()
      }
+     updateFontVal()
 }
 
 function saveMemes() {
@@ -152,7 +175,10 @@ function loadMemes() {
 }
 
 function randomizeLine() {
-     gMeme.lines = [createLine(makeLorem(3), getRandomIntInclusive(25, 50), 'center', getRandomColor(), getRandomColor()), createLine(makeLorem(3), getRandomIntInclusive(25, 50), 'center', getRandomColor(), getRandomColor())]
+     gMeme.lines = [createRandomLine(), createRandomLine()]
+}
+function createRandomLine() {
+     return createLine(makeJoke(), getRandomIntInclusive(20, 40), 'center', getRandomColor(), getRandomColor())
 }
 
 function resetMyMemeIdx() {
@@ -161,6 +187,8 @@ function resetMyMemeIdx() {
 
 function changeSelectedLine(idx) {
      gMeme.selectedLineIdx = idx
+     updateTextVal()
+     updateFontVal()
 }
 
 function setLinePos(lineIdx, axis, pos) {
@@ -175,12 +203,27 @@ function getImages() {
      return gImgs
 }
 
+function getSelectedLine() {
+     if (gMeme.selectedLineIdx === -1) return null
+     return gMeme.lines[gMeme.selectedLineIdx]
+}
+
 function onAddTextToLine(key) {
+     if (gMeme.selectedLineIdx === -1) gMeme.selectedLineIdx = 0
+     if (!gMeme.lines || !gMeme.lines.length) addMeme()
      gMeme.lines[gMeme.selectedLineIdx].txt += key
+     updateTextVal()
 }
 
 function onDeleteFromLine() {
+     if (!gMeme.lines[gMeme.selectedLineIdx].txt) {
+          deleteCurrent()
+          updateTextVal()
+          return
+     }
+     if (gMeme.selectedLineIdx === -1) gMeme.selectedLineIdx = 0
      gMeme.lines[gMeme.selectedLineIdx].txt = gMeme.lines[gMeme.selectedLineIdx].txt.slice(0, -1)
+     updateTextVal()
 }
 
 // function changeRate(changeRate, memeId) {
