@@ -18,7 +18,8 @@ function renderMemes() {
      const strHTML = []
      const memes = loadMemes()
      if (!memes || !memes.length) {
-          strHTML.push(`<div class="flex center-all" data-trans="memes-empty">No memes yet, save your first one today!</div>`)
+          const emptyText = (getLang() === 'en') ? 'No memes yet, save your first one today!' : 'טרם יצרת מימז, צור את הראשון שלך היום!'
+          strHTML.push(`<div class="flex center-all">${emptyText}</div>`)
           elMemes.innerHTML = strHTML.join('')
           return
      }

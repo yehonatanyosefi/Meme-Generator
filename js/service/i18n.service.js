@@ -42,10 +42,6 @@ var gTrans = {
         en: 'Meme-Generator',
         he: 'יוצר-מימז'
     },
-    'memes-empty': {
-        en: 'No memes yet, save your first one today!',
-        he: 'טרם יצרת מימז, צור את הראשון שלך היום!'
-    },
     'meme-save': {
         en: 'Meme Saved Successfully! 💾',
         he: 'המימ נשמר בהצלחה! 💾'
