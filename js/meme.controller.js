@@ -6,6 +6,7 @@ const PADDING_MULT = 1.05 //multiplier for padding
 var gElCanvas = null
 var gCtx = null
 var gChangeSizeInterval = null
+var gPreviousTouch = null
 var gIsFocused = false
 var gIsMouseDown = false
 var gIsResizing = false
@@ -76,9 +77,9 @@ function addMouseListeners() {
 }
 
 function addTouchListeners() {
-     gElCanvas.addEventListener('touchstart', onMouseDown)
-     gElCanvas.addEventListener('touchmove', onMouseHold)
-     gElCanvas.addEventListener('touchend', onMouseUp)
+     gElCanvas.addEventListener('touchstart', onTouchStart)
+     gElCanvas.addEventListener('touchmove', onTouchMove)
+     gElCanvas.addEventListener('touchend', onTouchEnd)
 }
 
 function prepareDownload() {
@@ -177,22 +178,6 @@ function drawSizeAdjust(x, y, size, sizePadding, width) {
      }
 }
 
-function onMouseDown(ev) {
-     const pos = getEvPos(ev)
-     const { x, y } = pos
-     switch (isLineClicked(x, y)) {
-          case 'none':
-               changeSelectedLine(-1)
-               renderMeme()
-               return
-               break
-          case 'resize':
-               gIsResizing = true
-               break
-     }
-     gIsMouseDown = true
-}
-
 function isLineClicked(clickX, clickY) {
      const meme = getMeme()
      let whatIsClicked = 'none'
@@ -219,6 +204,46 @@ function isLineClicked(clickX, clickY) {
           }
      })
      return whatIsClicked
+}
+function onTouchStart(ev) {
+     const touch = ev.touches[0]
+     if (gPreviousTouch) {
+          ev.movementX = touch.pageX - gPreviousTouch.pageX;
+          ev.movementY = touch.pageY - gPreviousTouch.pageY;
+     }
+     gPreviousTouch = touch
+     onMouseDown(ev)
+}
+
+function onTouchMove(ev) {
+     const touch = ev.touches[0]
+     if (gPreviousTouch) {
+          ev.movementX = touch.pageX - gPreviousTouch.pageX;
+          ev.movementY = touch.pageY - gPreviousTouch.pageY;
+     }
+     gPreviousTouch = touch
+     onMouseHold(ev)
+}
+
+function onTouchEnd(ev) {
+     gPreviousTouch = null
+     onMouseUp(ev)
+}
+
+function onMouseDown(ev) {
+     const pos = getEvPos(ev)
+     const { x, y } = pos
+     switch (isLineClicked(x, y)) {
+          case 'none':
+               changeSelectedLine(-1)
+               renderMeme()
+               return
+               break
+          case 'resize':
+               gIsResizing = true
+               break
+     }
+     gIsMouseDown = true
 }
 
 function onMouseUp(ev) {
