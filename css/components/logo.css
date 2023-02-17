@@ -20,3 +20,7 @@
 .logo:hover {
 	transform: rotateY(360deg);
 }
+
+body.rtl .logo {
+	font-family: Secular, sans-serif;
+}
