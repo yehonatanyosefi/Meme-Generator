@@ -410,6 +410,4 @@ function onToggleLang() {
      toggleLang()
      doTrans()
      renderGallery()
-     const savedMemes = loadMemes()
-     if (!savedMemes || !savedMemes.length) renderMemes()
 }
