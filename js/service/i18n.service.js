@@ -77,7 +77,16 @@ function doTrans() {
 
 function toggleLang() {
     gCurrLang = (gCurrLang === 'en') ? 'he' : 'en'
+    setLangSettings()
+}
+
+function setLang(lang) {
+    gCurrLang = lang
+    setLangSettings()
+}
+
+function setLangSettings() {
+    setQueryStringParams(gCurrLang)
     if (gCurrLang === 'en') setDefaultText('Text')
     else setDefaultText('טקסט')
 }
-

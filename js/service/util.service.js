@@ -59,3 +59,14 @@ function isSpecialKey(keyCode) {
     }
     return false
 }
+
+function getValByQSParams(param) { //gets query string
+    const queryStringParams = new URLSearchParams(window.location.search)
+    return queryStringParams.get(param)
+}
+
+function setQueryStringParams(lang) { //sets query string params with an object like we had before
+    const queryStringParams = `?lang=${lang}`
+    const newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname + queryStringParams
+    window.history.pushState({ path: newUrl }, '', newUrl)
+}

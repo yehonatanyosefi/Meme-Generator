@@ -52,34 +52,22 @@
 				</div>
 				<div class="control-box">
 					<div class="top-control">
-						<button class="btn-round" onclick="onSwitchLine()" onkeyup="event.preventDefault()">
+						<button onclick="onSwitchLine()" onkeyup="event.preventDefault()">
 							<i class="fa-solid fa-repeat"></i>
 						</button>
-						<button class="btn-round" onclick="onEditorAdd()" onkeyup="event.preventDefault()">
+						<button onclick="onEditorAdd()" onkeyup="event.preventDefault()">
 							<i class="fa-solid fa-circle-plus"></i>
 						</button>
-						<button class="btn-round" onclick="onEditorDelete()" onkeyup="event.preventDefault()">
+						<button onclick="onEditorDelete()" onkeyup="event.preventDefault()">
 							<i class="fa-solid fa-trash"></i>
 						</button>
-						<button
-							class="btn-round"
-							onclick="onChangeLine('align', 'right')"
-							onkeyup="event.preventDefault()"
-						>
+						<button onclick="onChangeLine('align', 'right')" onkeyup="event.preventDefault()">
 							<i class="fa-solid fa-align-left"></i>
 						</button>
-						<button
-							class="btn-round"
-							onclick="onChangeLine('align', 'center')"
-							onkeyup="event.preventDefault()"
-						>
+						<button onclick="onChangeLine('align', 'center')" onkeyup="event.preventDefault()">
 							<i class="fa-solid fa-align-center"></i>
 						</button>
-						<button
-							class="btn-round"
-							onclick="onChangeLine('align', 'left')"
-							onkeyup="event.preventDefault()"
-						>
+						<button onclick="onChangeLine('align', 'left')" onkeyup="event.preventDefault()">
 							<i class="fa-solid fa-align-right"></i>
 						</button>
 					</div>
@@ -89,7 +77,6 @@
 							onmouseout="stopPress()"
 							onmouseup="stopPress()"
 							onkeyup="event.preventDefault()"
-							class="btn-round"
 						>
 							<i class="fa-solid fa-plus"></i>
 						</button>
@@ -98,7 +85,6 @@
 							onmouseout="stopPress()"
 							onmouseup="stopPress()"
 							onkeyup="event.preventDefault()"
-							class="btn-round"
 						>
 							<i class="fa-solid fa-minus"></i>
 						</button>
@@ -149,15 +135,15 @@
 							hidden
 						/>
 						<label for="upload" class="upload-btn"><i class="fa-solid fa-file-arrow-up"></i></label>
-						<button class="btn-round" onclick="onSaveMeme()" onkeyup="event.preventDefault()">
+						<button onclick="onSaveMeme()" onkeyup="event.preventDefault()">
 							<i class="fa-solid fa-floppy-disk"></i>
 						</button>
 						<div class="download-container">
-							<button class="btn-round" onclick="prepareDownload()" onkeyup="event.preventDefault()">
+							<button onclick="prepareDownload()" onkeyup="event.preventDefault()">
 								<i class="fa-solid fa-download"></i></button
 							><a href="#" class="canvas-downloader" onclick="downloadCanvas(this)"></a>
 						</div>
-						<button class="btn-round" onclick="onShareImg()" onkeyup="event.preventDefault()">
+						<button onclick="onShareImg()" onkeyup="event.preventDefault()">
 							<i class="fa-brands fa-facebook"></i>
 						</button>
 						<button class="share-api" onkeyup="event.preventDefault()">

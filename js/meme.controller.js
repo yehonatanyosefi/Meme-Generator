@@ -13,6 +13,8 @@ var gIsResizing = false
 function onInit() {
      gElCanvas = document.querySelector('.canvas')
      gCtx = gElCanvas.getContext('2d')
+     let lang = getValByQSParams('lang') || 'en'
+     setLang(lang)
      doTrans()
      renderGallery()
 }

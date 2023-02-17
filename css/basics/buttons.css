@@ -1,5 +1,3 @@
-/* round buttons */
-
 button,
 .upload-btn {
 	color: var(--clr4);
@@ -17,10 +15,4 @@ button:hover,
 .upload {
 	color: var(--clr5);
 	scale: 1.05;
-}
-
-/* Round */
-
-.btn-round {
-	border-radius: 2em;
 }
