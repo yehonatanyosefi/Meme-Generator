@@ -19,3 +19,9 @@
 .nav-bar .menu a:hover {
 	color: var(--clr3);
 }
+
+.lang-selector {
+	height: var(--nav-height);
+	font-size: calc(var(--nav-height) * 0.3);
+	margin-inline-end: var(--inline-end-header);
+}

@@ -2,13 +2,57 @@
 const USDTOILS_CONV = 3.53
 
 var gTrans = {
-    'a': {
-        en: 'a',
-        he: 'א'
+    'gallery': {
+        en: 'Gallery',
+        he: 'גלריה'
+    },
+    'my-memes': {
+        en: 'My-Memes',
+        he: 'מימז שלי'
+    },
+    'about': {
+        en: 'About',
+        he: 'לגבי'
+    },
+    'about-text': {
+        en: 'This is all about love.',
+        he: 'זה הכל עקב אהבה.'
+    },
+    'text-input': {
+        en: 'Text',
+        he: 'טקסט'
+    },
+    'text': {
+        en: 'Text',
+        he: 'טקסט'
+    },
+    'font': {
+        en: 'Font',
+        he: 'פונט'
+    },
+    'footer': {
+        en: 'By Yehonatan Yosefi',
+        he: 'נוצר על ידי יהונתן יוספי'
+    },
+    'title': {
+        en: 'Meme Generator By Yehonatan Yosefi',
+        he: 'יוצר מימז - יהונתן יוספי'
+    },
+    'logo': {
+        en: 'Meme-Generator',
+        he: 'יוצר-מימז'
+    },
+    'memes-empty': {
+        en: 'No memes yet, save your first one today!',
+        he: 'טרם יצרת מימז, צור את הראשון שלך היום!'
     },
 }
 
 var gCurrLang = 'en'
+
+function getLang() {
+    return gCurrLang
+}
 
 function getTrans(transKey) {
     // if key is unknown return 'UNKNOWN'
@@ -31,64 +75,9 @@ function doTrans() {
     })
 }
 
-function setLang(lang) {
-    gCurrLang = lang
+function toggleLang() {
+    gCurrLang = (gCurrLang === 'en') ? 'he' : 'en'
+    if (gCurrLang === 'en') setDefaultText('Text')
+    else setDefaultText('טקסט')
 }
 
-function formatCurrency(num) {
-    if (gCurrLang === 'he') {
-        num *= USDTOILS_CONV
-        return new Intl.NumberFormat('he-IL', { style: 'currency', currency: 'ILS' }).format(num)
-    }
-    return `${num}$`
-}
-
-function formatNumSimple(num) {
-    return num.toLocaleString('es')
-}
-
-function formatNum(num) {
-    return new Intl.NumberFormat(gCurrLang).format(num)
-}
-
-function formatCurrency(num) {
-    return new Intl.NumberFormat('he-IL', { style: 'currency', currency: 'ILS' }).format(num)
-}
-
-function formatDate(time) {
-
-    const options = {
-        year: 'numeric', month: 'short', day: 'numeric',
-        hour: 'numeric', minute: 'numeric',
-        hour12: true,
-    }
-
-    return new Intl.DateTimeFormat(gCurrLang, options).format(time)
-}
-
-// Kilometers to Miles
-function kmToMiles(km) {
-    return km / 1.609
-}
-
-// Kilograms to Pounds:
-function kgToLbs(kg) {
-    return kg * 2.20462262185
-}
-
-
-function getPastRelativeFrom(ts) {
-    const diff = Date.now() - new Date(ts)
-    const seconds = diff / 1000
-    const minutes = seconds / 60
-    const hours = minutes / 60
-    const days = hours / 24
-
-    const formatter = new Intl.RelativeTimeFormat('en-US', {
-        numeric: 'auto'
-    })
-    if (seconds <= 60) return formatter.format(-seconds, 'seconds')
-    if (minutes <= 60) return formatter.format(-minutes, 'minutes')
-    if (hours <= 24) return formatter.format(-hours, 'hours')
-    return formatter.format(-days, 'days')
-}

@@ -11,23 +11,28 @@
 		<link rel="stylesheet" href="css/main.css" />
 		<link rel="preload" as="font" href="/fonts/Moonkids.ttf" type="font/ttf" crossorigin="anonymous" />
 		<link rel="preload" as="font" href="/fonts/Secular.ttf" type="font/ttf" crossorigin="anonymous" />
-		<title>Meme-Generator by Yehonatan Yosefi</title>
+		<title data-trans="title">Meme-Generator by Yehonatan Yosefi</title>
 	</head>
 
 	<body onload="onInit()" class="dark-theme main-layout">
 		<div class="nav-bar main-layout full">
 			<section class="flex space-between">
-				<div class="logo" onclick="onOpenGallery()">Meme-Generator</div>
+				<div class="logo" onclick="onOpenGallery()" data-trans="logo">Meme-Generator</div>
+				<button class="lang-selector" onclick="onToggleLang()">🌎</button>
 				<div class="menu">
 					<li class="clean list flex">
 						<ul>
-							<a href="#" class="gallery-a active" onclick="onOpenGallery()">Gallery</a>
+							<a href="#" class="gallery-a active" onclick="onOpenGallery()" data-trans="gallery"
+								>Gallery</a
+							>
 						</ul>
 						<ul>
-							<a href="#" class="my-memes-a" onclick="onOpenSavedMemes()">My Memes</a>
+							<a href="#" class="my-memes-a" onclick="onOpenSavedMemes()" data-trans="my-memes"
+								>My Memes</a
+							>
 						</ul>
 						<ul>
-							<a href="#" class="about-a" onclick="onOpenAbout()">About</a>
+							<a href="#" class="about-a" onclick="onOpenAbout()" data-trans="about">About</a>
 						</ul>
 					</li>
 				</div>
@@ -39,7 +44,7 @@
 			<div class="img-container"></div>
 			<div class="about-container hide">
 				<img src="img/creator.png" class="about-img" onclick="onOpenEditor();onSelectImg(1)" />
-				<p class="flex center-all">This is all about love.</p>
+				<p class="flex center-all" data-trans="about-text">This is all about love.</p>
 			</div>
 			<div class="editor-container hide">
 				<div class="canvas-container">
@@ -106,7 +111,7 @@
 							/>
 						</button>
 						<div class="font-container">
-							<label for="font">Font</label>
+							<label for="font" data-trans="font">Font</label>
 							<select
 								class="font"
 								onchange="onChangeLine('font', this.value)"
@@ -118,13 +123,14 @@
 							</select>
 						</div>
 						<div class="text-container">
-							<label for="txt">Text</label>
+							<label for="txt" data-trans="text">Text</label>
 							<input
 								type="text"
 								name="txt"
 								id="txt"
-								placeholder="txt"
+								placeholder="text"
 								class="txt"
+								data-trans="text-input"
 								onfocus="textInputFocus(true)"
 								onblur="textInputFocus(false)"
 								oninput="onChangeLine('text', this.value)"
@@ -161,11 +167,11 @@
 				</div>
 			</div>
 		</div>
-		<footer class="flex center-all">By Yehonatan Yosefi</footer>
+		<footer class="flex center-all" data-trans="footer">By Yehonatan Yosefi</footer>
 		<div class="main-screen" onclick="toggleMenu()"></div>
 		<div class="modal hide">Meme Saved Successfully! 💾</div>
 		<script src="js/service/storage.service.js"></script>
-		<!-- <script src="js/service/i18n.service.js"></script> -->
+		<script src="js/service/i18n.service.js"></script>
 		<script src="js/service/fb-share.service.js"></script>
 		<script src="js/service/web-api.service.js"></script>
 		<script src="js/service/upload.service.js"></script>

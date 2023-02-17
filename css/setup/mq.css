@@ -57,6 +57,7 @@
 	.editor-container {
 		flex-direction: column;
 	}
+
 	/* CHANGE */
 	.nav-bar .menu a.active {
 		box-shadow: inset 0 -2px 0 var(--clr5);
@@ -71,6 +72,10 @@
 	}
 	.footer {
 		bottom: 0;
+	}
+
+	.control-box {
+		height: 200px;
 	}
 }
 
@@ -105,6 +110,9 @@
 	}
 	.font {
 		width: 40px;
+	}
+	.control-box {
+		margin-left: 10px;
 	}
 }
 

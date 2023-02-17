@@ -8,6 +8,7 @@ var gMyMemeIdx = -1
 var gImgs = createImages()
 var gEmojis = ['👓', '💩', '💍', '🎉', '🎃', '🎈', '💄', '🎨', '🥇', '🎧', '💰', '📞', '🎤', '💖', '🕑', '💤', '😂', '😀', '😭', '👿']
 var gEmojisPage = 1
+var gDefaultText = 'Text'
 
 function createImages() {
      let images = []
@@ -89,7 +90,7 @@ function deleteCurrent() {
      updateFontVal()
 }
 
-function createLine(txt = 'Text', size = 50, align = 'center', color = 'white', stroke = 'black', font = 'secular', posX = null, posY = null, isEmoji = false) {
+function createLine(txt = gDefaultText, size = 50, align = 'center', color = 'white', stroke = 'black', font = 'secular', posX = null, posY = null, isEmoji = false) {
      return { txt, size, align, color, stroke, font, posX, posY, isEmoji }
 }
 
@@ -194,15 +195,15 @@ function getImages() {
 
 function getFilteredEmojis() {
      let startPage = gEmojisPage
-     if (gEmojisPage * EMOJIS_PER_PAGE > gEmojis.length) startPage = Math.floor(gEmojisPage)
-     const filteredEmojis = gEmojis.slice(startPage * EMOJIS_PER_PAGE - EMOJIS_PER_PAGE, gEmojisPage * EMOJIS_PER_PAGE)
+     // if (gEmojis.length / EMOJIS_PER_PAGE < Math.round(gEmojisPage)) startPage = Math.floor(gEmojisPage)
+     const filteredEmojis = gEmojis.slice(startPage * EMOJIS_PER_PAGE - EMOJIS_PER_PAGE, Math.floor(gEmojisPage) * EMOJIS_PER_PAGE)
      return filteredEmojis
 }
 
 function changePage(mod) {
      gEmojisPage += mod
      const lastPage = gEmojis.length / EMOJIS_PER_PAGE + (EMOJIS_PER_PAGE - 1) / EMOJIS_PER_PAGE
-     if (gEmojisPage < 1) gEmojisPage = lastPage
+     if (gEmojisPage < 1) gEmojisPage = Math.floor(lastPage)
      else if (gEmojisPage > lastPage) gEmojisPage = 1
 }
 
@@ -235,4 +236,8 @@ function addEmoji(emoji) {
      else gMeme.lines.push(newLine)
      gMeme.selectedLineIdx = gMeme.lines.length - 1
      updateTextVal()
+}
+
+function setDefaultText(txt) {
+     gDefaultText = txt
 }

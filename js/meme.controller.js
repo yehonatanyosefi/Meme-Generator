@@ -10,13 +10,10 @@ var gIsFocused = false
 var gIsMouseDown = false
 var gIsResizing = false
 
-//TODO: i18n for Hebrew
-//TODO: aspect ratio?
-//TODO: enter making a new line?
-
 function onInit() {
      gElCanvas = document.querySelector('.canvas')
      gCtx = gElCanvas.getContext('2d')
+     doTrans()
      renderGallery()
 }
 
@@ -146,7 +143,7 @@ function drawText(line, x, y, isSelected, idx, ctx = gCtx) {
 
 function drawSelection(x, y, size, text, align, isEmoji) {
      const width = gCtx.measureText(text).width
-     const sizePadding = (!isEmoji) ? PADDING_MULT : PADDING_MULT * 1.1
+     const sizePadding = (!isEmoji) ? PADDING_MULT : PADDING_MULT * 1.3
      switch (align) {
           case 'right':
                x -= width / 2
@@ -155,7 +152,7 @@ function drawSelection(x, y, size, text, align, isEmoji) {
                x += width / 2
                break
      }
-     drawRect(x, y, size, sizePadding, width)
+     drawRect(x, y, size, sizePadding, width,)
      drawSizeAdjust(x, y, size, sizePadding, width)
 }
 
@@ -163,8 +160,8 @@ function drawRect(x, y, size, sizePadding, width) {
      const oldColor = gCtx.fillStyle
      gCtx.fillStyle = 'rgba(255, 255, 255, 0.25)'
      gCtx.strokeStyle = 'white'
-     gCtx.strokeRect(x - width / 2 * sizePadding, y - (size / 1.8 * sizePadding), width * sizePadding, size * sizePadding)
-     gCtx.fillRect(x - width / 2 * sizePadding, y - (size / 1.8 * sizePadding), width * sizePadding, size * sizePadding)
+     gCtx.strokeRect(x - width / 2 * sizePadding, y - (size / 1.8 * sizePadding), width * sizePadding, size * sizePadding - Math.sqrt(size))
+     gCtx.fillRect(x - width / 2 * sizePadding, y - (size / 1.8 * sizePadding), width * sizePadding, size * sizePadding - Math.sqrt(size))
      gCtx.fillStyle = oldColor
 }
 
@@ -203,19 +200,19 @@ function isLineClicked(clickX, clickY) {
           const distanceY = Math.abs(posY - clickY)
           gCtx.font = `${size}px ${font || 'secular'}`
           const width = gCtx.measureText(txt).width
-          if (distanceX <= width / 2 * PADDING_MULT && distanceY <= size / 2 * PADDING_MULT) {
-               changeSelectedLine(idx)
-               renderMeme()
-               whatIsClicked = 'line'
-          }
+          const sizePadding = (!isEmoji) ? PADDING_MULT : PADDING_MULT * 1.3
           if (meme.selectedLineIdx === idx) { //if is selected - check if resize
-               const sizePadding = (!isEmoji) ? PADDING_MULT : PADDING_MULT * 1.1
                const iconSize = 12 * Math.sqrt(size / 40)
                const rPosX = posX + width / 2 + iconSize / 2
                const rPosY = posY - size / 1.8 - sizePadding - iconSize / 1.8
                const rDistanceX = Math.abs(rPosX - clickX)
                const rDistanceY = Math.abs(rPosY - clickY)
                if (rDistanceX <= iconSize / 2 && rDistanceY <= iconSize / 2) whatIsClicked = 'resize'
+          }
+          if (whatIsClicked !== 'resize' && distanceX <= width / 2 * sizePadding && distanceY <= size / 2 * sizePadding) {
+               changeSelectedLine(idx)
+               renderMeme()
+               whatIsClicked = 'line'
           }
      })
      return whatIsClicked
@@ -403,4 +400,13 @@ function textInputFocus(isFocused) {
 function onAddEmoji(emoji) {
      addEmoji(emoji)
      renderMeme()
+}
+
+function onToggleLang() {
+     document.body.classList.toggle('rtl')
+     toggleLang()
+     doTrans()
+     renderGallery()
+     const savedMemes = loadMemes()
+     if (!savedMemes || !savedMemes.length) renderMemes()
 }

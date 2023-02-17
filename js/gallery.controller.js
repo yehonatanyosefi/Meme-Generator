@@ -7,7 +7,9 @@ function renderGallery() {
      strHTML.push(imgs.map((img, idx) => {
           if (idx !== 0) return `<img src="${img.imgUrl}" class="gallery-img" onclick="onSelectImg(${idx + 1})" />`
      }))
-     strHTML.push(`<img src="img/flexible.png" class="gallery-img" onclick="onSelectImg('rnd')" />`)
+     let flexibleImg = 'flexible'
+     if (getLang() === 'he') flexibleImg = 'flexible-he'
+     strHTML.push(`<img src="img/${flexibleImg}.png" class="gallery-img" onclick="onSelectImg('rnd')" />`)
      elImages.innerHTML = strHTML.join('').replaceAll(',', '')
 }
 
@@ -16,7 +18,7 @@ function renderMemes() {
      const strHTML = []
      const memes = loadMemes()
      if (!memes || !memes.length) {
-          strHTML.push(`<div class="flex center-all">No Memes Yet, Save Your First One Today</div>`)
+          strHTML.push(`<div class="flex center-all" data-trans="memes-empty">No memes yet, save your first one today!</div>`)
           elMemes.innerHTML = strHTML.join('')
           return
      }

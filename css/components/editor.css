@@ -3,15 +3,12 @@
 	width: 100%;
 	background-color: var(--clr6);
 	margin-top: 10px;
-	margin-left: 10px;
 	margin-bottom: -10px;
 	padding: 10px;
 	border-radius: 1em;
 	box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px, rgba(0, 0, 0, 0.1) 0px 1px 3px;
+	direction: ltr;
 }
-/* .control-box button {
-	width: fit-content;
-} */
 
 .color-wrapper {
 	height: var(--icon-button);
@@ -48,6 +45,4 @@
 
 .emoji {
 	font-size: var(--icon-button);
-	width: 30px;
-	height: 30px;
 }

@@ -26,11 +26,4 @@
 /* EDITOR LAYOUT */
 .editor-container {
 	display: flex;
-	height: 450px;
 }
-/* .editor-container canvas {
-	grid-column: 1;
-}
-.editor-container .control-box {
-	grid-column: 3;
-} */
