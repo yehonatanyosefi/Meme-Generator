@@ -2,6 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1.0" />
 		<script src="https://kit.fontawesome.com/ebb427c2ba.js" crossorigin="anonymous"></script>
 		<link
 			rel="stylesheet"
@@ -50,10 +51,10 @@
 							<i class="fa-solid fa-repeat"></i>
 						</button>
 						<button class="btn-round" onclick="onEditorAdd()" onkeyup="event.preventDefault()">
-							<i class="fa-regular fa-square-plus"></i>
+							<i class="fa-solid fa-circle-plus"></i>
 						</button>
 						<button class="btn-round" onclick="onEditorDelete()" onkeyup="event.preventDefault()">
-							<i class="fa-regular fa-square-minus"></i>
+							<i class="fa-solid fa-trash"></i>
 						</button>
 						<button
 							class="btn-round"
@@ -130,6 +131,7 @@
 							/>
 						</div>
 					</div>
+					<div class="emoji-keyboard flex space-between"></div>
 					<div class="bottom-control">
 						<input
 							type="file"
@@ -140,7 +142,7 @@
 							onchange="onImgInput(event)"
 							hidden
 						/>
-						<label for="upload" class="upload-btn"><i class="fa-solid fa-upload"></i></label>
+						<label for="upload" class="upload-btn"><i class="fa-solid fa-file-arrow-up"></i></label>
 						<button class="btn-round" onclick="onSaveMeme()" onkeyup="event.preventDefault()">
 							<i class="fa-solid fa-floppy-disk"></i>
 						</button>
@@ -152,6 +154,9 @@
 						<button class="btn-round" onclick="onShareImg()" onkeyup="event.preventDefault()">
 							<i class="fa-brands fa-facebook"></i>
 						</button>
+						<button class="share-api" onkeyup="event.preventDefault()">
+							<i class="fa-solid fa-share-nodes"></i>
+						</button>
 					</div>
 				</div>
 			</div>
@@ -160,8 +165,9 @@
 		<div class="main-screen" onclick="toggleMenu()"></div>
 		<div class="modal hide">Meme Saved Successfully! 💾</div>
 		<script src="js/service/storage.service.js"></script>
-		<script src="js/service/i18n.service.js"></script>
+		<!-- <script src="js/service/i18n.service.js"></script> -->
 		<script src="js/service/fb-share.service.js"></script>
+		<script src="js/service/web-api.service.js"></script>
 		<script src="js/service/upload.service.js"></script>
 		<script src="js/service/util.service.js"></script>
 		<script src="js/service/meme.service.js"></script>

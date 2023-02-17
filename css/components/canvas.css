@@ -3,6 +3,7 @@
 	margin: auto;
 	background-color: white;
 	border: 1px solid black;
+	box-shadow: rgba(0, 0, 0, 0.1) 0px 3px 5px, rgba(0, 0, 0, 0.1) 0px 3px 5px;
 }
 
 .canvas-container {

@@ -2,7 +2,7 @@
 
 button,
 .upload-btn {
-	color: var(--clr-1);
+	color: var(--clr4);
 	cursor: pointer;
 	font-size: 1em;
 	justify-self: center;
@@ -10,14 +10,12 @@ button,
 	height: var(--icon-button);
 	width: var(--icon-button);
 	transition: scale 0.3s;
-	height: var(--icon-button);
-	width: var(--icon-button);
 }
 
 button:hover,
 .upload-btn:hover,
 .upload {
-	color: var(--clrbase);
+	color: var(--clr5);
 	scale: 1.05;
 }
 

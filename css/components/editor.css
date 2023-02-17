@@ -1,16 +1,17 @@
 .control-box {
 	display: grid;
 	width: 100%;
+	background-color: var(--clr6);
+	margin-top: 10px;
+	margin-left: 10px;
+	margin-bottom: -10px;
+	padding: 10px;
+	border-radius: 1em;
+	box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px, rgba(0, 0, 0, 0.1) 0px 1px 3px;
 }
-.control-box {
-	padding-top: 10px;
-}
-.control-box {
-	padding-bottom: 10px;
-}
-.control-box button {
+/* .control-box button {
 	width: fit-content;
-}
+} */
 
 .color-wrapper {
 	height: var(--icon-button);
@@ -37,4 +38,16 @@
 	grid-auto-flow: dense;
 	justify-content: space-around;
 	align-items: center;
+}
+.txt {
+	min-width: 40px;
+}
+.font {
+	width: 40px;
+}
+
+.emoji {
+	font-size: var(--icon-button);
+	width: 30px;
+	height: 30px;
 }

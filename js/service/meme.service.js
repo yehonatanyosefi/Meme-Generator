@@ -1,10 +1,13 @@
 'use strict'
 //consts
 const MEMES_KEY = 'memesDB'
+const EMOJIS_PER_PAGE = 4
 //vars
 var gMeme = createMeme()
 var gMyMemeIdx = -1
 var gImgs = createImages()
+var gEmojis = ['👓', '💩', '💍', '🎉', '🎃', '🎈', '💄', '🎨', '🥇', '🎧', '💰', '📞', '🎤', '💖', '🕑', '💤', '😂', '😀', '😭', '👿']
+var gEmojisPage = 1
 
 function createImages() {
      let images = []
@@ -19,13 +22,14 @@ function createImage(id, img) {
      return {
           id: id,
           imgUrl: img || `img/${id}.jpg`,
-          keywords: ['funny', 'cat'],
      }
 }
 
-function moveText(x, y, movX, movY) {
-     gMeme.lines[gMeme.selectedLineIdx].posX = x + movX
-     gMeme.lines[gMeme.selectedLineIdx].posY = y + movY
+function moveText(movX, movY, x, y) {
+     if (!gMeme.lines[gMeme.selectedLineIdx].posX) gMeme.lines[gMeme.selectedLineIdx].posX = x + movX
+     else gMeme.lines[gMeme.selectedLineIdx].posX += movX
+     if (!gMeme.lines[gMeme.selectedLineIdx].posY) gMeme.lines[gMeme.selectedLineIdx].posY = y + movY
+     else gMeme.lines[gMeme.selectedLineIdx].posY += movY
 }
 
 function addImage(img) {
@@ -85,13 +89,14 @@ function deleteCurrent() {
      updateFontVal()
 }
 
-function createLine(txt = 'Text', size = 50, align = 'center', color = 'white', stroke = 'black', font = 'secular', posX = null, posY = null) {
-     return { txt, size, align, color, stroke, font, posX, posY }
+function createLine(txt = 'Text', size = 50, align = 'center', color = 'white', stroke = 'black', font = 'secular', posX = null, posY = null, isEmoji = false) {
+     return { txt, size, align, color, stroke, font, posX, posY, isEmoji }
 }
 
 function changeSize(mod) {
+     if (gMeme.selectedLineIdx === -1) return
      gMeme.lines[gMeme.selectedLineIdx].size += mod
-     if (gMeme.lines[gMeme.selectedLineIdx].size === 1) gMeme.lines[gMeme.selectedLineIdx].size = 50
+     if (gMeme.lines[gMeme.selectedLineIdx].size <= 0) gMeme.lines[gMeme.selectedLineIdx].size = 50
 }
 
 function changeLine(prop, value) {
@@ -102,10 +107,6 @@ function changeLine(prop, value) {
      }
      switch (prop) {
           case 'text':
-               if (!value) {
-                    deleteCurrent()
-                    break
-               }
                if (!gMeme.lines || !gMeme.lines.length) addMeme()
                gMeme.lines[gMeme.selectedLineIdx].txt = value
                updateTextVal(value)
@@ -127,7 +128,6 @@ function changeLine(prop, value) {
                break
      }
 }
-
 
 
 function addMeme() {
@@ -192,6 +192,20 @@ function getImages() {
      return gImgs
 }
 
+function getFilteredEmojis() {
+     let startPage = gEmojisPage
+     if (gEmojisPage * EMOJIS_PER_PAGE > gEmojis.length) startPage = Math.floor(gEmojisPage)
+     const filteredEmojis = gEmojis.slice(startPage * EMOJIS_PER_PAGE - EMOJIS_PER_PAGE, gEmojisPage * EMOJIS_PER_PAGE)
+     return filteredEmojis
+}
+
+function changePage(mod) {
+     gEmojisPage += mod
+     const lastPage = gEmojis.length / EMOJIS_PER_PAGE + (EMOJIS_PER_PAGE - 1) / EMOJIS_PER_PAGE
+     if (gEmojisPage < 1) gEmojisPage = lastPage
+     else if (gEmojisPage > lastPage) gEmojisPage = 1
+}
+
 function getSelectedLine() {
      if (gMeme.selectedLineIdx === -1) return null
      return gMeme.lines[gMeme.selectedLineIdx]
@@ -212,5 +226,13 @@ function onDeleteFromLine() {
      }
      if (gMeme.selectedLineIdx === -1) gMeme.selectedLineIdx = 0
      gMeme.lines[gMeme.selectedLineIdx].txt = gMeme.lines[gMeme.selectedLineIdx].txt.slice(0, -1)
+     updateTextVal()
+}
+
+function addEmoji(emoji) {
+     const newLine = createLine(emoji, 50, 'center', 'white', 'black', 'secular', null, null, true)
+     if (!gMeme.lines) gMeme.lines = [newLine]
+     else gMeme.lines.push(newLine)
+     gMeme.selectedLineIdx = gMeme.lines.length - 1
      updateTextVal()
 }

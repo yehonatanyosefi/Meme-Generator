@@ -5,9 +5,14 @@ const PADDING_MULT = 1.05 //multiplier for padding
 //vars
 var gElCanvas = null
 var gCtx = null
-var gIsMouseDown = false
 var gChangeSizeInterval = null
 var gIsFocused = false
+var gIsMouseDown = false
+var gIsResizing = false
+
+//TODO: i18n for Hebrew
+//TODO: aspect ratio?
+//TODO: enter making a new line?
 
 function onInit() {
      gElCanvas = document.querySelector('.canvas')
@@ -115,7 +120,7 @@ function renderNewCanvas() {
 }
 
 function drawText(line, x, y, isSelected, idx, ctx = gCtx) {
-     const { txt, size, font, color, stroke, align, posX, posY } = line
+     const { txt, size, font, color, stroke, align, posX, posY, isEmoji } = line
      ctx.lineWidth = 1.5
      if (ctx === gCtx) {
           if (posX) x = posX
@@ -132,16 +137,16 @@ function drawText(line, x, y, isSelected, idx, ctx = gCtx) {
      ctx.strokeStyle = stroke
      ctx.textAlign = align
      ctx.textBaseline = 'middle'
-     if (isSelected) drawRect(x, y, size, txt, align)
+     if (isSelected) {
+          drawSelection(x, y, size, txt, align, isEmoji)
+     }
      ctx.fillText(txt, x, y) // Draws (fills) a given text at the given (x, y) position.
      ctx.strokeText(txt, x, y) // Draws (strokes) a given text at the given (x, y) position.
 }
 
-function drawRect(x, y, size, text, align) {
-     const oldColor = gCtx.fillStyle
+function drawSelection(x, y, size, text, align, isEmoji) {
      const width = gCtx.measureText(text).width
-     gCtx.fillStyle = 'rgba(255, 255, 255, 0.25)'
-     gCtx.strokeStyle = 'white'
+     const sizePadding = (!isEmoji) ? PADDING_MULT : PADDING_MULT * 1.1
      switch (align) {
           case 'right':
                x -= width / 2
@@ -150,42 +155,75 @@ function drawRect(x, y, size, text, align) {
                x += width / 2
                break
      }
-     gCtx.strokeRect(x - width / 2 * PADDING_MULT, y - (size / 2 * PADDING_MULT + 2), width * PADDING_MULT, size - PADDING_MULT)
-     gCtx.fillRect(x - width / 2 * PADDING_MULT, y - (size / 2 * PADDING_MULT + 2), width * PADDING_MULT, size - PADDING_MULT)
+     drawRect(x, y, size, sizePadding, width)
+     drawSizeAdjust(x, y, size, sizePadding, width)
+}
+
+function drawRect(x, y, size, sizePadding, width) {
+     const oldColor = gCtx.fillStyle
+     gCtx.fillStyle = 'rgba(255, 255, 255, 0.25)'
+     gCtx.strokeStyle = 'white'
+     gCtx.strokeRect(x - width / 2 * sizePadding, y - (size / 1.8 * sizePadding), width * sizePadding, size * sizePadding)
+     gCtx.fillRect(x - width / 2 * sizePadding, y - (size / 1.8 * sizePadding), width * sizePadding, size * sizePadding)
      gCtx.fillStyle = oldColor
+}
+
+function drawSizeAdjust(x, y, size, sizePadding, width) {
+     const iconSize = 12 * Math.sqrt(size / 40)
+     let img = new Image()
+     img.src = 'icons/resize.png'
+     img.onload = function () {
+          gCtx.drawImage(img, x + width / 2, y - size / 1.8 - sizePadding - iconSize, iconSize, iconSize)
+     }
 }
 
 function onMouseDown(ev) {
      const pos = getEvPos(ev)
      const { x, y } = pos
-     if (!isLineClicked(x, y)) {
-          changeSelectedLine(-1)
-          renderMeme()
-          return
+     switch (isLineClicked(x, y)) {
+          case 'none':
+               changeSelectedLine(-1)
+               renderMeme()
+               return
+               break
+          case 'resize':
+               gIsResizing = true
+               break
      }
      gIsMouseDown = true
 }
 
 function isLineClicked(clickX, clickY) {
      const meme = getMeme()
-     let isLineClicked = false
+     let whatIsClicked = 'none'
      meme.lines.forEach((line, idx) => {
-          const { txt, size, posX, posY } = line
+          const { txt, size, font, posX, posY, isEmoji } = line
           // Calc the distance between two dots
           const distanceX = Math.abs(posX - clickX)
           const distanceY = Math.abs(posY - clickY)
+          gCtx.font = `${size}px ${font || 'secular'}`
           const width = gCtx.measureText(txt).width
           if (distanceX <= width / 2 * PADDING_MULT && distanceY <= size / 2 * PADDING_MULT) {
-               isLineClicked = true
                changeSelectedLine(idx)
                renderMeme()
+               whatIsClicked = 'line'
+          }
+          if (meme.selectedLineIdx === idx) { //if is selected - check if resize
+               const sizePadding = (!isEmoji) ? PADDING_MULT : PADDING_MULT * 1.1
+               const iconSize = 12 * Math.sqrt(size / 40)
+               const rPosX = posX + width / 2 + iconSize / 2
+               const rPosY = posY - size / 1.8 - sizePadding - iconSize / 1.8
+               const rDistanceX = Math.abs(rPosX - clickX)
+               const rDistanceY = Math.abs(rPosY - clickY)
+               if (rDistanceX <= iconSize / 2 && rDistanceY <= iconSize / 2) whatIsClicked = 'resize'
           }
      })
-     return isLineClicked
+     return whatIsClicked
 }
 
 function onMouseUp(ev) {
      gIsMouseDown = false
+     gIsResizing = false
 }
 
 function onMouseHold(ev) {
@@ -193,7 +231,11 @@ function onMouseHold(ev) {
      const pos = getEvPos(ev)
      const { x, y } = pos
      const { movementX: movX, movementY: movY } = ev
-     moveText(x, y, movX, movY)
+     if (gIsResizing) {
+          changeSize(movX)
+     } else {
+          moveText(movX, movY, x, y)
+     }
      renderMeme()
 }
 
@@ -230,6 +272,11 @@ function onChangeLine(prop, value) {
      renderMeme()
 }
 
+function onChangePage(mod) {
+     changePage(mod)
+     renderEmojis()
+}
+
 function onSwitchLine() {
      switchLine()
      renderMeme()
@@ -243,13 +290,35 @@ function onChangeSize(mod) {
      gChangeSizeInterval = setInterval(() => {
           changeSize(mod)
           renderMeme()
-     }, 37)
+     }, 13)
 }
 
 function onSaveMeme() {
      saveMemes()
      openModal()
 }
+
+function renderEmojis() {
+
+     const emojis = getFilteredEmojis()
+     const elEmojiKeys = document.querySelector('.emoji-keyboard')
+     const strHTML = []
+     strHTML.push(`<button onclick = "onChangePage(-1)" onkeyup = "event.preventDefault()" >
+                         <i class="fa-solid fa-arrow-left"></i>
+				</ button>`)
+     for (let i = 0; i < emojis.length; i++) {
+          strHTML.push(`<button class="emoji emoji${i + 1}"
+                         onclick="onAddEmoji('${emojis[i]}')"
+                         onkeyup="event.preventDefault()">
+                         ${emojis[i]}
+                         </button>`)
+     }
+     strHTML.push(`<button onclick="onChangePage(1)" onkeyup="event.preventDefault()">
+				     <i class="fa-solid fa-arrow-right"></i>
+			     </button>`)
+     elEmojiKeys.innerHTML = strHTML.join('').replaceAll(',', '')
+}
+
 
 function onOpenEditor() {
      document.querySelector('.img-container').classList.add('hide')
@@ -263,6 +332,7 @@ function onOpenEditor() {
      gCtx.fillStyle = 'white'
      updateTextVal()
      updateFontVal()
+     renderEmojis()
 }
 
 function onOpenSavedMemes() {
@@ -302,7 +372,7 @@ function onOpenAbout() {
 function openModal() {
      const modal = document.querySelector('.modal')
      modal.classList.remove('hide')
-     setTimeout(closeModal, 800)
+     setTimeout(closeModal, 1500)
 }
 
 function closeModal() {
@@ -328,4 +398,9 @@ function updateTextVal() {
 
 function textInputFocus(isFocused) {
      gIsFocused = isFocused
+}
+
+function onAddEmoji(emoji) {
+     addEmoji(emoji)
+     renderMeme()
 }

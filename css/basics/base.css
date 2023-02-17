@@ -8,7 +8,7 @@ html {
 }
 
 body {
-	background-color: var(--clr-2);
+	background-color: var(--clr2);
 	color: var(--clr0);
 	font-family: Secular, sans-serif;
 	line-height: 1.5;
@@ -48,8 +48,6 @@ button {
 	font: inherit;
 	cursor: pointer;
 	outline: inherit;
-	height: fit-content;
-	width: fit-content;
 }
 
 i,

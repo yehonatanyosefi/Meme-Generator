@@ -1,7 +1,5 @@
 'use strict'
 
-var gCurrImageURL = null
-
 // The next 2 functions handle IMAGE UPLOADING to img tag from file system:
 function onImgInput(ev) {
     loadImageFromInput(ev, uploadImg)

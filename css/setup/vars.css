@@ -5,12 +5,11 @@
 	--clr2: #efefef;
 	--clr3: #b9ffd6;
 	--clr4: #284b63;
-	--clr-1: #284b63;
-	--clr-2: #efefef;
-	--clrbase: darkblue;
+	--clr5: darkblue;
+	--clr6: #f3fff8;
 
 	/* changing sizes */
-	--nav-height: 80px;
+	--nav-height: 50px;
 	--icon-button: 20px;
 	--side-padding: 5px;
 	--inline-end-header: 5px;
