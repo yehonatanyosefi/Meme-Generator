@@ -17,8 +17,8 @@ function onInit() {
      const lang = getValByQSParams('lang') || 'en'
      if (lang === 'he') document.body.classList.add('rtl')
      setLang(lang)
-     doTrans()
      renderGallery()
+     doTrans()
 }
 
 function renderMeme() {
@@ -433,6 +433,6 @@ function onAddEmoji(emoji) {
 function onToggleLang() {
      document.body.classList.toggle('rtl')
      toggleLang()
-     doTrans()
      renderGallery()
+     doTrans()
 }

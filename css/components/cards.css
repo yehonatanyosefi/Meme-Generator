@@ -24,8 +24,6 @@
 	border-radius: 1.5em;
 	transition: scale 0.4s opacity 0.9s;
 	opacity: 0.9;
-	height: 180px;
-	width: 180px;
 }
 
 .gallery-img:hover,
@@ -54,5 +52,5 @@
 }
 .card {
 	position: relative;
-	height: 180px;
+	margin-bottom: -8px;
 }

@@ -50,6 +50,110 @@ var gTrans = {
         en: 'Meme Saved Successfully! 💾',
         he: 'המימ נשמר בהצלחה! 💾'
     },
+    'img-text1': {
+        en: 'Shachar',
+        he: 'שחר'
+    },
+    'img-text2': {
+        en: 'Chen',
+        he: 'חן'
+    },
+    'img-text3': {
+        en: 'Stav',
+        he: 'סתיו'
+    },
+    'img-text4': {
+        en: 'Yaron',
+        he: 'ירון'
+    },
+    'img-text5': {
+        en: 'Yuval',
+        he: 'יובל'
+    },
+    'img-text6': {
+        en: 'Tal',
+        he: 'טל'
+    },
+    'img-text7': {
+        en: 'Adam',
+        he: 'אדם'
+    },
+    'img-text8': {
+        en: 'Oshra',
+        he: 'אושרה'
+    },
+    'img-text9': {
+        en: 'Sharon',
+        he: 'שרון'
+    },
+    'img-text10': {
+        en: 'Guy',
+        he: 'גיא'
+    },
+    'img-text11': {
+        en: 'Asi',
+        he: 'אסי'
+    },
+    'img-text12': {
+        en: 'Eran',
+        he: 'ערן'
+    },
+    'img-text13': {
+        en: 'Denis',
+        he: 'דניס'
+    },
+    'img-text14': {
+        en: 'Dima',
+        he: 'דימה'
+    },
+    'img-text15': {
+        en: 'Yarden',
+        he: 'ירדן'
+    },
+    'img-text16': {
+        en: 'Tal',
+        he: 'טל'
+    },
+    'img-text17': {
+        en: 'Inbar',
+        he: 'ענבר'
+    },
+    'img-text18': {
+        en: 'Hadas',
+        he: 'הדס'
+    },
+    'img-text19': {
+        en: 'Dvir',
+        he: 'דביר'
+    },
+    'img-text20': {
+        en: 'Moria',
+        he: 'מוריה'
+    },
+    'img-text21': {
+        en: 'Lihi',
+        he: 'ליהי'
+    },
+    'img-text22': {
+        en: 'Omri',
+        he: 'עמרי'
+    },
+    'img-text23': {
+        en: 'Shani',
+        he: 'שני'
+    },
+    'img-text24': {
+        en: 'Avi',
+        he: 'אבי'
+    },
+    'img-text25': {
+        en: 'Alon',
+        he: 'אלון'
+    },
+    'img-text26': {
+        en: 'Yuval',
+        he: 'יובל'
+    },
 }
 
 var gCurrLang = 'en'

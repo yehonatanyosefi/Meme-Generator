@@ -6,7 +6,7 @@ function renderGallery() {
      const imgs = getImages()
      strHTML.push(imgs.map((img, idx) => {
           if (idx !== 0) return `<div class="card"><img src="${img.imgUrl}" class="gallery-img" onclick="onSelectImg(${idx + 1})" />
-          <p><h5 class="text">${img.text}</h5></p></div>`
+          <h5 class="text" data-trans="img-text${idx}">${img.text}</h5></div>`
      }))
      let flexibleImg = 'flexible'
      if (getLang() === 'he') flexibleImg = 'flexible-he'
