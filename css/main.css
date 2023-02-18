@@ -9,7 +9,7 @@
 @import 'basics/buttons.css';
 
 /* COMPONENTS */
-@import 'components/img.css';
+@import 'components/cards.css';
 @import 'components/editor.css';
 @import 'components/canvas.css';
 @import 'components/about.css';

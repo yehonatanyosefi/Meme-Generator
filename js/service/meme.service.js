@@ -3,6 +3,7 @@
 const MEMES_KEY = 'memesDB'
 const EMOJIS_PER_PAGE = 4
 //vars
+var gImagesText = ['Shachar', 'Chen', 'Stav', 'Yaron', 'Yuval', 'Tal', 'Adam', 'Oshra', 'Sharon', 'Guy', 'Asi', 'Eran', 'Denis', 'Dima', 'Yarden', 'Tal', 'Inbar', 'Hadas', 'Dvir', 'Moria', 'Lihi', 'Omri', 'Shani', 'Avi', 'Alon', 'Yuval',]
 var gMeme = createMeme()
 var gMyMemeIdx = -1
 var gImgs = createImages()
@@ -12,17 +13,18 @@ var gDefaultText = 'Text'
 
 function createImages() {
      let images = []
-     images.push(createImage(0, 'img/0.png')) //me :)
+     images.push(createImage(0, 'img/0.png', 'Yehonatan')) //me :)
      for (let i = 1; i <= 26; i++) {
-          images.push(createImage(i))
+          images.push(createImage(i, `img/${i}.jpg`, gImagesText[i - 1]))
      }
      return images
 }
 
-function createImage(id, img) {
+function createImage(id, img, text) {
      return {
           id: id,
           imgUrl: img || `img/${id}.jpg`,
+          text: text || 'unknown',
      }
 }
 

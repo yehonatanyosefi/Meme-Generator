@@ -24,10 +24,35 @@
 	border-radius: 1.5em;
 	transition: scale 0.4s opacity 0.9s;
 	opacity: 0.9;
+	height: 180px;
+	width: 180px;
 }
 
 .gallery-img:hover,
 .my-meme:hover {
 	scale: 1.025;
 	opacity: 1;
+}
+
+.text {
+	position: absolute;
+	bottom: -5%;
+	left: 50%;
+	transform: translateX(-50%);
+
+	opacity: 0;
+	transition: 200ms;
+	pointer-events: none;
+	user-select: none;
+	z-index: 3;
+	color: var(--clr2);
+	text-shadow: rgba(0, 0, 0, 0.75) 0px 1px 3px, rgba(0, 0, 0, 0.75) 0px 1px 3px;
+}
+.card:hover .text {
+	transform: translateX(-50%) translateY(-50%);
+	opacity: 1;
+}
+.card {
+	position: relative;
+	height: 180px;
 }
