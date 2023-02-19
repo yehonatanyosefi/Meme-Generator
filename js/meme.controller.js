@@ -12,9 +12,8 @@ var gIsMouseDown = false
 var gIsResizing = false
 
 //TODO: save on localstorage language settings
-//TODO: let align move the text to center/one of the edges
 //TODO: add titles for buttons, and add button descriptions below them for social-media
-//TODO: add an upload button instead of the first picture, support the picture showin
+//TODO: add an upload button instead of the first picture, support the picture showing on gallery
 //TODO: add aspect ratio support
 
 function onInit() {
@@ -94,7 +93,7 @@ function prepareDownload() {
      if (meme.selectedLineIdx !== -1) {
           meme.selectedLineIdx = -1
           renderMeme()
-          setTimeout(() => elLink.click(), 0)
+          setTimeout(() => elLink.click(), 100)
      } else {
           elLink.click()
      }
@@ -142,7 +141,6 @@ function drawText(line, x, y, isSelected, idx, ctx = gCtx) {
      ctx.font = `${size}px ${font || 'secular'}`
      ctx.fillStyle = color
      ctx.strokeStyle = stroke
-     ctx.textAlign = align
      ctx.textBaseline = 'middle'
      if (isSelected) {
           drawSelection(x, y, size, txt, align, isEmoji)
@@ -154,14 +152,6 @@ function drawText(line, x, y, isSelected, idx, ctx = gCtx) {
 function drawSelection(x, y, size, text, align, isEmoji) {
      const width = gCtx.measureText(text).width
      const sizePadding = (!isEmoji) ? PADDING_MULT : PADDING_MULT * 1.3
-     switch (align) {
-          case 'right':
-               x -= width / 2
-               break
-          case 'left':
-               x += width / 2
-               break
-     }
      drawRect(x, y, size, sizePadding, width,)
      drawSizeAdjust(x, y, size, sizePadding, width)
 }
@@ -303,7 +293,8 @@ function onEditorAdd() {
 }
 
 function onChangeLine(prop, value) {
-     changeLine(prop, value)
+     if (prop === 'align') changeLine(prop, value, gElCanvas)
+     else changeLine(prop, value)
      renderMeme()
 }
 
@@ -362,6 +353,7 @@ function onOpenEditor() {
      updateTextVal()
      updateFontVal()
      renderEmojis()
+     gCtx.textAlign = 'center'
 }
 
 function onOpenSavedMemes() {
@@ -429,7 +421,7 @@ function updateTextVal() {
      const txt = (!line) ? '' : line.txt
      elTxtBox.value = txt
      if (elTxtBox.value === 'טקסט' || elTxtBox.value === 'Text') {
-          if (!elTxtBox.select()) setTimeout(() => elTxtBox.select(), 0)
+          if (!elTxtBox.select()) setTimeout(() => elTxtBox.select(), 100)
      }
 }
 

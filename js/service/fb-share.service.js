@@ -4,7 +4,7 @@ function onShareImg() {
     if (meme.selectedLineIdx !== -1) {
         meme.selectedLineIdx = -1
         renderMeme()
-        setTimeout(() => shareImg(), 0)
+        setTimeout(() => shareImg(), 100)
     } else shareImg()
 }
 

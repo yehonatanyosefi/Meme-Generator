@@ -103,7 +103,7 @@ function changeSize(mod) {
      if (gMeme.lines[gMeme.selectedLineIdx].size <= 0) gMeme.lines[gMeme.selectedLineIdx].size = 50
 }
 
-function changeLine(prop, value) {
+function changeLine(prop, value, canvas) {
      if (gMeme.selectedLineIdx === -1) {
           gMeme.selectedLineIdx = 0
           updateTextVal()
@@ -116,7 +116,17 @@ function changeLine(prop, value) {
                updateTextVal()
                break
           case 'align':
-               gMeme.lines[gMeme.selectedLineIdx].align = value
+               switch (value) {
+                    case 'left':
+                         gMeme.lines[gMeme.selectedLineIdx].posX = canvas.width - canvas.width / 8
+                         break
+                    case 'right':
+                         gMeme.lines[gMeme.selectedLineIdx].posX = canvas.width / 8
+                         break
+                    case 'center':
+                         gMeme.lines[gMeme.selectedLineIdx].posX = canvas.width / 2
+                         break
+               }
                break
           case 'fill':
                gMeme.lines[gMeme.selectedLineIdx].color = value
