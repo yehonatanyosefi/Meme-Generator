@@ -4,10 +4,6 @@
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width,initial-scale=1.0" />
 		<script src="https://kit.fontawesome.com/ebb427c2ba.js" crossorigin="anonymous"></script>
-		<link
-			rel="stylesheet"
-			href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
-		/>
 		<link rel="stylesheet" href="css/main.css" />
 		<link rel="preload" as="font" href="/fonts/Moonkids.ttf" type="font/ttf" crossorigin="anonymous" />
 		<link rel="preload" as="font" href="/fonts/Secular.ttf" type="font/ttf" crossorigin="anonymous" />
@@ -36,7 +32,7 @@
 						</ul>
 					</li>
 				</div>
-				<button class="hamburger" onclick="toggleMenu(true)"><i class="fa-solid fa-bars"></i></button>
+				<button class="hamburger" onclick="openMenu()"><i class="fa-solid fa-bars"></i></button>
 			</section>
 		</div>
 		<div class="main-content">
@@ -51,7 +47,22 @@
 					<canvas class="canvas" height="450" width="450"> </canvas>
 				</div>
 				<div class="control-box">
-					<div class="top-control">
+					<div class="txt-container">
+						<label for="txt" data-trans="text">Text: </label>
+						<input
+							type="text"
+							name="txt"
+							id="txt"
+							placeholder="text"
+							class="txt"
+							data-trans="text-input"
+							onfocus="textInputFocus(true)"
+							onblur="textInputFocus(false)"
+							oninput="onChangeLine('text', this.value)"
+						/>
+						
+					</div>
+						<div class="top-controls">
 						<button onclick="onSwitchLine()" onkeyup="event.preventDefault()">
 							<i class="fa-solid fa-repeat"></i>
 						</button>
@@ -70,18 +81,24 @@
 						<button onclick="onChangeLine('align', 'left')" onkeyup="event.preventDefault()">
 							<i class="fa-solid fa-align-right"></i>
 						</button>
-					</div>
-					<div class="text-container">
+							
+						</div>
+						<div class="middle-controls">
 						<button
-							onmousedown="onChangeSize(1)"
+						onTouchStart="onChangeSize(1)"
+						onTouchEnd="stopPress()"
+						onmousedown="onChangeSize(1)"
 							onmouseout="stopPress()"
 							onmouseup="stopPress()"
 							onkeyup="event.preventDefault()"
 						>
+						
 							<i class="fa-solid fa-plus"></i>
 						</button>
 						<button
-							onmousedown="onChangeSize(-1)"
+						onTouchStart="onChangeSize(-1)"
+						onTouchEnd="stopPress()"
+						onmousedown="onChangeSize(-1)"
 							onmouseout="stopPress()"
 							onmouseup="stopPress()"
 							onkeyup="event.preventDefault()"
@@ -96,7 +113,7 @@
 								value="#FFFFFF"
 							/>
 						</button>
-						<div class="font-container">
+
 							<label for="font" data-trans="font">Font</label>
 							<select
 								class="font"
@@ -107,24 +124,23 @@
 								<option value="impact">Impact</option>
 								<option value="moonkids">Moonkids</option>
 							</select>
+							
+							
 						</div>
-						<div class="text-container">
-							<label for="txt" data-trans="text">Text</label>
-							<input
-								type="text"
-								name="txt"
-								id="txt"
-								placeholder="text"
-								class="txt"
-								data-trans="text-input"
-								onfocus="textInputFocus(true)"
-								onblur="textInputFocus(false)"
-								oninput="onChangeLine('text', this.value)"
-							/>
+						<div class="emoji-display">
+							<button onclick = "onChangePage(-1)" onkeyup = "event.preventDefault()" >
+                         <i class="fa-solid fa-arrow-left"></i>
+				</button>
+							<div class="emoji1"></div>
+							<div class="emoji2"></div>
+							<div class="emoji3"></div>
+							<div class="emoji4"></div>
+							<button onclick="onChangePage(1)" onkeyup="event.preventDefault()">
+				     <i class="fa-solid fa-arrow-right"></i>
+			     </button>
+
 						</div>
-					</div>
-					<div class="emoji-keyboard flex space-between"></div>
-					<div class="bottom-control">
+				<div class="social-controls">
 						<input
 							type="file"
 							id="upload"
@@ -149,12 +165,11 @@
 						<button class="share-api" onkeyup="event.preventDefault()">
 							<i class="fa-solid fa-share-nodes"></i>
 						</button>
-					</div>
+						</div>
 				</div>
-			</div>
 		</div>
 		<footer class="flex center-all" data-trans="footer">By Yehonatan Yosefi</footer>
-		<div class="main-screen" onclick="toggleMenu()"></div>
+		<div class="main-screen" onclick="closeMenu()"></div>
 		<div class="modal hide" data-trans="meme-save">Meme Saved Successfully! 💾</div>
 		<script src="js/service/storage.service.js"></script>
 		<script src="js/service/i18n.service.js"></script>

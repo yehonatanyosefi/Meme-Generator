@@ -4,8 +4,9 @@ function renderGallery() {
      const elImages = document.querySelector('.img-container')
      const strHTML = []
      const imgs = getImages()
+     const numOfImages = getImagesNum()
      strHTML.push(imgs.map((img, idx) => {
-          if (idx !== 0) return `<div class="card"><img src="${img.imgUrl}" class="gallery-img" onclick="onSelectImg(${idx + 1})" />
+          if (idx !== 0 && idx <= numOfImages) return `<div class="card"><img src="${img.imgUrl}" class="gallery-img" onclick="onSelectImg(${idx + 1})" />
           <h5 class="text" data-trans="img-text${idx}">${img.text}</h5></div>`
      }))
      let flexibleImg = 'flexible'

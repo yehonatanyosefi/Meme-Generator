@@ -1,13 +1,16 @@
 .control-box {
+	margin-top: 10px;
 	display: grid;
 	width: 100%;
-	background-color: var(--clr6);
-	margin-top: 10px;
-	margin-bottom: -10px;
-	padding: 10px;
+	background-color: var(--clr5);
 	border-radius: 1em;
 	box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px, rgba(0, 0, 0, 0.1) 0px 1px 3px;
 	direction: ltr;
+	grid-template-columns: repeat(6, 1fr);
+	justify-content: center;
+	align-items: center;
+	justify-items: center;
+	padding: var(--ctrl-box-pad);
 }
 
 .color-wrapper {
@@ -26,23 +29,48 @@
 	height: 100%;
 	cursor: pointer;
 }
-
-.top-control,
-.text-container,
-.bottom-control {
-	display: grid;
-	grid-template-columns: repeat(auto-fit, var(--icon-button));
-	grid-auto-flow: dense;
-	justify-content: space-around;
+.font-container {
+	grid-column: span 2;
+	display: flex;
+	justify-content: center;
 	align-items: center;
 }
-.txt {
-	min-width: 40px;
-}
 .font {
-	width: 40px;
+	height: 20px;
+	width: fit-content;
 }
-
+/* .txt-container {
+	grid-column: 1/5;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+} */
+.txt {
+	height: 20px;
+	width: 90%;
+}
 .emoji {
 	font-size: var(--icon-button);
+}
+.download-container {
+	justify-self: center;
+}
+.fa-file-arrow-up {
+	justify-self: center;
+}
+.upload-btn {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.txt-container,
+.top-controls,
+.middle-controls,
+.emoji-display,
+.social-controls {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	grid-column: 1/-1;
+	width: 100%;
 }

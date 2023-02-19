@@ -5,12 +5,12 @@
 	--clr2: #efefef;
 	--clr3: #b9ffd6;
 	--clr4: #284b63;
-	--clr5: darkblue;
-	--clr6: #f3fff8;
+	--clr5: #f3fff8;
+	--clr6: rgba(234, 255, 255, 0.9);
 
 	/* changing sizes */
 	--nav-height: 50px;
 	--icon-button: 20px;
 	--side-padding: 5px;
-	--inline-end-header: 5px;
+	--ctrl-box-pad: 7px;
 }

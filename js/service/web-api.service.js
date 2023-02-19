@@ -15,13 +15,12 @@ function onShareAPI() {
      if (meme.selectedLineIdx !== -1) {
           meme.selectedLineIdx = -1
           renderMeme()
-          setTimeout(() => getShareData(), 100)
+          setTimeout(() => getShareData(), 0)
      } else getShareData()
 }
 
 function getShareData() {
      const imgDataUrl = gElCanvas.toDataURL('image/jpeg').substring(23)
-     console.log('imgDataUrl', imgDataUrl)
      const byteCharacters = atob(imgDataUrl);
      const byteNumbers = new Array(byteCharacters.length);
      for (let i = 0; i < byteCharacters.length; i++) {

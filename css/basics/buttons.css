@@ -13,6 +13,6 @@ button,
 button:hover,
 .upload-btn:hover,
 .upload {
-	color: var(--clr5);
+	color: var(--clr1);
 	scale: 1.05;
 }

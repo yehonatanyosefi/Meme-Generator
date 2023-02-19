@@ -11,6 +11,12 @@ var gIsFocused = false
 var gIsMouseDown = false
 var gIsResizing = false
 
+//TODO: save on localstorage language settings
+//TODO: let align move the text to center/one of the edges
+//TODO: add titles for buttons, and add button descriptions below them for social-media
+//TODO: add an upload button instead of the first picture, support the picture showin
+//TODO: add aspect ratio support
+
 function onInit() {
      gElCanvas = document.querySelector('.canvas')
      gCtx = gElCanvas.getContext('2d')
@@ -88,7 +94,7 @@ function prepareDownload() {
      if (meme.selectedLineIdx !== -1) {
           meme.selectedLineIdx = -1
           renderMeme()
-          setTimeout(() => elLink.click(), 100)
+          setTimeout(() => elLink.click(), 0)
      } else {
           elLink.click()
      }
@@ -233,20 +239,24 @@ function onTouchEnd(ev) {
 function onMouseDown(ev) {
      const pos = getEvPos(ev)
      const { x, y } = pos
+     gElCanvas.style.cursor = "grabbing"
      switch (isLineClicked(x, y)) {
           case 'none':
                changeSelectedLine(-1)
                renderMeme()
+               gElCanvas.style.cursor = "initial"
                return
                break
           case 'resize':
                gIsResizing = true
+               gElCanvas.style.cursor = "move"
                break
      }
      gIsMouseDown = true
 }
 
 function onMouseUp(ev) {
+     gElCanvas.style.cursor = "initial"
      gIsMouseDown = false
      gIsResizing = false
 }
@@ -328,20 +338,14 @@ function renderEmojis() {
      const emojis = getFilteredEmojis()
      const elEmojiKeys = document.querySelector('.emoji-keyboard')
      const strHTML = []
-     strHTML.push(`<button onclick = "onChangePage(-1)" onkeyup = "event.preventDefault()" >
-                         <i class="fa-solid fa-arrow-left"></i>
-				</ button>`)
      for (let i = 0; i < emojis.length; i++) {
-          strHTML.push(`<button class="emoji emoji${i + 1}"
+          const elEmojiBtn = document.querySelector(`.emoji${i + 1}`)
+          elEmojiBtn.innerHTML = `<button class="emoji emoji${i + 1}"
                          onclick="onAddEmoji('${emojis[i]}')"
                          onkeyup="event.preventDefault()">
                          ${emojis[i]}
-                         </button>`)
+                         </button>`
      }
-     strHTML.push(`<button onclick="onChangePage(1)" onkeyup="event.preventDefault()">
-				     <i class="fa-solid fa-arrow-right"></i>
-			     </button>`)
-     elEmojiKeys.innerHTML = strHTML.join('').replaceAll(',', '')
 }
 
 
@@ -412,13 +416,21 @@ function updateFontVal() {
      elFont.value = font
 }
 
-function toggleMenu() {
-     document.body.classList.toggle('menu-open')
+function openMenu() {
+     document.body.classList.add('menu-open')
+}
+
+function closeMenu() {
+     document.body.classList.remove('menu-open')
 }
 function updateTextVal() {
+     const elTxtBox = document.querySelector('.txt')
      const line = getSelectedLine()
      const txt = (!line) ? '' : line.txt
-     document.querySelector('.txt').value = txt
+     elTxtBox.value = txt
+     if (elTxtBox.value === 'טקסט' || elTxtBox.value === 'Text') {
+          if (!elTxtBox.select()) setTimeout(() => elTxtBox.select(), 0)
+     }
 }
 
 function textInputFocus(isFocused) {

@@ -80,7 +80,7 @@ var gTrans = {
     },
     'img-text8': {
         en: 'Oshra',
-        he: 'אושרה'
+        he: 'אשרה'
     },
     'img-text9': {
         en: 'Sharon',

@@ -2,19 +2,20 @@
 //consts
 const MEMES_KEY = 'memesDB'
 const EMOJIS_PER_PAGE = 4
+const IMAGES_NUM = 26
 //vars
 var gImagesText = ['Shachar', 'Chen', 'Stav', 'Yaron', 'Yuval', 'Tal', 'Adam', 'Oshra', 'Sharon', 'Guy', 'Asi', 'Eran', 'Denis', 'Dima', 'Yarden', 'Tal', 'Inbar', 'Hadas', 'Dvir', 'Moria', 'Lihi', 'Omri', 'Shani', 'Avi', 'Alon', 'Yuval',]
 var gMeme = createMeme()
 var gMyMemeIdx = -1
 var gImgs = createImages()
-var gEmojis = ['👓', '💩', '💍', '🎉', '🎃', '🎈', '💄', '🎨', '🥇', '🎧', '💰', '📞', '🎤', '💖', '🕑', '💤', '😂', '😀', '😭', '👿']
+var gEmojis = ['👓', '💖', '💍', '🎉', '🎃', '🎈', '💄', '🎨', '🥇', '🎧', '💰', '💩', '📞', '🎤', '🕑', '💤', '😂', '😀', '😭', '👿']
 var gEmojisPage = 1
 var gDefaultText = 'Text'
 
 function createImages() {
      let images = []
      images.push(createImage(0, 'img/0.png', 'Yehonatan')) //me :)
-     for (let i = 1; i <= 26; i++) {
+     for (let i = 1; i <= IMAGES_NUM; i++) {
           images.push(createImage(i, `img/${i}.jpg`, gImagesText[i - 1]))
      }
      return images
@@ -112,7 +113,7 @@ function changeLine(prop, value) {
           case 'text':
                if (!gMeme.lines || !gMeme.lines.length) addMeme()
                gMeme.lines[gMeme.selectedLineIdx].txt = value
-               updateTextVal(value)
+               updateTextVal()
                break
           case 'align':
                gMeme.lines[gMeme.selectedLineIdx].align = value
@@ -193,6 +194,10 @@ function getMeme() {
 
 function getImages() {
      return gImgs
+}
+
+function getImagesNum() {
+     return IMAGES_NUM
 }
 
 function getFilteredEmojis() {
