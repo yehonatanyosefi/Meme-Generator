@@ -39,12 +39,6 @@
 	height: 20px;
 	width: fit-content;
 }
-/* .txt-container {
-	grid-column: 1/5;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-} */
 .txt {
 	height: 20px;
 	width: 90%;
@@ -73,4 +67,9 @@
 	align-items: center;
 	grid-column: 1/-1;
 	width: 100%;
+}
+
+body.rtl .txt-container,
+body.rtl .middle-controls {
+	direction: rtl;
 }
